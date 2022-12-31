@@ -1,0 +1,49 @@
+.searchBar {
+	position: sticky;
+	top: 0;
+	display: flex;
+	padding: 1rem;
+	justify-content: center;
+	align-items: center;
+}
+
+.backIcon {
+	color: #fff;
+}
+
+.arrowButton {
+	padding: 0 0.5rem;
+}
+
+.arrowIcon {
+	fill: white;
+}
+
+.inputWrapper {
+	position: relative;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+}
+
+.searchIcon {
+	color: #000;
+	position: absolute;
+	top: 50%;
+	left: 0.75em;
+	transform: translateY(-50%);
+}
+
+.input {
+	border-radius: 4px;
+	padding: 0.6rem 2.7rem;
+	width: 100%;
+}
+
+.clearTextButton {
+	position: absolute;
+	top: 50%;
+	right: 0.75em;
+	transform: translateY(-50%);
+	color: #000;
+}

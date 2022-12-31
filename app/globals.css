@@ -8,12 +8,11 @@ html,
 body {
 	padding: 0;
 	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 	background-color: black;
 	color: white;
 	max-width: 100vw;
 	overflow-x: hidden;
+	letter-spacing: 0.025rem;
 }
 
 a {
@@ -34,6 +33,7 @@ input {
 button {
 	border: none;
 	background: none;
+	letter-spacing: 0.025rem;
 }
 
 main {

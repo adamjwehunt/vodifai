@@ -1,8 +1,8 @@
-import { Varela_Round } from '@next/font/google';
+import { Cabin } from '@next/font/google';
 import './globals.css';
 
-const varelaRound = Varela_Round({
-	weight: '400',
+const cabin = Cabin({
+	weight: ['400', '700'],
 	subsets: ['latin'],
 });
 
@@ -12,7 +12,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" className={varelaRound.className}>
+		<html lang="en" className={cabin.className}>
 			{/*
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
