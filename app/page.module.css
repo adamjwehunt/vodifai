@@ -21,6 +21,7 @@
 	white-space: nowrap;
 	width: 100%;
 	font-size: 1rem;
+	cursor: text;
 }
 
 .searchIcon {

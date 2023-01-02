@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import XIcon from '../../public/x-icon.svg';
 import styles from './search.module.css';
 
@@ -8,11 +8,15 @@ export const SearchInput = ({ query }: { query: string }) => {
 	const router = useRouter();
 	const [value, setValue] = useState(query);
 
-	const handleKeyPress = async (
+	const handleKeyDown = async (
 		event: React.KeyboardEvent<HTMLInputElement>
 	) => {
 		if (event.key === 'Enter') {
-			router.push(`/search/${(event.target as HTMLInputElement).value}`);
+			router.push(
+				`/search/${encodeURIComponent(
+					(event.target as HTMLInputElement).value
+				)}`
+			);
 		}
 	};
 	const handleClearInput = () => {
@@ -29,7 +33,7 @@ export const SearchInput = ({ query }: { query: string }) => {
 				value={value}
 				placeholder="What do you want to watch?"
 				onChange={(event) => setValue(event.target.value)}
-				onKeyPress={handleKeyPress}
+				onKeyDown={handleKeyDown}
 			/>
 			{!value ? null : (
 				<button className={styles.clearTextButton} onClick={handleClearInput}>

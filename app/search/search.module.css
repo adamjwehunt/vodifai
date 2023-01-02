@@ -32,6 +32,7 @@
 	top: 50%;
 	left: 0.75em;
 	transform: translateY(-50%);
+	pointer-events: none;
 }
 
 .input {

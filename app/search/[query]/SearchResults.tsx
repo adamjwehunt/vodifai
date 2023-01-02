@@ -1,8 +1,9 @@
-import React from 'react';
+import Image from 'next/image';
+import { YoutubeSearchResult } from './types';
 
-async function getVideos(query: string) {
+async function getVideos(query: string): Promise<YoutubeSearchResult | null> {
 	if (!query) {
-		return [];
+		return null;
 	}
 
 	const res = await fetch(
@@ -14,11 +15,23 @@ async function getVideos(query: string) {
 
 export default async function SearchResults({ query }: { query: string }) {
 	const videos = await getVideos(query);
-	console.log(
-		`app/search/[query]/SearchResults.tsx - 17 => videos: `,
-		'\n',
-		videos
-	);
 
-	return <div>{query}</div>;
+	return (
+		<div>
+			{videos?.items.map((video) => {
+				return (
+					<div key={video.id.videoId}>
+						<h3>{video.snippet.title}</h3>
+						<p>{video.snippet.description}</p>
+						<Image
+							src={video.snippet.thumbnails.high.url}
+							alt={video.snippet.title}
+							width={video.snippet.thumbnails.high.width}
+							height={video.snippet.thumbnails.high.height}
+						/>
+					</div>
+				);
+			})}
+		</div>
+	);
 }

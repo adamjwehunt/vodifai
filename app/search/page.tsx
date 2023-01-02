@@ -1,5 +1,5 @@
 import SearchBar from './SearchBar';
 
-export default function Search({ params }: { params: any }) {
+export default function Search() {
 	return <SearchBar query={''} />;
 }
