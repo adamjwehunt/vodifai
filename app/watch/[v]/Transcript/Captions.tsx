@@ -28,16 +28,27 @@ export const Captions = memo(
 		const playerStateDispatch = usePlayerStateDispatch();
 		const { seekTo } = usePlayerRef();
 
-		const wrapperRef = useRef<HTMLInputElement>(null);
+		const containerRef = useRef<HTMLInputElement>(null);
 
-		const handleActiveCaptionChange = useCallback((activeCaption: any) => {
-			const wrapper = wrapperRef?.current;
-			if (activeCaption && wrapper) {
-				// const activeCaptionRect = activeCaption.getBoundingClientRect();
-				// wrapper.scrollTo(0, middle);
-				// activeCaption.scrollIntoView()
-			}
-		}, []);
+		const handleActiveCaptionChange = useCallback(
+			(caption: HTMLInputElement) => {
+				const container = containerRef?.current;
+				if (caption && container) {
+					const captionComputedStyle = getComputedStyle(caption);
+					const captionPaddingY = parseFloat(
+						captionComputedStyle.paddingBottom
+					);
+					const captionHeight = caption.offsetHeight - captionPaddingY;
+
+					container.scrollTo({
+						top:
+							caption.offsetTop - (container.offsetHeight - captionHeight) / 2,
+						behavior: 'smooth',
+					});
+				}
+			},
+			[]
+		);
 
 		const handleCaptionClick = (captionStart: number) => {
 			seekTo(captionStart);
@@ -45,8 +56,8 @@ export const Captions = memo(
 		};
 
 		return (
-			<div ref={wrapperRef} className={className}>
-				<CaptionsContainer>
+			<div className={className}>
+				<CaptionsContainer ref={containerRef}>
 					{captions.map(({ start, text, id }: Caption, i: number) => (
 						<CaptionText
 							key={i}
