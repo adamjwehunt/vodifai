@@ -9,7 +9,8 @@ export const BufferSpinner = styled(({ className }: StyledComponent) => {
 	const { isBuffering } = usePlayerState();
 
 	if (!isBuffering) {
-		return null;
+		// Animates exit
+		return <AnimatePresence />;
 	}
 
 	return (

@@ -33,26 +33,31 @@ interface TopProps extends StyledComponent {
 export const Top = styled(
 	({ title, artist, className, isExpanded, onToggleExpand }: TopProps) => {
 		if (!isExpanded) {
-			return null;
+			// Animates exit
+			return <AnimatePresence />;
 		}
 
 		const handleSearchTranscriptButtonClick = () => {};
 
 		return (
 			<AnimatePresence>
-				<motion.div
-					className={className}
-					initial={{ y: '-5rem', opacity: 0 }}
-					animate={{ y: 0, opacity: 1 }}
-					exit={{ y: '-5rem', opacity: 0 }}
-				>
-					<SearchTranscriptButton onClick={handleSearchTranscriptButtonClick} />
-					<Info>
-						<div>{title}</div>
-						<div>{artist}</div>
-					</Info>
-					<MinimizeButton onClick={onToggleExpand} />
-				</motion.div>
+				{
+					<motion.div
+						className={className}
+						initial={{ y: '-5rem', opacity: 0 }}
+						animate={{ y: 0, opacity: 1 }}
+						exit={{ y: '-5rem', opacity: 0 }}
+					>
+						<SearchTranscriptButton
+							onClick={handleSearchTranscriptButtonClick}
+						/>
+						<Info>
+							<div>{title}</div>
+							<div>{artist}</div>
+						</Info>
+						<MinimizeButton onClick={onToggleExpand} />
+					</motion.div>
+				}
 			</AnimatePresence>
 		);
 	}

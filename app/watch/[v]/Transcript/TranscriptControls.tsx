@@ -11,7 +11,8 @@ interface TranscriptControlsProps extends StyledComponent {
 export const TranscriptControls = styled(
 	({ isExpanded, className }: TranscriptControlsProps) => {
 		if (!isExpanded) {
-			return null;
+			// Animates exit
+			return <AnimatePresence />;
 		}
 
 		return (
