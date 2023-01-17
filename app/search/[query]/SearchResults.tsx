@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { YoutubeSearchResult } from './types';
 
 async function getVideos(query: string): Promise<YoutubeSearchResult | null> {
@@ -19,8 +20,13 @@ export default async function SearchResults({ query }: { query: string }) {
 	return (
 		<div>
 			{videos?.items.map((video) => {
+				console.log(
+					`app/search/[query]/SearchResults.tsx - 23 => video: `,
+					'\n',
+					video
+				);
 				return (
-					<div key={video.id.videoId}>
+					<Link key={video.id.videoId} href={`/watch/${video.id.videoId}`}>
 						<h3>{video.snippet.title}</h3>
 						<p>{video.snippet.description}</p>
 						<Image
@@ -29,7 +35,7 @@ export default async function SearchResults({ query }: { query: string }) {
 							width={video.snippet.thumbnails.high.width}
 							height={video.snippet.thumbnails.high.height}
 						/>
-					</div>
+					</Link>
 				);
 			})}
 		</div>

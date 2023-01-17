@@ -30,9 +30,10 @@
 	color: #000;
 	position: absolute;
 	top: 50%;
-	left: 0.75em;
+	left: 0.75rem;
 	transform: translateY(-50%);
 	pointer-events: none;
+	height: 1rem;
 }
 
 .input {
@@ -44,7 +45,7 @@
 .clearTextButton {
 	position: absolute;
 	top: 50%;
-	right: 0.75em;
+	right: 0.75rem;
 	transform: translateY(-50%);
 	color: #000;
 }

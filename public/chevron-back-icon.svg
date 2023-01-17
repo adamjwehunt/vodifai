@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  focusable="false"
+  aria-hidden="true"
+  viewBox="0 0 24 24"
+  data-testid="ArrowBackIosIcon"
+  tabindex="-1"
+  title="ArrowBackIos">
+  <path d="M11.67 3.87 9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"></path>
+</svg>
