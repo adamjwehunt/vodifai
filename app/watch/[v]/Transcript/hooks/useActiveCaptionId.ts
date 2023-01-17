@@ -5,7 +5,7 @@ export default function useActiveCaptionId(
 	captions: Caption[],
 	played: number
 ): {
-	activeCaptionId: number | null;
+	activeCaptionId?: number;
 	handleAnimationStart: () => void;
 	handleAnimationComplete: () => void;
 } {
@@ -14,19 +14,19 @@ export default function useActiveCaptionId(
 	const handleAnimationStart = () => setIsAnimating(true);
 	const handleAnimationComplete = () => setIsAnimating(false);
 
-	const previousActiveCaptionId = useRef<number | null>(null);
+	const previousActiveCaptionId = useRef<number | undefined>();
 
 	const activeCaptionId = useMemo(() => {
 		if (isAnimating) {
 			return previousActiveCaptionId.current;
 		}
 
-		const id =
-			captions.find(
-				({ start, duration }: { start: number; duration: number }, i: number) =>
-					played > start &&
-					played < (captions[i + 1]?.start || start + duration)
-			)?.id || null;
+		const id = captions.find(
+			({ start, duration }: { start: number; duration: number }, i: number) =>
+				played === start ||
+				(played >= start &&
+					played < (captions[i + 1]?.start || start + duration))
+		)?.id;
 
 		previousActiveCaptionId.current = id;
 		return id;

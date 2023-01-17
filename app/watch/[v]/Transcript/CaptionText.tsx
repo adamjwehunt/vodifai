@@ -3,7 +3,7 @@ import { StyledComponent } from '../types';
 import { css } from '@emotion/react';
 
 interface CaptionTextProps extends StyledComponent {
-	isActive: boolean;
+	isHighlighted: boolean;
 	text: string;
 	captionRef: ((activeCaption: any) => void) | null;
 	onClick: () => void;
@@ -16,7 +16,7 @@ export const CaptionText = styled(
 		</div>
 	)
 )(
-	({ isActive }) => css`
+	({ isHighlighted }) => css`
 		color: rgba(0, 0, 0, 0.7);
 		font-size: 1.8rem;
 		font-weight: 600;
@@ -26,7 +26,7 @@ export const CaptionText = styled(
 			text-transform: capitalize;
 		}
 
-		${isActive &&
+		${isHighlighted &&
 		css`
 			color: #fff;
 		`};

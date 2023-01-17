@@ -16,7 +16,6 @@ interface BottomProps extends StyledComponent {
 export const Bottom = styled(
 	({ className, captions, isExpanded, onToggleExpand }: BottomProps) => {
 		const { played } = usePlayerState();
-
 		const { activeCaptionId, handleAnimationStart, handleAnimationComplete } =
 			useActiveCaptionId(captions, played);
 

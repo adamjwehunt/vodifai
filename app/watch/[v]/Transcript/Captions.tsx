@@ -20,13 +20,12 @@ const CaptionsContainer = styled.div`
 
 interface CaptionsProps extends StyledComponent {
 	captions: Caption[];
-	activeCaptionId: number | null;
+	activeCaptionId?: number;
 }
 
 export const Captions = memo(
 	styled(({ className, captions, activeCaptionId }: CaptionsProps) => {
 		const playerStateDispatch = usePlayerStateDispatch();
-
 		const { seekTo } = usePlayerRef();
 
 		const wrapperRef = useRef<HTMLInputElement>(null);
@@ -48,18 +47,19 @@ export const Captions = memo(
 		return (
 			<div ref={wrapperRef} className={className}>
 				<CaptionsContainer>
-					{captions.map(({ start, text, id }: Caption, i: number) => {
-						const isActive = activeCaptionId === id;
-						return (
-							<CaptionText
-								key={i}
-								isActive={isActive}
-								captionRef={isActive ? handleActiveCaptionChange : null}
-								onClick={() => handleCaptionClick(start)}
-								text={text}
-							/>
-						);
-					})}
+					{captions.map(({ start, text, id }: Caption, i: number) => (
+						<CaptionText
+							key={i}
+							isHighlighted={
+								activeCaptionId !== undefined ? id <= activeCaptionId : false
+							}
+							captionRef={
+								id === activeCaptionId ? handleActiveCaptionChange : null
+							}
+							onClick={() => handleCaptionClick(start)}
+							text={text}
+						/>
+					))}
 				</CaptionsContainer>
 			</div>
 		);
