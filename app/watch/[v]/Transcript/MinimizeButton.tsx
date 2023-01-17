@@ -11,6 +11,10 @@ const ChevronDownIcon = styled(ChevronBackIcon)`
 	transform: rotate(-90deg);
 	fill: #fff;
 	margin-top: -0.3em;
+
+	&:focus {
+		outline: none;
+	}
 `;
 
 export const MinimizeButton = styled(
@@ -24,7 +28,7 @@ export const MinimizeButton = styled(
 			<ChevronDownIcon />
 		</button>
 	)
-	)(css`
+)(css`
 	background-color: hsla(0, 0%, 0%, 0.3);
 	height: 2rem;
 	width: 2rem;
