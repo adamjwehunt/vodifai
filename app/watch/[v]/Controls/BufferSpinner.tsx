@@ -61,7 +61,7 @@ export const BufferSpinner = styled(({ className }: StyledComponent) => {
 
 		&:after {
 			${pseudoElementBase};
-			border: 0.3rem solid transparent;
+			border: 0.375rem solid transparent;
 			border-top-color: #fff;
 		}
 	`;
