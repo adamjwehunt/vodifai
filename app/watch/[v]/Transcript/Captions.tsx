@@ -7,6 +7,7 @@ import {
 import { Caption, StyledComponent } from '../types';
 import { CaptionText } from './CaptionText';
 import { css } from '@emotion/react';
+import useIsScrolling from './hooks/useIsScrolling';
 
 const CaptionsContainer = styled.div`
 	overflow-y: scroll;
@@ -29,9 +30,14 @@ export const Captions = memo(
 		const { seekTo } = usePlayerRef();
 
 		const containerRef = useRef<HTMLInputElement>(null);
+		const isScrolling = useIsScrolling(containerRef?.current, 1000);
 
 		const handleActiveCaptionChange = useCallback(
 			(caption: HTMLInputElement) => {
+				if (isScrolling) {
+					return;
+				}
+
 				const container = containerRef?.current;
 				if (caption && container) {
 					const captionComputedStyle = getComputedStyle(caption);
@@ -47,7 +53,7 @@ export const Captions = memo(
 					});
 				}
 			},
-			[]
+			[isScrolling]
 		);
 
 		const handleCaptionClick = (captionStart: number) => {
