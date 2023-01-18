@@ -6,7 +6,7 @@ interface CaptionTextProps extends StyledComponent {
 	isHighlighted: boolean;
 	text: string;
 	captionRef: ((activeCaption: any) => void) | null;
-	onClick: () => void;
+	onClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export const CaptionText = styled(

@@ -1,8 +1,9 @@
-import { memo, useCallback, useRef } from 'react';
+import React, { memo, useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
 import {
 	usePlayerStateDispatch,
 	usePlayerRef,
+	usePlayerState,
 } from '../PlayerProvider/playerContext';
 import { Caption, StyledComponent } from '../types';
 import { CaptionText } from './CaptionText';
@@ -28,16 +29,12 @@ export const Captions = memo(
 	styled(({ className, captions, activeCaptionId }: CaptionsProps) => {
 		const playerStateDispatch = usePlayerStateDispatch();
 		const { seekTo } = usePlayerRef();
-
-		const containerRef = useRef<HTMLInputElement>(null);
+		const { isPlaying, isSeeking } = usePlayerState();
+		const containerRef = useRef<HTMLDivElement>(null);
 		const isScrolling = useIsScrolling(containerRef?.current, 1000);
 
-		const handleActiveCaptionChange = useCallback(
-			(caption: HTMLInputElement) => {
-				if (isScrolling) {
-					return;
-				}
-
+		const scrollToCaption = useCallback(
+			(caption: HTMLDivElement, isSmooth = true) => {
 				const container = containerRef?.current;
 				if (caption && container) {
 					const captionComputedStyle = getComputedStyle(caption);
@@ -49,14 +46,33 @@ export const Captions = memo(
 					container.scrollTo({
 						top:
 							caption.offsetTop - (container.offsetHeight - captionHeight) / 2,
-						behavior: 'smooth',
+						...(isSmooth && { behavior: 'smooth' }),
 					});
 				}
 			},
-			[isScrolling]
+			[]
 		);
 
-		const handleCaptionClick = (captionStart: number) => {
+		const handleActiveCaptionChange = useCallback(
+			(caption: HTMLDivElement) => {
+				if (isSeeking) {
+					return scrollToCaption(caption, false);
+				}
+
+				if (isScrolling && isPlaying) {
+					return;
+				}
+
+				scrollToCaption(caption);
+			},
+			[isScrolling, isPlaying, isSeeking, scrollToCaption]
+		);
+
+		const handleCaptionClick = (
+			event: React.MouseEvent<HTMLElement>,
+			captionStart: number
+		) => {
+			scrollToCaption(event.target);
 			seekTo(captionStart);
 			playerStateDispatch({ type: 'played', seconds: captionStart });
 		};
@@ -73,7 +89,9 @@ export const Captions = memo(
 							captionRef={
 								id === activeCaptionId ? handleActiveCaptionChange : null
 							}
-							onClick={() => handleCaptionClick(start)}
+							onClick={(event: React.MouseEvent<HTMLElement>) => {
+								handleCaptionClick(event, start);
+							}}
 							text={text}
 						/>
 					))}
