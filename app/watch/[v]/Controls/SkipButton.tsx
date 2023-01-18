@@ -33,7 +33,8 @@ export const SkipButton = styled(({ back }: SkipButtonProps) => {
 		}
 
 		seekTo(seconds);
-		playerStateDispatch({ type: 'played', seconds });
+		// playerStateDispatch({ type: 'played', seconds });
+		playerStateDispatch({ type: 'seekEnd', seconds });
 	};
 
 	return (

@@ -29,7 +29,7 @@ export const Captions = memo(
 	styled(({ className, captions, activeCaptionId }: CaptionsProps) => {
 		const playerStateDispatch = usePlayerStateDispatch();
 		const { seekTo } = usePlayerRef();
-		const { isPlaying, isSeeking } = usePlayerState();
+		const { isPlaying, isSeeking, hasSeeked } = usePlayerState();
 		const containerRef = useRef<HTMLDivElement>(null);
 		const isScrolling = useIsScrolling(containerRef?.current, 1000);
 
@@ -55,7 +55,7 @@ export const Captions = memo(
 
 		const handleActiveCaptionChange = useCallback(
 			(caption: HTMLDivElement) => {
-				if (isSeeking) {
+				if (isSeeking || hasSeeked) {
 					return scrollToCaption(caption, false);
 				}
 
@@ -65,7 +65,7 @@ export const Captions = memo(
 
 				scrollToCaption(caption);
 			},
-			[isScrolling, isPlaying, isSeeking, scrollToCaption]
+			[isScrolling, isPlaying, isSeeking, hasSeeked, scrollToCaption]
 		);
 
 		const handleCaptionClick = (
