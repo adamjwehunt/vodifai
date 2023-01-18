@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Top } from './Top';
 import { Bottom } from './Bottom';
 import { TranscriptControls } from './TranscriptControls';
@@ -17,10 +17,19 @@ export default function Transcript({ playerInfo }: TranscriptProps) {
 
 	const { videoDetails, captions } = playerInfo;
 	const [isExpanded, setIsExpanded] = useState(false);
-	const handleToggleExpand = () => setIsExpanded(!isExpanded);
+	const captionsRef = useRef<HTMLDivElement | null>(null);
+
+	const handleToggleExpand = () => {
+		setIsExpanded(!isExpanded);
+		if (captionsRef.current) {
+			captionsRef.current.centerActiveCaption();
+		}
+	};
 
 	return (
-		<MotionConfig transition={{ type: 'ease-in-out', duration: expandDuration }}>
+		<MotionConfig
+			transition={{ type: 'ease-in-out', duration: expandDuration }}
+		>
 			<Top
 				key={'top'}
 				title={videoDetails?.title ?? ''}
@@ -31,6 +40,7 @@ export default function Transcript({ playerInfo }: TranscriptProps) {
 			<Bottom
 				captions={captions}
 				isExpanded={isExpanded}
+				captionsRef={captionsRef}
 				onToggleExpand={handleToggleExpand}
 			/>
 			<TranscriptControls key={'transcriptControls'} isExpanded={isExpanded} />
