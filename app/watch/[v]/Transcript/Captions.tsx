@@ -69,10 +69,10 @@ export const Captions = memo(
 		);
 
 		const handleCaptionClick = (
-			event: React.MouseEvent<HTMLElement>,
+			element: HTMLDivElement,
 			captionStart: number
 		) => {
-			scrollToCaption(event.target);
+			scrollToCaption(element);
 			seekTo(captionStart);
 			playerStateDispatch({ type: 'played', seconds: captionStart });
 		};
@@ -89,8 +89,8 @@ export const Captions = memo(
 							captionRef={
 								id === activeCaptionId ? handleActiveCaptionChange : null
 							}
-							onClick={(event: React.MouseEvent<HTMLElement>) => {
-								handleCaptionClick(event, start);
+							onClick={({ target }) => {
+								handleCaptionClick(target as HTMLDivElement, start);
 							}}
 							text={text}
 						/>
