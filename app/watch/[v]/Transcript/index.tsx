@@ -4,6 +4,8 @@ import { Bottom } from './Bottom';
 import { TranscriptControls } from './TranscriptControls';
 import { MotionConfig } from 'framer-motion';
 
+export const expandDuration = 0.3;
+
 interface TranscriptProps {
 	playerInfo: any;
 }
@@ -18,7 +20,7 @@ export default function Transcript({ playerInfo }: TranscriptProps) {
 	const handleToggleExpand = () => setIsExpanded(!isExpanded);
 
 	return (
-		<MotionConfig transition={{ type: 'ease-in-out', duration: 0.35 }}>
+		<MotionConfig transition={{ type: 'ease-in-out', duration: expandDuration }}>
 			<Top
 				key={'top'}
 				title={videoDetails?.title ?? ''}

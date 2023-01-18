@@ -6,6 +6,7 @@ import useActiveCaptionId from './hooks/useActiveCaptionId';
 import { Caption, StyledComponent } from '../types';
 import { css } from '@emotion/react';
 import { usePlayerState } from '../PlayerProvider/playerContext';
+import { useRef } from 'react';
 
 interface BottomProps extends StyledComponent {
 	captions: Caption[];
@@ -18,6 +19,14 @@ export const Bottom = styled(
 		const { played } = usePlayerState();
 		const { activeCaptionId, handleAnimationStart, handleAnimationComplete } =
 			useActiveCaptionId(captions, played);
+		const captionsRef = useRef<any>(null);
+
+		const handleToggleExpand = () => {
+			onToggleExpand();
+			if (captionsRef.current) {
+				captionsRef.current.centerActiveCaption();
+			}
+		};
 
 		return (
 			<motion.div
@@ -35,8 +44,12 @@ export const Bottom = styled(
 					}),
 				}}
 			>
-				<TranscriptHeader onToggleExpand={onToggleExpand} />
-				<Captions activeCaptionId={activeCaptionId} captions={captions} />
+				<TranscriptHeader onToggleExpand={handleToggleExpand} />
+				<Captions
+					ref={captionsRef}
+					activeCaptionId={activeCaptionId}
+					captions={captions}
+				/>
 			</motion.div>
 		);
 	}

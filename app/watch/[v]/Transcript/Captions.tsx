@@ -1,4 +1,10 @@
-import React, { memo, useCallback, useRef } from 'react';
+import React, {
+	forwardRef,
+	memo,
+	useCallback,
+	useImperativeHandle,
+	useRef,
+} from 'react';
 import styled from '@emotion/styled';
 import {
 	usePlayerStateDispatch,
@@ -9,6 +15,7 @@ import { Caption, StyledComponent } from '../types';
 import { CaptionText } from './CaptionText';
 import { css } from '@emotion/react';
 import useIsScrolling from './hooks/useIsScrolling';
+import { expandDuration } from '.';
 
 const CaptionsContainer = styled.div`
 	overflow-y: scroll;
@@ -26,79 +33,103 @@ interface CaptionsProps extends StyledComponent {
 }
 
 export const Captions = memo(
-	styled(({ className, captions, activeCaptionId }: CaptionsProps) => {
-		const playerStateDispatch = usePlayerStateDispatch();
-		const { seekTo } = usePlayerRef();
-		const { isPlaying, isSeeking, hasSeeked } = usePlayerState();
-		const containerRef = useRef<HTMLDivElement>(null);
-		const isScrolling = useIsScrolling(containerRef?.current, 1000);
+	styled(
+		// eslint-disable-next-line react/display-name
+		forwardRef(
+			(
+				{ className, captions, activeCaptionId }: CaptionsProps,
+				ref: React.ForwardedRef<any>
+			) => {
+				const playerStateDispatch = usePlayerStateDispatch();
+				const { seekTo } = usePlayerRef();
+				const { isPlaying, isSeeking, hasSeeked } = usePlayerState();
+				const containerRef = useRef<HTMLDivElement>(null);
+				const activeCaptionRef = useRef<HTMLDivElement | null>(null);
+				const isScrolling = useIsScrolling(containerRef?.current, 1000);
 
-		const scrollToCaption = useCallback(
-			(caption: HTMLDivElement, isSmooth = true) => {
-				const container = containerRef?.current;
-				if (caption && container) {
-					const captionComputedStyle = getComputedStyle(caption);
-					const captionPaddingY = parseFloat(
-						captionComputedStyle.paddingBottom
-					);
-					const captionHeight = caption.offsetHeight - captionPaddingY;
-
-					container.scrollTo({
-						top:
-							caption.offsetTop - (container.offsetHeight - captionHeight) / 2,
-						...(isSmooth && { behavior: 'smooth' }),
-					});
-				}
-			},
-			[]
-		);
-
-		const handleActiveCaptionChange = useCallback(
-			(caption: HTMLDivElement) => {
-				if (isSeeking || hasSeeked) {
-					return scrollToCaption(caption, false);
-				}
-
-				if (isScrolling && isPlaying) {
-					return;
-				}
-
-				scrollToCaption(caption);
-			},
-			[isScrolling, isPlaying, isSeeking, hasSeeked, scrollToCaption]
-		);
-
-		const handleCaptionClick = (
-			element: HTMLDivElement,
-			captionStart: number
-		) => {
-			scrollToCaption(element);
-			seekTo(captionStart);
-			playerStateDispatch({ type: 'played', seconds: captionStart });
-		};
-
-		return (
-			<div className={className}>
-				<CaptionsContainer ref={containerRef}>
-					{captions.map(({ start, text, id }: Caption, i: number) => (
-						<CaptionText
-							key={i}
-							isHighlighted={
-								activeCaptionId !== undefined ? id <= activeCaptionId : false
+				useImperativeHandle(ref, () => ({
+					centerActiveCaption() {
+						setTimeout(() => {
+							if (activeCaptionRef.current) {
+								scrollToCaption(activeCaptionRef.current);
 							}
-							captionRef={
-								id === activeCaptionId ? handleActiveCaptionChange : null
-							}
-							onClick={({ target }) => {
-								handleCaptionClick(target as HTMLDivElement, start);
-							}}
-							text={text}
-						/>
-					))}
-				</CaptionsContainer>
-			</div>
-		);
-	})(() => {
+						}, expandDuration * 1000);
+					},
+				}));
+
+				const scrollToCaption = useCallback(
+					(caption: HTMLDivElement, isSmooth = true) => {
+						const container = containerRef?.current;
+						if (caption && container) {
+							const captionComputedStyle = getComputedStyle(caption);
+							const captionPaddingY = parseFloat(
+								captionComputedStyle.paddingBottom
+							);
+							const captionHeight = caption.offsetHeight - captionPaddingY;
+
+							container.scrollTo({
+								top:
+									caption.offsetTop -
+									(container.offsetHeight - captionHeight) / 2,
+								...(isSmooth && { behavior: 'smooth' }),
+							});
+						}
+					},
+					[]
+				);
+
+				const handleActiveCaptionChange = useCallback(
+					(caption: HTMLDivElement) => {
+						activeCaptionRef.current = caption;
+
+						if (isSeeking || hasSeeked) {
+							return scrollToCaption(caption, false);
+						}
+
+						if (isScrolling && isPlaying) {
+							return;
+						}
+
+						scrollToCaption(caption);
+					},
+					[isScrolling, isPlaying, isSeeking, hasSeeked, scrollToCaption]
+				);
+
+				const handleCaptionClick = (
+					element: HTMLDivElement,
+					captionStart: number
+				) => {
+					scrollToCaption(element);
+					seekTo(captionStart);
+					playerStateDispatch({ type: 'played', seconds: captionStart });
+				};
+
+				return (
+					<div className={className}>
+						<CaptionsContainer ref={containerRef}>
+							{captions.map(({ start, text, id }: Caption, i: number) => (
+								<CaptionText
+									key={i}
+									isHighlighted={
+										activeCaptionId !== undefined
+											? id <= activeCaptionId
+											: false
+									}
+									captionRef={
+										id === activeCaptionId ? handleActiveCaptionChange : null
+									}
+									onClick={({ target }) => {
+										handleCaptionClick(target as HTMLDivElement, start);
+									}}
+									text={text}
+								/>
+							))}
+						</CaptionsContainer>
+					</div>
+				);
+			}
+		)
+	)(() => {
 		const pseudoElementBase = (location: 'top' | 'bottom') => css`
 			content: '';
 			position: absolute;
