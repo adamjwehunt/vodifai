@@ -34,4 +34,5 @@ export const MinimizeButton = styled(
 	width: 2rem;
 	border-radius: 50%;
 	padding: 0 0.4rem;
+	flex-shrink: 0;
 `);

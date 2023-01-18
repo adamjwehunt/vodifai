@@ -8,6 +8,10 @@ const ExpandIcon = styled(Icon)`
 	height: 100%;
 	fill: #fff;
 	max-width: 100%;
+
+	&:focus {
+		outline: none;
+	}
 `;
 
 interface ExpandButtonProps extends StyledComponent {

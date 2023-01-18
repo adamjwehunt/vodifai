@@ -68,7 +68,7 @@ export const Top = styled(
 	z-index: 3;
 	display: flex;
 	justify-content: space-between;
-	align-items: flex-start;
+	align-items: center;
 	padding: 1rem;
 	background-color: rgb(185, 153, 190);
 `);
