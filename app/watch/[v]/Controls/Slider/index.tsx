@@ -16,15 +16,12 @@ export const Slider = styled(({ className }: StyledComponent) => {
 	const { seekTo } = usePlayerRef();
 
 	const handleSeek = (value: number[]) => {
-		const seconds = value[0];
-		playerStateDispatch({ type: 'seek' });
-		playerStateDispatch({ type: 'played', seconds });
+		playerStateDispatch({ type: 'seek', seconds: value[0] });
 	};
 
 	const handleSeekCommitted = (value: number[]) => {
 		const seconds = value[0];
-		playerStateDispatch({ type: 'seekEnd' });
-		playerStateDispatch({ type: 'played', seconds });
+		playerStateDispatch({ type: 'seekEnd', seconds });
 		seekTo(seconds);
 	};
 

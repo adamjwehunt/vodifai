@@ -32,12 +32,14 @@ export const playerReducer: PlayerReducer = (
 			return {
 				...previousState,
 				isSeeking: true,
+				played: action.seconds,
 			};
 		case 'seekEnd':
 			return {
 				...previousState,
 				isSeeking: false,
 				hasSeeked: true,
+				played: action.seconds,
 			};
 		case 'seekComplete':
 			return {

@@ -22,9 +22,11 @@ export type PlayerReducerAction =
 	  }
 	| {
 			type: 'seek';
+			seconds: number;
 	  }
 	| {
 			type: 'seekEnd';
+			seconds: number;
 	  }
 	| {
 			type: 'seekComplete';
