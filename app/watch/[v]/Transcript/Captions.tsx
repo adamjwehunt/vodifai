@@ -99,6 +99,8 @@ export const Captions = memo(
 					element: HTMLDivElement,
 					captionStart: number
 				) => {
+					captionStart =
+						captionStart < 1 ? Math.ceil(captionStart) : captionStart;
 					scrollToCaption(element);
 					seekTo(captionStart);
 					playerStateDispatch({ type: 'played', seconds: captionStart });
