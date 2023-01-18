@@ -14,7 +14,11 @@ async function getVideos(query: string): Promise<YoutubeSearchResult | null> {
 	return res.json();
 }
 
-export default async function SearchResults({ query }: { query: string }) {
+interface SearchResultsProps {
+	query: string;
+}
+
+export default async function SearchResults({ query }: SearchResultsProps) {
 	const videos = await getVideos(query);
 
 	return (

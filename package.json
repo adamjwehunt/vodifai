@@ -23,10 +23,12 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-player": "^2.11.0",
-    "typescript": "4.9.4"
+    "typescript": "4.9.4",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",
+    "@types/xmldom": "^0.1.31",
     "sass": "^1.57.1"
   }
 }
