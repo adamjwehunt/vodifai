@@ -86,7 +86,7 @@ export const Captions = memo(
 							return scrollToCaption(caption, false);
 						}
 
-						if (isScrolling && isPlaying) {
+						if (isScrolling || !isPlaying) {
 							return;
 						}
 
