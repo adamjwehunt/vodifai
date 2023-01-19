@@ -3,7 +3,7 @@ import { StyledComponent } from '../types';
 import { usePlayerState } from '../PlayerProvider/playerContext';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import { SearchTranscriptButton } from './SearchTranscriptButton';
+// import { SearchTranscriptButton } from './SearchTranscriptButton';
 import { MinimizeButton } from './MinimizeButton';
 import { css } from '@emotion/react';
 
@@ -36,7 +36,7 @@ export const Top = styled(({ className }: StyledComponent) => {
 		},
 	} = usePlayerState();
 
-	const handleSearchTranscriptButtonClick = () => {};
+	// const handleSearchTranscriptButtonClick = () => {};
 
 	if (!isExpanded) {
 		// Animates exit
@@ -52,7 +52,7 @@ export const Top = styled(({ className }: StyledComponent) => {
 					animate={{ y: 0, opacity: 1 }}
 					exit={{ y: '-5rem', opacity: 0 }}
 				>
-					<SearchTranscriptButton onClick={handleSearchTranscriptButtonClick} />
+					{/* <SearchTranscriptButton onClick={handleSearchTranscriptButtonClick} /> */}
 					<Info>
 						<div>{title}</div>
 						<div>{authorName}</div>
