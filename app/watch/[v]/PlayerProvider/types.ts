@@ -1,4 +1,5 @@
 import { Reducer } from 'react';
+import { VideoInfo } from '../types';
 
 export interface PlayerReducerState {
 	isPlaying: boolean;
@@ -7,6 +8,7 @@ export interface PlayerReducerState {
 	isBuffering: boolean;
 	duration: number;
 	played: number;
+	videoInfo: VideoInfo;
 }
 
 export type PlayerReducerAction =

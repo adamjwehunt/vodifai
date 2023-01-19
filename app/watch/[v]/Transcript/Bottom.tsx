@@ -1,29 +1,26 @@
-import { motion } from 'framer-motion';
-import { Captions, CaptionsHandle } from './Captions';
-import { TranscriptHeader } from './TranscriptHeader';
+import { Ref } from 'react';
 import styled from '@emotion/styled';
-import useActiveCaptionId from './hooks/useActiveCaptionId';
-import { Caption, StyledComponent } from '../types';
-import { css } from '@emotion/react';
+import { StyledComponent } from '../types';
 import { usePlayerState } from '../PlayerProvider/playerContext';
-import { ElementRef, Ref } from 'react';
+import { useActiveCaptionId } from './hooks/useActiveCaptionId';
+import { motion } from 'framer-motion';
+import { TranscriptHeader } from './TranscriptHeader';
+import { Captions, CaptionsHandle } from './Captions';
+import { css } from '@emotion/react';
 
 interface BottomProps extends StyledComponent {
-	captions: Caption[];
-	isExpanded: boolean;
 	captionsRef: Ref<CaptionsHandle>;
+	isExpanded: boolean;
 	onToggleExpand: () => void;
 }
 
 export const Bottom = styled(
-	({
-		className,
-		captions,
-		isExpanded,
-		captionsRef,
-		onToggleExpand,
-	}: BottomProps) => {
-		const { played } = usePlayerState();
+	({ className, captionsRef, isExpanded, onToggleExpand }: BottomProps) => {
+		const {
+			played,
+			videoInfo: { captions },
+		} = usePlayerState();
+		useActiveCaptionId(captions, played);
 		const { activeCaptionId, handleAnimationStart, handleAnimationComplete } =
 			useActiveCaptionId(captions, played);
 
@@ -44,11 +41,7 @@ export const Bottom = styled(
 				}}
 			>
 				<TranscriptHeader onToggleExpand={onToggleExpand} />
-				<Captions
-					ref={captionsRef}
-					activeCaptionId={activeCaptionId}
-					captions={captions}
-				/>
+				<Captions ref={captionsRef} activeCaptionId={activeCaptionId} />
 			</motion.div>
 		);
 	}

@@ -114,6 +114,6 @@ export interface VideoInfo {
 	id: string;
 	url: string;
 	captions: Caption[];
-	videoDetails: VideoDetails;
 	formats: VideoFormat[];
+	videoDetails: VideoDetails;
 }

@@ -2,7 +2,7 @@ import { findBestTranscriptUrl, mapYoutubeCaptions } from './youtubeUtil';
 import { Caption, CaptionTrack, VideoInfo } from './types';
 import { DOMParser } from 'xmldom';
 import ytdl from 'ytdl-core';
-import PlayerContainer from './PlayerContainer';
+import { PlayerContainer } from './PlayerContainer';
 
 const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
 

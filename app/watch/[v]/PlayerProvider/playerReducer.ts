@@ -11,6 +11,21 @@ export const DEFAULT_PLAYER_REDUCER_STATE: PlayerReducerState = Object.freeze({
 	isBuffering: false,
 	duration: 0,
 	played: 0,
+	videoInfo: {
+		id: '',
+		url: '',
+		captions: [],
+		formats: [],
+		videoDetails: {
+			title: '',
+			description: '',
+			author: {
+				name: '',
+				id: '',
+			},
+			duration: 0,
+		},
+	},
 });
 
 export const playerReducer: PlayerReducer = (

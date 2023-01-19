@@ -2,13 +2,19 @@ import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
 import { Marquee } from './Marquee';
 import { css } from '@emotion/react';
+import { usePlayerState } from '../PlayerProvider/playerContext';
 
-interface DetailsTextProps extends StyledComponent {
-	title?: string;
-	author?: string;
-}
-export const DetailsText = styled(
-	({ className, title, author }: DetailsTextProps) => (
+export const DetailsText = styled(({ className }: StyledComponent) => {
+	const {
+		videoInfo: {
+			videoDetails: {
+				title,
+				author: { name: authorName },
+			},
+		},
+	} = usePlayerState();
+
+	return (
 		<div className={className}>
 			<Marquee
 				text={title}
@@ -18,7 +24,7 @@ export const DetailsText = styled(
 				`}
 			/>
 			<Marquee
-				text={author}
+				text={authorName}
 				textStyle={css`
 					font-size: 1rem;
 					letter-spacing: 0.02em;
@@ -26,8 +32,8 @@ export const DetailsText = styled(
 				`}
 			/>
 		</div>
-	)
-)(css`
+	);
+})(css`
 	width: 100%;
 	display: flex;
 	flex-wrap: wrap;

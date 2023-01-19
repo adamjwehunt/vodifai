@@ -1,14 +1,14 @@
 import { useMemo, useRef, useState } from 'react';
 import { Caption } from '../../types';
 
-export default function useActiveCaptionId(
+export const useActiveCaptionId = (
 	captions: Caption[],
 	played: number
 ): {
 	activeCaptionId?: number;
 	handleAnimationStart: () => void;
 	handleAnimationComplete: () => void;
-} {
+} => {
 	// Prevents activeCaptionId from updating while animation is in progress
 	const [isAnimating, setIsAnimating] = useState(false);
 	const handleAnimationStart = () => setIsAnimating(true);
@@ -33,4 +33,4 @@ export default function useActiveCaptionId(
 	}, [captions, played, isAnimating]);
 
 	return { activeCaptionId, handleAnimationStart, handleAnimationComplete };
-}
+};

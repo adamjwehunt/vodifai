@@ -20,18 +20,23 @@ const reactPlayerConfig: Config = {
 };
 
 interface PlayerProps extends StyledComponent {
-	url: string;
 	playerRef: ForwardedRef<ReactPlayer>;
 }
 
-export const Player = styled(({ className, url, playerRef }: PlayerProps) => {
+export const Player = styled(({ className, playerRef }: PlayerProps) => {
 	// Render react-player on the client only
 	const [isSSR, setIsSSR] = useState(true);
 	useEffect(() => {
 		setIsSSR(false);
 	}, []);
 
-	const { isPlaying, isSeeking, hasSeeked } = usePlayerState();
+	const {
+		isPlaying,
+		isSeeking,
+		hasSeeked,
+		videoInfo: { url },
+	} = usePlayerState();
+
 	const playerStateDispatch = usePlayerStateDispatch();
 
 	const dispatchPlayed = (seconds: number) => {

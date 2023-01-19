@@ -20,6 +20,6 @@ const debounce = (callback: () => void, delay: number, immediate?: boolean) => {
 	};
 };
 
-export default function useDebounce(callback: () => void, delay: number) {
+export const useDebounce = (callback: () => void, delay: number) => {
 	return useMemo(() => debounce(callback, delay), [callback, delay]);
-}
+};

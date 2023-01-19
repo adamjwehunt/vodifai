@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { SearchTranscriptButton } from './SearchTranscriptButton';
 import { MinimizeButton } from './MinimizeButton';
 import { css } from '@emotion/react';
+import { usePlayerState } from '../PlayerProvider/playerContext';
 
 const Info = styled.div`
 	padding: 0 1rem;
@@ -24,18 +25,25 @@ const Info = styled.div`
 `;
 
 interface TopProps extends StyledComponent {
-	title: string;
-	artist: string;
 	isExpanded: boolean;
 	onToggleExpand: () => void;
 }
 
 export const Top = styled(
-	({ title, artist, className, isExpanded, onToggleExpand }: TopProps) => {
+	({ className, isExpanded, onToggleExpand }: TopProps) => {
 		if (!isExpanded) {
 			// Animates exit
 			return <AnimatePresence />;
 		}
+
+		const {
+			videoInfo: {
+				videoDetails: {
+					title,
+					author: { name: authorName },
+				},
+			},
+		} = usePlayerState();
 
 		const handleSearchTranscriptButtonClick = () => {};
 
@@ -53,7 +61,7 @@ export const Top = styled(
 						/>
 						<Info>
 							<div>{title}</div>
-							<div>{artist}</div>
+							<div>{authorName}</div>
 						</Info>
 						<MinimizeButton onClick={onToggleExpand} />
 					</motion.div>

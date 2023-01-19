@@ -3,21 +3,16 @@ import { Top } from './Top';
 import { Bottom } from './Bottom';
 import { TranscriptControls } from './TranscriptControls';
 import { MotionConfig } from 'framer-motion';
-import { VideoInfo } from '../types';
 import { Captions } from './Captions';
+import { usePlayerState } from '../PlayerProvider/playerContext';
 
 export const expandDuration = 0.3;
 
-interface TranscriptProps {
-	videoInfo: VideoInfo;
-}
+export const Transcript = () => {
+	const {
+		videoInfo: { captions },
+	} = usePlayerState();
 
-export default function Transcript({ videoInfo }: TranscriptProps) {
-	if (!videoInfo?.captions?.length) {
-		return null;
-	}
-
-	const { videoDetails, captions } = videoInfo;
 	const [isExpanded, setIsExpanded] = useState(false);
 	const captionsRef = useRef<ElementRef<typeof Captions>>(null);
 
@@ -28,24 +23,21 @@ export default function Transcript({ videoInfo }: TranscriptProps) {
 		}
 	};
 
+	if (!captions.length) {
+		return null;
+	}
+
 	return (
 		<MotionConfig
 			transition={{ type: 'ease-in-out', duration: expandDuration }}
 		>
-			<Top
-				key={'top'}
-				title={videoDetails?.title ?? ''}
-				artist={videoDetails?.author?.name ?? ''}
-				isExpanded={isExpanded}
-				onToggleExpand={handleToggleExpand}
-			/>
+			<Top isExpanded={isExpanded} onToggleExpand={handleToggleExpand} />
 			<Bottom
-				captions={captions}
-				isExpanded={isExpanded}
 				captionsRef={captionsRef}
+				isExpanded={isExpanded}
 				onToggleExpand={handleToggleExpand}
 			/>
-			<TranscriptControls key={'transcriptControls'} isExpanded={isExpanded} />
+			<TranscriptControls isExpanded={isExpanded} />
 		</MotionConfig>
 	);
-}
+};

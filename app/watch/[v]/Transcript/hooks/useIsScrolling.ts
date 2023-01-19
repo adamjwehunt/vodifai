@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import useDebounce from './useDebounce';
+import { useDebounce } from './useDebounce';
 
 const useOnScroll = (callback: () => void, element: HTMLElement | null) => {
 	useEffect(() => {
@@ -11,10 +11,7 @@ const useOnScroll = (callback: () => void, element: HTMLElement | null) => {
 	}, [callback, element]);
 };
 
-export default function useIsScrolling(
-	element: HTMLElement | null,
-	delay = 100
-) {
+export const useIsScrolling = (element: HTMLElement | null, delay = 100) => {
 	const [isScrolling, setIsScrolling] = useState(false);
 
 	const onScroll = useCallback(() => {
@@ -30,4 +27,4 @@ export default function useIsScrolling(
 	useOnScroll(useDebounce(onScrollEnd, delay), element);
 
 	return isScrolling;
-}
+};

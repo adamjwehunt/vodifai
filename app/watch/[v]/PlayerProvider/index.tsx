@@ -1,5 +1,6 @@
 import { MutableRefObject, ReactNode, useReducer, useRef } from 'react';
 import ReactPlayer from 'react-player';
+import { VideoInfo } from '../types';
 import {
 	PlayerStateContext,
 	PlayerStateDispatchContext,
@@ -10,13 +11,17 @@ import { PlayerReducerState, PlayerReducerAction } from './types';
 
 interface PlayerProviderProps {
 	children: (playerRef: MutableRefObject<ReactPlayer | null>) => ReactNode;
+	videoInfo: VideoInfo;
 }
 
-export default function PlayerProvider({ children }: PlayerProviderProps) {
+export const PlayerProvider = ({
+	children,
+	videoInfo,
+}: PlayerProviderProps) => {
 	const [playerState, playerStateDispatch] = useReducer(
 		(previousState: PlayerReducerState, action: PlayerReducerAction) =>
 			playerReducer(previousState, action),
-		DEFAULT_PLAYER_REDUCER_STATE
+		{ ...DEFAULT_PLAYER_REDUCER_STATE, videoInfo }
 	);
 
 	const playerRef = useRef<ReactPlayer | null>(null);
@@ -30,4 +35,4 @@ export default function PlayerProvider({ children }: PlayerProviderProps) {
 			</PlayerStateDispatchContext.Provider>
 		</PlayerStateContext.Provider>
 	);
-}
+};

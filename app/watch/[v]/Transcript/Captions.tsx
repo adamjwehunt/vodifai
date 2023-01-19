@@ -14,7 +14,7 @@ import {
 import { Caption, StyledComponent } from '../types';
 import { CaptionText } from './CaptionText';
 import { css } from '@emotion/react';
-import useIsScrolling from './hooks/useIsScrolling';
+import { useIsScrolling } from './hooks/useIsScrolling';
 import { expandDuration } from '.';
 
 const CaptionsContainer = styled.div`
@@ -28,7 +28,6 @@ const CaptionsContainer = styled.div`
 `;
 
 interface CaptionsProps extends StyledComponent {
-	captions: Caption[];
 	activeCaptionId?: number;
 }
 
@@ -41,12 +40,17 @@ export const Captions = memo(
 		// eslint-disable-next-line react/display-name
 		forwardRef(
 			(
-				{ className, captions, activeCaptionId }: CaptionsProps,
+				{ className, activeCaptionId }: CaptionsProps,
 				ref: React.ForwardedRef<CaptionsHandle>
 			) => {
 				const playerStateDispatch = usePlayerStateDispatch();
 				const { seekTo } = usePlayerRef();
-				const { isPlaying, isSeeking, hasSeeked } = usePlayerState();
+				const {
+					isPlaying,
+					isSeeking,
+					hasSeeked,
+					videoInfo: { captions },
+				} = usePlayerState();
 				const containerRef = useRef<HTMLDivElement>(null);
 				const activeCaptionRef = useRef<HTMLDivElement | null>(null);
 				const isScrolling = useIsScrolling(containerRef?.current, 1000);

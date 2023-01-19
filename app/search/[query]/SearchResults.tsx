@@ -18,7 +18,7 @@ interface SearchResultsProps {
 	query: string;
 }
 
-export default async function SearchResults({ query }: SearchResultsProps) {
+export const SearchResults = async ({ query }: SearchResultsProps) => {
 	const videos = await getVideos(query);
 
 	return (
@@ -29,14 +29,14 @@ export default async function SearchResults({ query }: SearchResultsProps) {
 						<h3>{video.snippet.title}</h3>
 						<p>{video.snippet.description}</p>
 						<Image
-							src={video.snippet.thumbnails.high.url}
-							alt={video.snippet.title}
-							width={video.snippet.thumbnails.high.width}
-							height={video.snippet.thumbnails.high.height}
+							src={video.snippet.thumbnails.high?.url || ''}
+							alt={video.snippet.title || ''}
+							width={video.snippet.thumbnails.high?.width || 0}
+							height={video.snippet.thumbnails.high?.height || 0}
 						/>
 					</Link>
 				);
 			})}
 		</div>
 	);
-}
+};

@@ -1,23 +1,23 @@
 'use client';
 
+import { PlayerProvider } from './PlayerProvider';
+import { PlayerTray } from './PlayerTray';
 import { Player } from './Player';
-import PlayerProvider from './PlayerProvider';
-import { PlayerTools } from './PlayerTools';
+import { Transcript } from './Transcript';
 import { VideoInfo } from './types';
 
 interface PlayerContainerProps {
 	videoInfo: VideoInfo;
 }
 
-export default function PlayerContainer({ videoInfo }: PlayerContainerProps) {
-	return (
-		<PlayerProvider>
-			{(playerRef) => (
-				<section>
-					<Player playerRef={playerRef} url={videoInfo.url} />
-					<PlayerTools videoInfo={videoInfo} />
-				</section>
-			)}
-		</PlayerProvider>
-	);
-}
+export const PlayerContainer = ({ videoInfo }: PlayerContainerProps) => (
+	<PlayerProvider videoInfo={videoInfo}>
+		{(playerRef) => (
+			<section>
+				<Player playerRef={playerRef} />
+				<PlayerTray />
+				<Transcript />
+			</section>
+		)}
+	</PlayerProvider>
+);
