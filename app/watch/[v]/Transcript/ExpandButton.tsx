@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
+import {
+	useCaptionsRef,
+	useTranscriptStateDispatch,
+} from '../TranscriptProvider/transcriptContext';
 import Icon from '../../../../public/expand-icon.svg';
 import { css } from '@emotion/react';
 
@@ -14,17 +18,25 @@ const ExpandIcon = styled(Icon)`
 	}
 `;
 
-interface ExpandButtonProps extends StyledComponent {
-	onClick: () => void;
-}
+export const ExpandButton = styled(({ className }: StyledComponent) => {
+	const transcriptStateDispatch = useTranscriptStateDispatch();
+	const { centerActiveCaption } = useCaptionsRef();
 
-export const ExpandButton = styled(
-	({ onClick, className }: ExpandButtonProps) => (
-		<button className={className} aria-label={'Menu'} onClick={onClick}>
+	const handleExpandButtonClick = () => {
+		transcriptStateDispatch({ type: 'toggleExpand' });
+		centerActiveCaption();
+	};
+
+	return (
+		<button
+			className={className}
+			aria-label={'Menu'}
+			onClick={handleExpandButtonClick}
+		>
 			<ExpandIcon />
 		</button>
-	)
-)(css`
+	);
+})(css`
 	background-color: hsla(0, 0%, 0%, 0.3);
 	border-radius: 50%;
 	padding: 0.3rem;

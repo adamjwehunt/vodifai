@@ -1,51 +1,46 @@
-import { Ref } from 'react';
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
-import { usePlayerState } from '../PlayerProvider/playerContext';
-import { useActiveCaptionId } from './hooks/useActiveCaptionId';
+import { RefObject } from 'react';
+import {
+	useTranscriptState,
+	useTranscriptStateDispatch,
+} from '../TranscriptProvider/transcriptContext';
 import { motion } from 'framer-motion';
 import { TranscriptHeader } from './TranscriptHeader';
 import { Captions, CaptionsHandle } from './Captions';
 import { css } from '@emotion/react';
 
 interface BottomProps extends StyledComponent {
-	captionsRef: Ref<CaptionsHandle>;
-	isExpanded: boolean;
-	onToggleExpand: () => void;
+	captionsRef: RefObject<CaptionsHandle>;
 }
 
-export const Bottom = styled(
-	({ className, captionsRef, isExpanded, onToggleExpand }: BottomProps) => {
-		const {
-			played,
-			videoInfo: { captions },
-		} = usePlayerState();
-		useActiveCaptionId(captions, played);
-		const { activeCaptionId, handleAnimationStart, handleAnimationComplete } =
-			useActiveCaptionId(captions, played);
+export const Bottom = styled(({ className, captionsRef }: BottomProps) => {
+	const { isExpanded } = useTranscriptState();
+	const transcriptStateDispatch = useTranscriptStateDispatch();
 
-		return (
-			<motion.div
-				className={className}
-				onAnimationStart={handleAnimationStart}
-				onAnimationComplete={handleAnimationComplete}
-				animate={{
-					...(isExpanded && {
-						top: '8dvh',
-						bottom: 0,
-						left: 0,
-						right: 0,
-						paddingTop: 0,
-						paddingBottom: '21dvh',
-					}),
-				}}
-			>
-				<TranscriptHeader onToggleExpand={onToggleExpand} />
-				<Captions ref={captionsRef} activeCaptionId={activeCaptionId} />
-			</motion.div>
-		);
-	}
-)(css`
+	return (
+		<motion.div
+			className={className}
+			onAnimationStart={() => transcriptStateDispatch({ type: 'animateStart' })}
+			onAnimationComplete={() =>
+				transcriptStateDispatch({ type: 'animateEnd' })
+			}
+			animate={{
+				...(isExpanded && {
+					top: '8dvh',
+					bottom: 0,
+					left: 0,
+					right: 0,
+					paddingTop: 0,
+					paddingBottom: '21dvh',
+				}),
+			}}
+		>
+			<TranscriptHeader />
+			<Captions ref={captionsRef} />
+		</motion.div>
+	);
+})(css`
 	position: absolute;
 	top: calc(100dvh - 2.3rem);
 	bottom: -300px;

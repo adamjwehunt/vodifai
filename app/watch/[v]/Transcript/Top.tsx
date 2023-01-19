@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
+import { usePlayerState } from '../PlayerProvider/playerContext';
+import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SearchTranscriptButton } from './SearchTranscriptButton';
 import { MinimizeButton } from './MinimizeButton';
 import { css } from '@emotion/react';
-import { usePlayerState } from '../PlayerProvider/playerContext';
 
 const Info = styled.div`
 	padding: 0 1rem;
@@ -24,52 +25,44 @@ const Info = styled.div`
 	}
 `;
 
-interface TopProps extends StyledComponent {
-	isExpanded: boolean;
-	onToggleExpand: () => void;
-}
-
-export const Top = styled(
-	({ className, isExpanded, onToggleExpand }: TopProps) => {
-		if (!isExpanded) {
-			// Animates exit
-			return <AnimatePresence />;
-		}
-
-		const {
-			videoInfo: {
-				videoDetails: {
-					title,
-					author: { name: authorName },
-				},
+export const Top = styled(({ className }: StyledComponent) => {
+	const { isExpanded } = useTranscriptState();
+	const {
+		videoInfo: {
+			videoDetails: {
+				title,
+				author: { name: authorName },
 			},
-		} = usePlayerState();
+		},
+	} = usePlayerState();
 
-		const handleSearchTranscriptButtonClick = () => {};
+	const handleSearchTranscriptButtonClick = () => {};
 
-		return (
-			<AnimatePresence>
-				{
-					<motion.div
-						className={className}
-						initial={{ y: '-5rem', opacity: 0 }}
-						animate={{ y: 0, opacity: 1 }}
-						exit={{ y: '-5rem', opacity: 0 }}
-					>
-						<SearchTranscriptButton
-							onClick={handleSearchTranscriptButtonClick}
-						/>
-						<Info>
-							<div>{title}</div>
-							<div>{authorName}</div>
-						</Info>
-						<MinimizeButton onClick={onToggleExpand} />
-					</motion.div>
-				}
-			</AnimatePresence>
-		);
+	if (!isExpanded) {
+		// Animates exit
+		return <AnimatePresence />;
 	}
-)(css`
+
+	return (
+		<AnimatePresence>
+			{
+				<motion.div
+					className={className}
+					initial={{ y: '-5rem', opacity: 0 }}
+					animate={{ y: 0, opacity: 1 }}
+					exit={{ y: '-5rem', opacity: 0 }}
+				>
+					<SearchTranscriptButton onClick={handleSearchTranscriptButtonClick} />
+					<Info>
+						<div>{title}</div>
+						<div>{authorName}</div>
+					</Info>
+					<MinimizeButton />
+				</motion.div>
+			}
+		</AnimatePresence>
+	);
+})(css`
 	position: absolute;
 	left: 0;
 	right: 0;

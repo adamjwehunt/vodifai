@@ -12,10 +12,12 @@ import {
 	usePlayerState,
 } from '../PlayerProvider/playerContext';
 import { Caption, StyledComponent } from '../types';
-import { CaptionText } from './CaptionText';
-import { css } from '@emotion/react';
 import { useIsScrolling } from './hooks/useIsScrolling';
 import { expandDuration } from '.';
+import { useActiveCaptionId } from './hooks/useActiveCaptionId';
+import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
+import { CaptionText } from './CaptionText';
+import { css } from '@emotion/react';
 
 const CaptionsContainer = styled.div`
 	overflow-y: scroll;
@@ -27,10 +29,6 @@ const CaptionsContainer = styled.div`
 	}
 `;
 
-interface CaptionsProps extends StyledComponent {
-	activeCaptionId?: number;
-}
-
 export interface CaptionsHandle {
 	centerActiveCaption: () => void;
 }
@@ -40,20 +38,27 @@ export const Captions = memo(
 		// eslint-disable-next-line react/display-name
 		forwardRef(
 			(
-				{ className, activeCaptionId }: CaptionsProps,
+				{ className }: StyledComponent,
 				ref: React.ForwardedRef<CaptionsHandle>
 			) => {
 				const playerStateDispatch = usePlayerStateDispatch();
 				const { seekTo } = usePlayerRef();
 				const {
+					played,
 					isPlaying,
 					isSeeking,
 					hasSeeked,
 					videoInfo: { captions },
 				} = usePlayerState();
+				const { isAnimating } = useTranscriptState();
 				const containerRef = useRef<HTMLDivElement>(null);
 				const activeCaptionRef = useRef<HTMLDivElement | null>(null);
 				const isScrolling = useIsScrolling(containerRef?.current, 1000);
+				const activeCaptionId = useActiveCaptionId(
+					captions,
+					played,
+					isAnimating
+				);
 
 				useImperativeHandle(ref, () => ({
 					centerActiveCaption() {

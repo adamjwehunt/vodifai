@@ -1,11 +1,8 @@
 import styled from '@emotion/styled';
+import { StyledComponent } from '../types';
+import { useCaptionsRef, useTranscriptStateDispatch } from '../TranscriptProvider/transcriptContext';
 import ChevronBackIcon from '../../../../public/chevron-back-icon.svg';
 import { css } from '@emotion/react';
-import { StyledComponent } from '../types';
-
-interface MinimizeButtonProps extends StyledComponent {
-	onClick: () => void;
-}
 
 const ChevronDownIcon = styled(ChevronBackIcon)`
 	transform: rotate(-90deg);
@@ -17,18 +14,26 @@ const ChevronDownIcon = styled(ChevronBackIcon)`
 	}
 `;
 
-export const MinimizeButton = styled(
-	({ onClick, className }: MinimizeButtonProps) => (
+export const MinimizeButton = styled(({ className }: StyledComponent) => {
+	const transcriptStateDispatch = useTranscriptStateDispatch();
+	const { centerActiveCaption } = useCaptionsRef();
+
+	const handleMinimizeButtonClick = () => {
+		transcriptStateDispatch({ type: 'toggleExpand' });
+		centerActiveCaption();
+	};
+
+	return (
 		<button
 			className={className}
 			aria-label={'Menu'}
 			color="primary"
-			onClick={onClick}
+			onClick={handleMinimizeButtonClick}
 		>
 			<ChevronDownIcon />
 		</button>
-	)
-)(css`
+	);
+})(css`
 	background-color: hsla(0, 0%, 0%, 0.3);
 	height: 2rem;
 	width: 2rem;

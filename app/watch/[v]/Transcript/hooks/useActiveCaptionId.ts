@@ -1,22 +1,15 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { Caption } from '../../types';
 
 export const useActiveCaptionId = (
 	captions: Caption[],
-	played: number
-): {
-	activeCaptionId?: number;
-	handleAnimationStart: () => void;
-	handleAnimationComplete: () => void;
-} => {
-	// Prevents activeCaptionId from updating while animation is in progress
-	const [isAnimating, setIsAnimating] = useState(false);
-	const handleAnimationStart = () => setIsAnimating(true);
-	const handleAnimationComplete = () => setIsAnimating(false);
-
+	played: number,
+	isAnimating: boolean
+): number | undefined => {
 	const previousActiveCaptionId = useRef<number | undefined>();
 
 	const activeCaptionId = useMemo(() => {
+		// Prevents activeCaptionId from updating while animation is in progress
 		if (isAnimating) {
 			return previousActiveCaptionId.current;
 		}
@@ -32,5 +25,5 @@ export const useActiveCaptionId = (
 		return id;
 	}, [captions, played, isAnimating]);
 
-	return { activeCaptionId, handleAnimationStart, handleAnimationComplete };
+	return activeCaptionId;
 };
