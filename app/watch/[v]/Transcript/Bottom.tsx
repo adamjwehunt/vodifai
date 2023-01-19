@@ -1,16 +1,17 @@
 import { motion } from 'framer-motion';
-import { Captions } from './Captions';
+import { Captions, CaptionsHandle } from './Captions';
 import { TranscriptHeader } from './TranscriptHeader';
 import styled from '@emotion/styled';
 import useActiveCaptionId from './hooks/useActiveCaptionId';
 import { Caption, StyledComponent } from '../types';
 import { css } from '@emotion/react';
 import { usePlayerState } from '../PlayerProvider/playerContext';
+import { ElementRef, Ref } from 'react';
 
 interface BottomProps extends StyledComponent {
 	captions: Caption[];
 	isExpanded: boolean;
-	captionsRef: React.RefObject<HTMLDivElement>;
+	captionsRef: Ref<CaptionsHandle>;
 	onToggleExpand: () => void;
 }
 

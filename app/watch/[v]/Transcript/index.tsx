@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { ElementRef, useRef, useState } from 'react';
 import { Top } from './Top';
 import { Bottom } from './Bottom';
 import { TranscriptControls } from './TranscriptControls';
 import { MotionConfig } from 'framer-motion';
 import { VideoInfo } from '../types';
+import { Captions } from './Captions';
 
 export const expandDuration = 0.3;
 
@@ -18,7 +19,7 @@ export default function Transcript({ videoInfo }: TranscriptProps) {
 
 	const { videoDetails, captions } = videoInfo;
 	const [isExpanded, setIsExpanded] = useState(false);
-	const captionsRef = useRef<HTMLDivElement | null>(null);
+	const captionsRef = useRef<ElementRef<typeof Captions>>(null);
 
 	const handleToggleExpand = () => {
 		setIsExpanded(!isExpanded);

@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import { StyledComponent } from '../types';
+import { StyledComponent, VideoDetails } from '../types';
 import { DetailsText } from './DetailsText';
 import { css } from '@emotion/react';
 
 interface DetailsProps extends StyledComponent {
-	videoDetails: any | null;
+	videoDetails: VideoDetails | null;
 }
 
 export const Details = styled(({ className, videoDetails }: DetailsProps) => {

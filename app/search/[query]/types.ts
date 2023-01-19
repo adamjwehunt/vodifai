@@ -12,7 +12,13 @@ interface YoutubeSearchSnippet {
 	channelId: string;
 	title: string;
 	description: string;
-	thumbnails: any;
+	thumbnails: {
+		default: YoutubeThumbnail;
+		medium?: YoutubeThumbnail;
+		high?: YoutubeThumbnail;
+		standard?: YoutubeThumbnail;
+		maxres?: YoutubeThumbnail;
+	};
 	channelTitle: string;
 	liveBroadcastContent: string;
 }
@@ -29,4 +35,10 @@ export interface YoutubeSearchResult {
 	regionCode: string;
 	pageInfo: YoutubePageInfo;
 	items: YoutubeSearchItem[];
+}
+
+export interface YoutubeThumbnail {
+	url: string;
+	width: number;
+	height: number;
 }

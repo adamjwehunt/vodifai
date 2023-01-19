@@ -1,21 +1,26 @@
 'use client';
 
-import { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 
-export const useIsOverflow = (ref: any, callback: any) => {
-	const [isOverflow, setIsOverflow] = useState<boolean | undefined>(
-		undefined
-	);
+export const useIsOverflow = (
+	ref: React.RefObject<HTMLElement>,
+	callback: (hasOverflow: boolean) => {}
+) => {
+	const [isOverflow, setIsOverflow] = useState<boolean | undefined>(undefined);
 
 	useLayoutEffect(() => {
 		const { current } = ref;
 
 		const trigger = () => {
-			const hasOverflow = current.scrollHeight > current.clientHeight;
+			if (current) {
+				const hasOverflow = current.scrollHeight > current.clientHeight;
 
-			setIsOverflow(hasOverflow);
+				setIsOverflow(hasOverflow);
 
-			if (callback) callback(hasOverflow);
+				if (callback) {
+					callback(hasOverflow);
+				}
+			}
 		};
 
 		if (current) {

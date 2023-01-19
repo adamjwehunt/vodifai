@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import { StyledComponent } from './types';
+import { StyledComponent, VideoDetails } from './types';
 import { Details } from './Details';
 import { Controls } from './Controls';
 import { SecondaryControls } from './SecondaryControls';
 import { css } from '@emotion/react';
 
 interface PlayerTrayProps extends StyledComponent {
-	videoDetails: any;
+	videoDetails: VideoDetails;
 }
 
 export const PlayerTray = styled(

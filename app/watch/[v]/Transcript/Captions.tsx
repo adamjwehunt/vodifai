@@ -32,13 +32,17 @@ interface CaptionsProps extends StyledComponent {
 	activeCaptionId?: number;
 }
 
+export interface CaptionsHandle {
+	centerActiveCaption: () => void;
+}
+
 export const Captions = memo(
 	styled(
 		// eslint-disable-next-line react/display-name
 		forwardRef(
 			(
 				{ className, captions, activeCaptionId }: CaptionsProps,
-				ref: React.ForwardedRef<any>
+				ref: React.ForwardedRef<CaptionsHandle>
 			) => {
 				const playerStateDispatch = usePlayerStateDispatch();
 				const { seekTo } = usePlayerRef();

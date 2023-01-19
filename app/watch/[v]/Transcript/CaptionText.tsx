@@ -5,7 +5,7 @@ import { css } from '@emotion/react';
 interface CaptionTextProps extends StyledComponent {
 	isHighlighted: boolean;
 	text: string;
-	captionRef: ((activeCaption: any) => void) | null;
+	captionRef: ((activeCaption: HTMLDivElement) => void) | null;
 	onClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
