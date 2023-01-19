@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
 import {
 	useCaptionsRef,
+	useTranscriptState,
 	useTranscriptStateDispatch,
 } from '../TranscriptProvider/transcriptContext';
 import Icon from '../../../../public/expand-icon.svg';
@@ -21,6 +22,7 @@ const ExpandIcon = styled(Icon)`
 export const ExpandButton = styled(({ className }: StyledComponent) => {
 	const transcriptStateDispatch = useTranscriptStateDispatch();
 	const { centerActiveCaption } = useCaptionsRef();
+	const { isExpanded } = useTranscriptState();
 
 	const handleExpandButtonClick = () => {
 		transcriptStateDispatch({ type: 'toggleExpand' });
@@ -31,6 +33,7 @@ export const ExpandButton = styled(({ className }: StyledComponent) => {
 		<button
 			className={className}
 			aria-label={'Menu'}
+			tabIndex={isExpanded ? -1 : 0}
 			onClick={handleExpandButtonClick}
 		>
 			<ExpandIcon />

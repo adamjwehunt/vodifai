@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
-import { useCaptionsRef, useTranscriptStateDispatch } from '../TranscriptProvider/transcriptContext';
+import {
+	useCaptionsRef,
+	useTranscriptState,
+	useTranscriptStateDispatch,
+} from '../TranscriptProvider/transcriptContext';
 import ChevronBackIcon from '../../../../public/chevron-back-icon.svg';
 import { css } from '@emotion/react';
 
@@ -17,6 +21,7 @@ const ChevronDownIcon = styled(ChevronBackIcon)`
 export const MinimizeButton = styled(({ className }: StyledComponent) => {
 	const transcriptStateDispatch = useTranscriptStateDispatch();
 	const { centerActiveCaption } = useCaptionsRef();
+	const { isExpanded } = useTranscriptState();
 
 	const handleMinimizeButtonClick = () => {
 		transcriptStateDispatch({ type: 'toggleExpand' });
@@ -28,6 +33,7 @@ export const MinimizeButton = styled(({ className }: StyledComponent) => {
 			className={className}
 			aria-label={'Menu'}
 			color="primary"
+			tabIndex={isExpanded ? 0 : -1}
 			onClick={handleMinimizeButtonClick}
 		>
 			<ChevronDownIcon />
