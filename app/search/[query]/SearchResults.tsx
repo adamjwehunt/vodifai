@@ -24,11 +24,6 @@ export default async function SearchResults({ query }: SearchResultsProps) {
 	return (
 		<div>
 			{videos?.items.map((video) => {
-				console.log(
-					`app/search/[query]/SearchResults.tsx - 23 => video: `,
-					'\n',
-					video
-				);
 				return (
 					<Link key={video.id.videoId} href={`/watch/${video.id.videoId}`}>
 						<h3>{video.snippet.title}</h3>

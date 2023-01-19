@@ -1,11 +1,16 @@
 import Transcript from './Transcript';
 import { PlayerTray } from './PlayerTray';
+import { VideoInfo } from './types';
 
-export const PlayerTools = ({ playerInfo }) => {
+interface PlayerToolsProps {
+	videoInfo: VideoInfo;
+}
+
+export const PlayerTools = ({ videoInfo }: PlayerToolsProps) => {
 	return (
 		<>
-			<PlayerTray videoDetails={playerInfo?.videoDetails} />
-			<Transcript playerInfo={playerInfo} />
+			<PlayerTray videoDetails={videoInfo?.videoDetails} />
+			<Transcript videoInfo={videoInfo} />
 		</>
 	);
 };

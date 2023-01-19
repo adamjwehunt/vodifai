@@ -3,19 +3,20 @@ import { Top } from './Top';
 import { Bottom } from './Bottom';
 import { TranscriptControls } from './TranscriptControls';
 import { MotionConfig } from 'framer-motion';
+import { VideoInfo } from '../types';
 
 export const expandDuration = 0.3;
 
 interface TranscriptProps {
-	playerInfo: any;
+	videoInfo: VideoInfo;
 }
 
-export default function Transcript({ playerInfo }: TranscriptProps) {
-	if (!playerInfo?.captions?.length) {
+export default function Transcript({ videoInfo }: TranscriptProps) {
+	if (!videoInfo?.captions?.length) {
 		return null;
 	}
 
-	const { videoDetails, captions } = playerInfo;
+	const { videoDetails, captions } = videoInfo;
 	const [isExpanded, setIsExpanded] = useState(false);
 	const captionsRef = useRef<HTMLDivElement | null>(null);
 

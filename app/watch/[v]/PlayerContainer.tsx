@@ -3,22 +3,19 @@
 import { Player } from './Player';
 import PlayerProvider from './PlayerProvider';
 import { PlayerTools } from './PlayerTools';
+import { VideoInfo } from './types';
 
 interface PlayerContainerProps {
-	youtubeUrl: string;
-	videoDetails: any;
+	videoInfo: VideoInfo;
 }
 
-export default function PlayerContainer({
-	youtubeUrl,
-	videoDetails,
-}: PlayerContainerProps) {
+export default function PlayerContainer({ videoInfo }: PlayerContainerProps) {
 	return (
 		<PlayerProvider>
 			{(playerRef) => (
 				<section>
-					<Player playerRef={playerRef} url={youtubeUrl} />
-					<PlayerTools playerInfo={videoDetails} />
+					<Player playerRef={playerRef} url={videoInfo.url} />
+					<PlayerTools videoInfo={videoInfo} />
 				</section>
 			)}
 		</PlayerProvider>

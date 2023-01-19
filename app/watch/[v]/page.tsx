@@ -1,11 +1,16 @@
 import { findBestTranscriptUrl, mapYoutubeCaptions } from './youtubeUtil';
-import { Caption, CaptionTrack } from './types';
+import {
+	Caption,
+	CaptionTrack,
+	VideoDetails,
+	VideoFormat,
+	VideoInfo,
+} from './types';
 import { DOMParser } from 'xmldom';
+import ytdl from 'ytdl-core';
 import PlayerContainer from './PlayerContainer';
 
 const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
-const baseVideoStreamInfoUrl =
-	'https://video-stream-info-0t47m3binksc.runkit.sh';
 
 async function getYoutubeCaptions(
 	captionTracks: CaptionTrack[],
@@ -21,17 +26,35 @@ async function getYoutubeCaptions(
 	return mapYoutubeCaptions(transcript);
 }
 
-async function getVideoDetails(videoId: string, language = 'en'): Promise<any> {
-	const playerInfo = await fetch(
-		`${baseVideoStreamInfoUrl}/ytinfo?url=${videoId}`
-	).then((t) => t.json());
+async function getVideoInfo(
+	videoId: string,
+	language = 'en'
+): Promise<VideoInfo> {
+	const info = await ytdl.getInfo(videoId);
+
+	const tracks =
+		info.player_response.captions?.playerCaptionsTracklistRenderer
+			.captionTracks;
 
 	let captions: Caption[] = [];
-	if (playerInfo?.tracks?.length > 0) {
-		captions = await getYoutubeCaptions(playerInfo.tracks, language);
+	if (tracks?.length) {
+		captions = await getYoutubeCaptions(tracks, language);
 	}
 
-	return { ...playerInfo, captions };
+	return {
+		id: videoId,
+		url: baseYoutubeUrl + videoId,
+		videoDetails: {
+			author: {
+				id: info.videoDetails.author.id,
+				name: info.videoDetails.author.name,
+			},
+			description: info.videoDetails.description,
+			title: info.videoDetails.title,
+		},
+		captions,
+		formats: info.formats,
+	};
 }
 
 interface WatchPageProps {
@@ -39,12 +62,7 @@ interface WatchPageProps {
 }
 
 export default async function WatchPage({ params: { v } }: WatchPageProps) {
-	const videoDetails = await getVideoDetails(v);
+	const videoInfo = await getVideoInfo(v);
 
-	return (
-		<PlayerContainer
-			youtubeUrl={`${baseYoutubeUrl}${v}`}
-			videoDetails={videoDetails}
-		/>
-	);
+	return <PlayerContainer videoInfo={videoInfo} />;
 }
