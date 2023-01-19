@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import ArrowIcon from '../../public/arrow-icon.svg';
-import SearchIcon from '../../public/search-icon.svg';
+import ArrowIcon from '@/public/arrow-icon.svg';
+import SearchIcon from '@/public/search-icon.svg';
 import { SearchInput } from './SearchInput';
 import styles from './search.module.css';
 

@@ -5,7 +5,7 @@ import {
 	useTranscriptState,
 	useTranscriptStateDispatch,
 } from '../TranscriptProvider/transcriptContext';
-import Icon from '../../../../public/expand-icon.svg';
+import Icon from '@/public/expand-icon.svg';
 import { css } from '@emotion/react';
 
 const ExpandIcon = styled(Icon)`

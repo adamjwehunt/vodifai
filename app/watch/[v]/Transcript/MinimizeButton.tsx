@@ -5,7 +5,7 @@ import {
 	useTranscriptState,
 	useTranscriptStateDispatch,
 } from '../TranscriptProvider/transcriptContext';
-import ChevronBackIcon from '../../../../public/chevron-back-icon.svg';
+import ChevronBackIcon from '@/public/chevron-back-icon.svg';
 import { css } from '@emotion/react';
 
 const ChevronDownIcon = styled(ChevronBackIcon)`

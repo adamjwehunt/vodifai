@@ -6,8 +6,8 @@ import {
 } from '../PlayerProvider/playerContext';
 import { clamp } from './util';
 import { SkipIcon } from './SkipIcon';
-import SkipForwardIcon from '../../../../public/skip-forward-icon.svg';
-import SkipBackIcon from '../../../../public/skip-back-icon.svg';
+import SkipForwardIcon from '@/public/skip-forward-icon.svg';
+import SkipBackIcon from '@/public/skip-back-icon.svg';
 import { css } from '@emotion/react';
 
 const SKIP_COUNT_SECONDS = 15;

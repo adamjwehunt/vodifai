@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
-import Icon from '../../../../public/search-icon.svg';
+import Icon from '@/public/search-icon.svg';
 import { css } from '@emotion/react';
 
 const SearchIcon = styled(Icon)`

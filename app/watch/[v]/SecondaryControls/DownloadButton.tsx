@@ -1,5 +1,5 @@
 import { SecondaryButton } from './SecondaryButton';
-import FileDownloadIcon from '../../../../public/file-download-icon.svg';
+import FileDownloadIcon from '@/public/file-download-icon.svg';
 
 export const DownloadButton = () => {
 	const handleDownloadButtonClick = () => {};

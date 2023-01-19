@@ -3,8 +3,8 @@ import {
 	usePlayerState,
 } from '../PlayerProvider/playerContext';
 import { PlayPauseIcon } from './PlayPauseIcon';
-import PlayIcon from '../../../../public/play-icon.svg';
-import PauseIcon from '../../../../public/pause-icon.svg';
+import PlayIcon from '@/public/play-icon.svg';
+import PauseIcon from '@/public/pause-icon.svg';
 
 export const PlayPauseButton = () => {
 	const { isPlaying } = usePlayerState();

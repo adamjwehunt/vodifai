@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Categories } from './Categories';
 import styles from './page.module.css';
-import SearchIcon from '../public/search-icon.svg';
+import SearchIcon from '@/public/search-icon.svg';
 
 export default async function Home() {
 	return (

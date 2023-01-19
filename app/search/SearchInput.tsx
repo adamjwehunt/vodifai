@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import XIcon from '../../public/x-icon.svg';
+import XIcon from '@/public/x-icon.svg';
 import styles from './search.module.css';
 
 export const SearchInput = ({ query }: { query: string }) => {
