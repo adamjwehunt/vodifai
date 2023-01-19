@@ -11,7 +11,11 @@ import { Thumb } from './Thumb';
 import { css } from '@emotion/react';
 
 export const Slider = styled(({ className }: StyledComponent) => {
-	const { duration, played } = usePlayerState();
+	const {
+		duration,
+		played,
+		videoInfo: { videoDetails },
+	} = usePlayerState();
 	const playerStateDispatch = usePlayerStateDispatch();
 	const { seekTo } = usePlayerRef();
 
@@ -30,9 +34,9 @@ export const Slider = styled(({ className }: StyledComponent) => {
 			<Root
 				className={className}
 				value={[played]}
-				max={duration}
+				max={duration || videoDetails.duration}
 				step={1}
-				aria-label="Video scrubber"
+				aria-label="Player scrubber"
 				onValueChange={handleSeek}
 				onValueCommit={handleSeekCommitted}
 			>

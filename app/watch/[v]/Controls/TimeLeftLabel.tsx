@@ -3,12 +3,17 @@ import { ScrubberLabel } from './ScrubberLabel';
 import { formatDuration } from './util';
 
 export const TimeLeftLabel = () => {
-	const { duration, played } = usePlayerState();
+	const {
+		duration,
+		played,
+		videoInfo: { videoDetails },
+	} = usePlayerState();
+	const total = duration || videoDetails.duration;
 
 	return (
 		<ScrubberLabel
-			text={`${duration === played ? '' : '-'}${formatDuration(
-				duration - played
+			text={`${total === played ? '' : '-'}${formatDuration(
+				total - played
 			)}`}
 		/>
 	);
