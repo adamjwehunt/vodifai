@@ -107,6 +107,7 @@ export interface VideoDetails {
 		name: string;
 		id: string;
 	};
+	duration: number;
 }
 
 export interface VideoInfo {

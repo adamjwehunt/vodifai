@@ -1,11 +1,5 @@
 import { findBestTranscriptUrl, mapYoutubeCaptions } from './youtubeUtil';
-import {
-	Caption,
-	CaptionTrack,
-	VideoDetails,
-	VideoFormat,
-	VideoInfo,
-} from './types';
+import { Caption, CaptionTrack, VideoInfo } from './types';
 import { DOMParser } from 'xmldom';
 import ytdl from 'ytdl-core';
 import PlayerContainer from './PlayerContainer';
@@ -51,6 +45,7 @@ async function getVideoInfo(
 			},
 			description: info.videoDetails.description,
 			title: info.videoDetails.title,
+			duration: parseInt(info.videoDetails.lengthSeconds),
 		},
 		captions,
 		formats: info.formats,
