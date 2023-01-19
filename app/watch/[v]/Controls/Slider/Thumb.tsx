@@ -9,8 +9,7 @@ export const Thumb = styled(Slider.Thumb)`
 	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
 	border-radius: 50%;
 
-	&:active,
-	&:focus-visible {
+	&:active {
 		outline: none;
 	}
 `;
