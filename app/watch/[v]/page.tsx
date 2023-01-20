@@ -3,6 +3,7 @@ import { Caption, CaptionTrack, VideoInfo } from './types';
 import { DOMParser } from 'xmldom';
 import ytdl from 'ytdl-core';
 import { PlayerContainer } from './PlayerContainer';
+import { SearchBar } from 'app/search/SearchBar';
 
 const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
 
@@ -59,5 +60,10 @@ interface WatchPageProps {
 export default async function WatchPage({ params: { v } }: WatchPageProps) {
 	const videoInfo = await getVideoInfo(v);
 
-	return <PlayerContainer videoInfo={videoInfo} />;
+	return (
+		<>
+			<SearchBar button />
+			<PlayerContainer videoInfo={videoInfo} />
+		</>
+	);
 }

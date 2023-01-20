@@ -22,11 +22,11 @@ export const Transcript = () => {
 		>
 			<TranscriptProvider>
 				{(captionsRef) => (
-					<section>
+					<>
 						<Top />
 						<Bottom captionsRef={captionsRef} />
 						<TranscriptControls />
-					</section>
+					</>
 				)}
 			</TranscriptProvider>
 		</MotionConfig>

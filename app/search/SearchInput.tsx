@@ -5,7 +5,12 @@ import { useState } from 'react';
 import XIcon from '@/public/x-icon.svg';
 import styles from './search.module.css';
 
-export const SearchInput = ({ query }: { query: string }) => {
+interface SearchInputProps {
+	query?: string;
+	noFocus?: boolean;
+}
+
+export const SearchInput = ({ query, noFocus }: SearchInputProps) => {
 	const router = useRouter();
 	const [value, setValue] = useState(query);
 
@@ -28,7 +33,8 @@ export const SearchInput = ({ query }: { query: string }) => {
 	return (
 		<>
 			<input
-				autoFocus
+				autoFocus={!noFocus}
+				tabIndex={noFocus ? -1 : 0}
 				type={'text'}
 				className={styles.input}
 				value={value}

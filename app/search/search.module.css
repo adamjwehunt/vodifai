@@ -1,18 +1,17 @@
 .searchBar {
-	position: sticky;
+	position: fixed;
 	top: 0;
+	left: 0;
+	right: 0;
 	display: flex;
 	padding: 1rem;
 	justify-content: center;
 	align-items: center;
+	z-index: 1;
 }
 
 .backIcon {
 	color: #fff;
-}
-
-.arrowButton {
-	padding: 0 0.5rem;
 }
 
 .arrowIcon {

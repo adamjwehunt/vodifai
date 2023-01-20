@@ -78,7 +78,7 @@ export const Player = styled(({ className, playerRef }: PlayerProps) => {
 					muted={true}
 					controls={true}
 					config={reactPlayerConfig}
-					style={{ position: 'sticky', top: '6dvh' }}
+					style={{ position: 'sticky', top: '8dvh' }}
 					width={'100%'}
 					height={'56.25dvw'}
 					onSeek={handleSeek}
@@ -94,8 +94,10 @@ export const Player = styled(({ className, playerRef }: PlayerProps) => {
 	);
 })(css`
 	position: absolute;
-	inset: 0;
-	bottom: 35dvh;
+	top: 8dvh;
+	bottom: 32dvh;
+	left: 0;
+	right: 0;
 	display: flex;
 	align-items: center;
 `);

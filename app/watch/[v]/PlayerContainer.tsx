@@ -13,11 +13,11 @@ interface PlayerContainerProps {
 export const PlayerContainer = ({ videoInfo }: PlayerContainerProps) => (
 	<PlayerProvider videoInfo={videoInfo}>
 		{(playerRef) => (
-			<section>
+			<>
 				<Player playerRef={playerRef} />
 				<PlayerTray />
 				<Transcript />
-			</section>
+			</>
 		)}
 	</PlayerProvider>
 );
