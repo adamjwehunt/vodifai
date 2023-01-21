@@ -1,22 +1,18 @@
 'use client';
 
-import styled from '@emotion/styled';
 import { useRouter } from 'next/navigation';
-import { css } from '@emotion/react';
-import { StyledComponent } from 'app/watch/[v]/types';
+import styles from './searchBar.module.css';
 
-interface BackButtonProps extends StyledComponent {
+interface BackButtonProps {
 	children: React.ReactNode;
 }
 
-export const BackButton = styled(({ className, children }: BackButtonProps) => {
+export const BackButton = ({ children }: BackButtonProps) => {
 	const router = useRouter();
 
 	return (
-		<button onClick={() => router.back()} className={className}>
+		<button onClick={() => router.back()} className={styles.backButton}>
 			{children}
 		</button>
 	);
-})(css`
-	padding: 0 0.5rem;
-`);
+};

@@ -1,44 +1,32 @@
 'use client';
 
-import styled from '@emotion/styled';
-import { StyledComponent } from '../types';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import { css } from '@emotion/react';
 import { ReactElement } from 'react';
+import styles from './transcript.module.scss';
 
-interface TranscriptControlsProps extends StyledComponent {
+interface TranscriptControlsProps {
 	children: ReactElement;
 }
 
-export const TranscriptControls = styled(
-	({ className, children }: TranscriptControlsProps) => {
-		const { isExpanded } = useTranscriptState();
+export const TranscriptControls = ({ children }: TranscriptControlsProps) => {
+	const { isExpanded } = useTranscriptState();
 
-		if (!isExpanded) {
-			// Animates exit
-			return <AnimatePresence />;
-		}
-
-		return (
-			<AnimatePresence>
-				<motion.div
-					className={className}
-					initial={{ y: 0, opacity: 0 }}
-					animate={{ y: '-18dvh', opacity: 1 }}
-					exit={{ y: 0, opacity: 0 }}
-				>
-					{children}
-				</motion.div>
-			</AnimatePresence>
-		);
+	if (!isExpanded) {
+		// Animates exit
+		return <AnimatePresence />;
 	}
-)(css`
-	position: fixed;
-	left: 0;
-	right: 0;
-	top: calc(100dvh - 2rem);
-	z-index: 3;
-	padding: 0px 1.5rem 4rem;
-	background-color: rgb(185, 153, 190);
-`);
+
+	return (
+		<AnimatePresence>
+			<motion.div
+				className={styles.transcriptControls}
+				initial={{ y: 0, opacity: 0 }}
+				animate={{ y: '-18dvh', opacity: 1 }}
+				exit={{ y: 0, opacity: 0 }}
+			>
+				{children}
+			</motion.div>
+		</AnimatePresence>
+	);
+};

@@ -1,17 +1,7 @@
 'use client';
 
 import { ReactNode, useRef } from 'react';
-import styled from '@emotion/styled';
-
-const MarqueeWrapper = styled.div`
-	width: 100%;
-	overflow: hidden;
-`;
-
-const Text = styled.div`
-	text-align: justify;
-	white-space: nowrap;
-`;
+import styles from './watch.module.scss';
 
 interface MarqueeProps {
 	children: ReactNode;
@@ -22,10 +12,10 @@ export const Marquee = ({ children, className }: MarqueeProps) => {
 	const textRef = useRef<HTMLInputElement>(null);
 
 	return (
-		<MarqueeWrapper ref={MarqueeWrapperRef}>
-			<Text ref={textRef}>
+		<div ref={MarqueeWrapperRef} className={styles.marqueeWrapper}>
+			<div ref={textRef} className={styles.marqueeText}>
 				<span className={className}>{children}</span>
-			</Text>
-		</MarqueeWrapper>
+			</div>
+		</div>
 	);
 };

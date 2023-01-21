@@ -28,8 +28,8 @@ export const Transcript = ({ children }: TranscriptProps) => {
 			<TranscriptProvider>
 				{(captionsRef) => (
 					<>
-						<Bottom captionsRef={captionsRef} />
 						{children}
+						<Bottom captionsRef={captionsRef} />
 					</>
 				)}
 			</TranscriptProvider>

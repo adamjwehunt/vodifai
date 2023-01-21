@@ -11,9 +11,9 @@ import { ShareButton } from './ShareButton';
 import { Transcript } from './Transcript';
 import { TranscriptControls } from './Transcript/TranscriptControls';
 import { Top } from './Transcript/Top';
-import styles from './watch.module.scss';
 import { MinimizeButton } from './Transcript/MinimizeButton';
 import { SearchTranscriptButton } from './Transcript/SearchTranscriptButton';
+import styles from './watch.module.scss';
 
 const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
 

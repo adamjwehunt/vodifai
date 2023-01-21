@@ -1,17 +1,15 @@
 'use client';
 
-import styled from '@emotion/styled';
-import { StyledComponent } from '../types';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import { css } from '@emotion/react';
 import { ReactElement } from 'react';
+import styles from './transcript.module.scss';
 
-interface TopProps extends StyledComponent {
+interface TopProps {
 	children: ReactElement[];
 }
 
-export const Top = styled(({ className, children }: TopProps) => {
+export const Top = ({ children }: TopProps) => {
 	const { isExpanded } = useTranscriptState();
 
 	if (!isExpanded) {
@@ -23,7 +21,7 @@ export const Top = styled(({ className, children }: TopProps) => {
 		<AnimatePresence>
 			{
 				<motion.div
-					className={className}
+					className={styles.top}
 					initial={{ y: '-5rem', opacity: 0 }}
 					animate={{ y: 0, opacity: 1 }}
 					exit={{ y: '-5rem', opacity: 0 }}
@@ -33,14 +31,4 @@ export const Top = styled(({ className, children }: TopProps) => {
 			}
 		</AnimatePresence>
 	);
-})(css`
-	position: absolute;
-	left: 0;
-	right: 0;
-	z-index: 3;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 1rem;
-	background-color: rgb(185, 153, 190);
-`);
+};

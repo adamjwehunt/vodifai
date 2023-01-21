@@ -1,13 +1,11 @@
 'use client';
 
-import styled from '@emotion/styled';
 import {
 	usePlayerRef,
 	usePlayerState,
 	usePlayerStateDispatch,
 } from '../PlayerProvider/playerContext';
 import { clamp } from './util';
-import { css } from '@emotion/react';
 
 const SKIP_COUNT_SECONDS = 15;
 
@@ -16,7 +14,7 @@ interface SkipButtonProps {
 	children?: React.ReactElement;
 }
 
-export const SkipButton = styled(({ back, children }: SkipButtonProps) => {
+export const SkipButton = ({ back, children }: SkipButtonProps) => {
 	const { duration, played } = usePlayerState();
 	const playerStateDispatch = usePlayerStateDispatch();
 	const { seekTo } = usePlayerRef();
@@ -46,8 +44,4 @@ export const SkipButton = styled(({ back, children }: SkipButtonProps) => {
 			{children}
 		</button>
 	);
-})(css`
-	&:hover svg {
-		fill: white;
-	}
-`);
+};

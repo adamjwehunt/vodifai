@@ -1,0 +1,155 @@
+.top {
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 3;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem;
+	background-color: rgb(185, 153, 190);
+}
+
+.searchTranscriptButton {
+	height: 2rem;
+	width: 2rem;
+	padding: 0 0.275rem;
+}
+
+.searchIcon {
+	display: flex;
+	height: 100%;
+	fill: #fff;
+	max-width: 100%;
+}
+
+.minimizeButton {
+	height: 2rem;
+	width: 2rem;
+	border-radius: 50%;
+	padding: 0 0.4rem;
+	flex-shrink: 0;
+	background-color: hsla(0, 0%, 0%, 0.3);
+}
+
+.chevronDownIcon {
+	transform: rotate(-90deg);
+	fill: #fff;
+	margin-top: -0.3em;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.bottom {
+	position: absolute;
+	top: calc(100dvh - 2.3rem);
+	bottom: -300px;
+	left: 4.5dvw;
+	right: 4.5dvw;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	padding-top: 3rem;
+	padding-bottom: 0;
+	border-radius: 0.3rem;
+	background-color: rgb(185, 153, 190);
+}
+
+.transcriptHeader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding: 0.7rem;
+	font-size: 1.1rem;
+	font-weight: 600;
+	height: 3rem;
+}
+
+.expandButton {
+	background-color: hsla(0, 0%, 0%, 0.3);
+	border-radius: 50%;
+	padding: 0.3rem;
+	height: 100%;
+}
+
+.expandIcon {
+	display: flex;
+	height: 100%;
+	fill: #fff;
+	max-width: 100%;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.transcriptControls {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: calc(100dvh - 2rem);
+	z-index: 3;
+	padding: 0px 1.5rem 4rem;
+	background-color: rgb(185, 153, 190);
+}
+
+.captionsWrapper {
+	@mixin captionsPseudoBase($location) {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		#{$location}: 0;
+		pointer-events: none;
+		height: 1.75rem;
+		z-index: 1;
+		background-image: linear-gradient(
+			to #{$location},
+			rgba(185, 153, 190, 0),
+			rgb(185, 153, 190) 90%
+		);
+	}
+
+	position: relative;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0.1rem 0;
+	background-color: rgb(185, 153, 190);
+
+	&:before {
+		@include captionsPseudoBase(top);
+	}
+
+	&:after {
+		@include captionsPseudoBase(bottom);
+	}
+}
+
+.captions {
+	overflow-y: scroll;
+	width: 100%;
+	padding: 1rem 0;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.captionText {
+	color: rgba(0, 0, 0, 0.7);
+	font-size: 1.8rem;
+	font-weight: 600;
+	padding: 0 1.5rem 1.5rem;
+
+	&:first-letter {
+		text-transform: capitalize;
+	}
+}

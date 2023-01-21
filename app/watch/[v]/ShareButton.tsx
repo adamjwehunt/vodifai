@@ -1,22 +1,18 @@
 'use client';
 
-import styled from '@emotion/styled';
-import { StyledComponent } from './types';
-import { SecondaryButton } from './SecondaryButton';
 import ShareIcon from '@/public/share-icon.svg';
-import { css } from '@emotion/react';
+import styles from './watch.module.scss';
 
-export const ShareButton = styled(({ className }: StyledComponent) => {
+export const ShareButton = () => {
 	const handleShareButtonClick = () => {};
 
 	return (
-		<SecondaryButton
-			className={className}
-			icon={ShareIcon}
-			ariaLabel={'Share Video'}
+		<button
+			className={styles.shareButton}
+			aria-label={'Share Video'}
 			onClick={handleShareButtonClick}
-		/>
+		>
+			<ShareIcon className={styles.secondaryButtonIcon} />
+		</button>
 	);
-})(css`
-	padding: 0.125rem;
-`);
+};

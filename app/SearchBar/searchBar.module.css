@@ -10,12 +10,12 @@
 	z-index: 1;
 }
 
-.backIcon {
-	color: #fff;
+.backButton {
+	padding: 0 0.5rem;
 }
 
 .arrowIcon {
-	fill: white;
+	fill: #fff;
 }
 
 .inputWrapper {

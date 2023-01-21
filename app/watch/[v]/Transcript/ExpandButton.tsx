@@ -1,25 +1,12 @@
-import styled from '@emotion/styled';
-import { StyledComponent } from '../types';
 import {
 	useCaptionsRef,
 	useTranscriptState,
 	useTranscriptStateDispatch,
 } from '../TranscriptProvider/transcriptContext';
-import Icon from '@/public/expand-icon.svg';
-import { css } from '@emotion/react';
+import ExpandIcon from '@/public/expand-icon.svg';
+import styles from './transcript.module.scss';
 
-const ExpandIcon = styled(Icon)`
-	display: flex;
-	height: 100%;
-	fill: #fff;
-	max-width: 100%;
-
-	&:focus {
-		outline: none;
-	}
-`;
-
-export const ExpandButton = styled(({ className }: StyledComponent) => {
+export const ExpandButton = () => {
 	const transcriptStateDispatch = useTranscriptStateDispatch();
 	const { centerActiveCaption } = useCaptionsRef();
 	const { isExpanded } = useTranscriptState();
@@ -31,17 +18,12 @@ export const ExpandButton = styled(({ className }: StyledComponent) => {
 
 	return (
 		<button
-			className={className}
-			aria-label={'Menu'}
+			className={styles.expandButton}
+			aria-label={'Expand transcript'}
 			tabIndex={isExpanded ? -1 : 0}
 			onClick={handleExpandButtonClick}
 		>
-			<ExpandIcon />
+			<ExpandIcon className={styles.expandIcon} />
 		</button>
 	);
-})(css`
-	background-color: hsla(0, 0%, 0%, 0.3);
-	border-radius: 50%;
-	padding: 0.3rem;
-	height: 100%;
-`);
+};

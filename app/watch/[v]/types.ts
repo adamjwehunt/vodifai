@@ -18,11 +18,6 @@ export interface Caption {
 	text: string;
 }
 
-export interface StyledComponent {
-	className?: string;
-	style?: React.CSSProperties;
-}
-
 export interface VideoFormat {
 	itag: number;
 	url: string;

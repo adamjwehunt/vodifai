@@ -1,15 +1,13 @@
 'use client';
 
 import { ForwardedRef, useEffect, useState } from 'react';
-import styled from '@emotion/styled';
 import ReactPlayer, { Config } from 'react-player';
 import { OnProgressProps } from 'react-player/base';
-import { StyledComponent } from './types';
 import {
 	usePlayerStateDispatch,
 	usePlayerState,
 } from './PlayerProvider/playerContext';
-import { css } from '@emotion/react';
+import styles from './watch.module.scss';
 
 const reactPlayerConfig: Config = {
 	youtube: {
@@ -19,11 +17,11 @@ const reactPlayerConfig: Config = {
 	},
 };
 
-interface PlayerProps extends StyledComponent {
+interface PlayerProps {
 	playerRef: ForwardedRef<ReactPlayer>;
 }
 
-export const Player = styled(({ className, playerRef }: PlayerProps) => {
+export const Player = ({ playerRef }: PlayerProps) => {
 	// Render react-player on the client only
 	const [isSSR, setIsSSR] = useState(true);
 	useEffect(() => {
@@ -69,7 +67,7 @@ export const Player = styled(({ className, playerRef }: PlayerProps) => {
 	const handleBufferEnd = () => playerStateDispatch({ type: 'bufferEnd' });
 
 	return (
-		<div className={className}>
+		<div className={styles.player}>
 			{isSSR ? null : (
 				<ReactPlayer
 					ref={playerRef}
@@ -92,12 +90,4 @@ export const Player = styled(({ className, playerRef }: PlayerProps) => {
 			)}
 		</div>
 	);
-})(css`
-	position: absolute;
-	top: 8dvh;
-	bottom: 32dvh;
-	left: 0;
-	right: 0;
-	display: flex;
-	align-items: center;
-`);
+};

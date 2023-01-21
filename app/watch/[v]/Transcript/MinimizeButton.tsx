@@ -1,26 +1,14 @@
 'use client';
 
-import styled from '@emotion/styled';
-import { StyledComponent } from '../types';
 import {
 	useCaptionsRef,
 	useTranscriptState,
 	useTranscriptStateDispatch,
 } from '../TranscriptProvider/transcriptContext';
-import ChevronBackIcon from '@/public/chevron-back-icon.svg';
-import { css } from '@emotion/react';
+import ChevronDownIcon from '@/public/chevron-back-icon.svg';
+import styles from './transcript.module.scss';
 
-const ChevronDownIcon = styled(ChevronBackIcon)`
-	transform: rotate(-90deg);
-	fill: #fff;
-	margin-top: -0.3em;
-
-	&:focus {
-		outline: none;
-	}
-`;
-
-export const MinimizeButton = styled(({ className }: StyledComponent) => {
+export const MinimizeButton = () => {
 	const transcriptStateDispatch = useTranscriptStateDispatch();
 	const { centerActiveCaption } = useCaptionsRef();
 	const { isExpanded } = useTranscriptState();
@@ -32,19 +20,12 @@ export const MinimizeButton = styled(({ className }: StyledComponent) => {
 
 	return (
 		<button
-			className={className}
-			aria-label={'Menu'}
+			className={styles.minimizeButton}
+			aria-label={'Minimize transcript'}
 			tabIndex={isExpanded ? 0 : -1}
 			onClick={handleMinimizeButtonClick}
 		>
-			<ChevronDownIcon />
+			<ChevronDownIcon className={styles.chevronDownIcon} />
 		</button>
 	);
-})(css`
-	background-color: hsla(0, 0%, 0%, 0.3);
-	height: 2rem;
-	width: 2rem;
-	border-radius: 50%;
-	padding: 0 0.4rem;
-	flex-shrink: 0;
-`);
+};

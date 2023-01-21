@@ -1,13 +1,11 @@
 'use client';
 
-import styled from '@emotion/styled';
-import { StyledComponent } from '../types';
 import { usePlayerState } from '../PlayerProvider/playerContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DelayRender } from './DelayRender';
-import { css } from '@emotion/react';
+import styles from './controls.module.scss';
 
-export const BufferSpinner = styled(({ className }: StyledComponent) => {
+export const BufferSpinner = () => {
 	const { isBuffering } = usePlayerState();
 
 	if (!isBuffering) {
@@ -19,7 +17,7 @@ export const BufferSpinner = styled(({ className }: StyledComponent) => {
 		<AnimatePresence>
 			<DelayRender seconds={0.25}>
 				<motion.div
-					className={className}
+					className={styles.bufferSpinner}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1, rotate: 360 }}
 					exit={{ opacity: 0 }}
@@ -36,35 +34,4 @@ export const BufferSpinner = styled(({ className }: StyledComponent) => {
 			</DelayRender>
 		</AnimatePresence>
 	);
-})(() => {
-	const insetPosition = css`
-		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-	`;
-
-	const pseudoElementBase = css`
-		content: '';
-		${insetPosition};
-		border-radius: 50%;
-	`;
-
-	return css`
-		${insetPosition}
-		pointer-events: none;
-
-		&:before {
-			${pseudoElementBase};
-			opacity: 0.3;
-			background: #fff;
-		}
-
-		&:after {
-			${pseudoElementBase};
-			border: 0.375rem solid transparent;
-			border-top-color: #fff;
-		}
-	`;
-});
+};
