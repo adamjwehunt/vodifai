@@ -1,24 +1,32 @@
+'use client';
+
 import {
 	usePlayerStateDispatch,
 	usePlayerState,
 } from '../PlayerProvider/playerContext';
-import { PlayPauseIcon } from './PlayPauseIcon';
-import PlayIcon from '@/public/play-icon.svg';
-import PauseIcon from '@/public/pause-icon.svg';
+import { Children, cloneElement, JSXElementConstructor, ReactElement } from 'react';
+import styles from './controls.module.scss';
 
-export const PlayPauseButton = () => {
+interface PlayPauseButtonProps {
+	children: ReactElement[];
+}
+
+export const PlayPauseButton = ({ children }: PlayPauseButtonProps) => {
 	const { isPlaying } = usePlayerState();
 	const playerStateDispatch = usePlayerStateDispatch();
+	const Icon = Children.toArray(children).find(({ props: { id } }) =>
+		isPlaying ? id === 'pause-icon' : id === 'play-icon'
+	) as ReactElement<any, string | JSXElementConstructor<any>>;
 
 	return (
 		<button
+			className={styles.playPauseButton}
 			aria-label={isPlaying ? 'Pause' : 'Play'}
-			color="primary"
 			onClick={() =>
 				playerStateDispatch({ type: isPlaying ? 'pause' : 'play' })
 			}
 		>
-			<PlayPauseIcon icon={isPlaying ? PauseIcon : PlayIcon} />
+			{cloneElement(Icon)}
 		</button>
 	);
 };

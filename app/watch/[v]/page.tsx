@@ -2,8 +2,18 @@ import { findBestTranscriptUrl, mapYoutubeCaptions } from './youtubeUtil';
 import { Caption, CaptionTrack, VideoInfo } from './types';
 import { DOMParser } from 'xmldom';
 import ytdl from 'ytdl-core';
-import { PlayerContainer } from './PlayerContainer';
 import { SearchBar } from 'app/search/SearchBar';
+import { PlayerContainer } from './PlayerContainer';
+import { Marquee } from './Marquee';
+import { Controls } from './Controls';
+import { DownloadButton } from './DownloadButton';
+import { ShareButton } from './ShareButton';
+import { Transcript } from './Transcript';
+import { TranscriptControls } from './Transcript/TranscriptControls';
+import { Top } from './Transcript/Top';
+import styles from './watch.module.scss';
+import { MinimizeButton } from './Transcript/MinimizeButton';
+import { SearchTranscriptButton } from './Transcript/SearchTranscriptButton';
 
 const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
 
@@ -60,10 +70,44 @@ interface WatchPageProps {
 export default async function WatchPage({ params: { v } }: WatchPageProps) {
 	const videoInfo = await getVideoInfo(v);
 
+	const {
+		videoDetails: {
+			title: videoTitle,
+			author: { name: authorName },
+		},
+	} = videoInfo;
+
 	return (
 		<>
 			<SearchBar button />
-			<PlayerContainer videoInfo={videoInfo} />
+			<PlayerContainer videoInfo={videoInfo}>
+				<div className={styles.playerTray}>
+					<div className={styles.details}>
+						<div className={styles.detailsText}>
+							<Marquee className={styles.title}>{videoTitle}</Marquee>
+							<Marquee className={styles.author}>{authorName}</Marquee>
+						</div>
+					</div>
+					<Controls />
+					<div className={styles.secondaryControls}>
+						<DownloadButton />
+						<ShareButton />
+					</div>
+				</div>
+				<Transcript>
+					<Top>
+						<SearchTranscriptButton />
+						<div className={styles.transcriptDetails}>
+							<div>{videoTitle}</div>
+							<div>{authorName}</div>
+						</div>
+						<MinimizeButton />
+					</Top>
+					<TranscriptControls>
+						<Controls />
+					</TranscriptControls>
+				</Transcript>
+			</PlayerContainer>
 		</>
 	);
 }

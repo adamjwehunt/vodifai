@@ -1,42 +1,18 @@
+'use client';
+
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
-import { usePlayerState } from '../PlayerProvider/playerContext';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { AnimatePresence, motion } from 'framer-motion';
-// import { SearchTranscriptButton } from './SearchTranscriptButton';
-import { MinimizeButton } from './MinimizeButton';
 import { css } from '@emotion/react';
+import { ReactElement } from 'react';
 
-const Info = styled.div`
-	padding: 0 1rem;
-	overflow: hidden;
-	text-align: center;
-	white-space: nowrap;
-	line-height: 1.45rem;
-	letter-spacing: 0.03rem;
+interface TopProps extends StyledComponent {
+	children: ReactElement[];
+}
 
-	> div {
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-
-	div:first-of-type {
-		font-weight: 600;
-	}
-`;
-
-export const Top = styled(({ className }: StyledComponent) => {
+export const Top = styled(({ className, children }: TopProps) => {
 	const { isExpanded } = useTranscriptState();
-	const {
-		videoInfo: {
-			videoDetails: {
-				title,
-				author: { name: authorName },
-			},
-		},
-	} = usePlayerState();
-
-	// const handleSearchTranscriptButtonClick = () => {};
 
 	if (!isExpanded) {
 		// Animates exit
@@ -52,12 +28,7 @@ export const Top = styled(({ className }: StyledComponent) => {
 					animate={{ y: 0, opacity: 1 }}
 					exit={{ y: '-5rem', opacity: 0 }}
 				>
-					{/* <SearchTranscriptButton onClick={handleSearchTranscriptButtonClick} /> */}
-					<Info>
-						<div>{title}</div>
-						<div>{authorName}</div>
-					</Info>
-					<MinimizeButton />
+					{children}
 				</motion.div>
 			}
 		</AnimatePresence>

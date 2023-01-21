@@ -1,3 +1,5 @@
+'use client';
+
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
 import { usePlayerState } from '../PlayerProvider/playerContext';

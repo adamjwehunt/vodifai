@@ -1,3 +1,5 @@
+'use client';
+
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
 import {
@@ -32,7 +34,6 @@ export const MinimizeButton = styled(({ className }: StyledComponent) => {
 		<button
 			className={className}
 			aria-label={'Menu'}
-			color="primary"
 			tabIndex={isExpanded ? 0 : -1}
 			onClick={handleMinimizeButtonClick}
 		>

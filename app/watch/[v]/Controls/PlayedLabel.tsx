@@ -1,9 +1,15 @@
-import { usePlayerState } from '../PlayerProvider/playerContext';
-import { ScrubberLabel } from './ScrubberLabel';
-import { formatDuration } from './util';
+'use client';
 
-export const PlayedLabel = () => {
+import { Children, cloneElement } from 'react';
+import { usePlayerState } from '../PlayerProvider/playerContext';
+import { formatPlayerTime } from './util';
+
+interface PlayedLabelProps {
+	children: React.ReactElement;
+}
+
+export const PlayedLabel = ({ children }: PlayedLabelProps) => {
 	const { played } = usePlayerState();
 
-	return <ScrubberLabel text={formatDuration(played)} />;
+	return cloneElement(Children.only(children), {}, formatPlayerTime(played));
 };

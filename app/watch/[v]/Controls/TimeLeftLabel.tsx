@@ -1,8 +1,14 @@
-import { usePlayerState } from '../PlayerProvider/playerContext';
-import { ScrubberLabel } from './ScrubberLabel';
-import { formatDuration } from './util';
+'use client';
 
-export const TimeLeftLabel = () => {
+import { Children, cloneElement } from 'react';
+import { usePlayerState } from '../PlayerProvider/playerContext';
+import { formatPlayerTime } from './util';
+
+interface TimeLeftLabelProps {
+	children: React.ReactElement;
+}
+
+export const TimeLeftLabel = ({ children }: TimeLeftLabelProps) => {
 	const {
 		duration,
 		played,
@@ -10,11 +16,9 @@ export const TimeLeftLabel = () => {
 	} = usePlayerState();
 	const total = duration || videoDetails.duration;
 
-	return (
-		<ScrubberLabel
-			text={`${total === played ? '' : '-'}${formatDuration(
-				total - played
-			)}`}
-		/>
+	return cloneElement(
+		Children.only(children),
+		{},
+		`${total === played ? '' : '-'}${formatPlayerTime(total - played)}`
 	);
 };

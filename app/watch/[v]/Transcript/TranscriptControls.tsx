@@ -1,31 +1,39 @@
+'use client';
+
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Controls } from '../Controls';
 import { css } from '@emotion/react';
+import { ReactElement } from 'react';
 
-export const TranscriptControls = styled(({ className }: StyledComponent) => {
-	const { isExpanded } = useTranscriptState();
+interface TranscriptControlsProps extends StyledComponent {
+	children: ReactElement;
+}
 
-	if (!isExpanded) {
-		// Animates exit
-		return <AnimatePresence />;
+export const TranscriptControls = styled(
+	({ className, children }: TranscriptControlsProps) => {
+		const { isExpanded } = useTranscriptState();
+
+		if (!isExpanded) {
+			// Animates exit
+			return <AnimatePresence />;
+		}
+
+		return (
+			<AnimatePresence>
+				<motion.div
+					className={className}
+					initial={{ y: 0, opacity: 0 }}
+					animate={{ y: '-18dvh', opacity: 1 }}
+					exit={{ y: 0, opacity: 0 }}
+				>
+					{children}
+				</motion.div>
+			</AnimatePresence>
+		);
 	}
-
-	return (
-		<AnimatePresence>
-			<motion.div
-				className={className}
-				initial={{ y: 0, opacity: 0 }}
-				animate={{ y: '-18dvh', opacity: 1 }}
-				exit={{ y: 0, opacity: 0 }}
-			>
-				<Controls />
-			</motion.div>
-		</AnimatePresence>
-	);
-})(css`
+)(css`
 	position: fixed;
 	left: 0;
 	right: 0;

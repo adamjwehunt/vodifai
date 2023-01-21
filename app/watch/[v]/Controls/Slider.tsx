@@ -1,16 +1,14 @@
-import styled from '@emotion/styled';
-import { StyledComponent } from '../../types';
+'use client';
+
 import {
 	usePlayerStateDispatch,
 	usePlayerRef,
 	usePlayerState,
-} from '../../PlayerProvider/playerContext';
-import { Root } from '@radix-ui/react-slider';
-import { Track } from './Track';
-import { Thumb } from './Thumb';
-import { css } from '@emotion/react';
+} from '../PlayerProvider/playerContext';
+import { Root, Track, Range, Thumb } from '@radix-ui/react-slider';
+import styles from './controls.module.scss';
 
-export const Slider = styled(({ className }: StyledComponent) => {
+export const Slider = () => {
 	const {
 		duration,
 		played,
@@ -32,7 +30,7 @@ export const Slider = styled(({ className }: StyledComponent) => {
 	return (
 		<form>
 			<Root
-				className={className}
+				className={styles.slider}
 				value={[played]}
 				max={duration || videoDetails.duration}
 				step={1}
@@ -40,16 +38,11 @@ export const Slider = styled(({ className }: StyledComponent) => {
 				onValueChange={handleSeek}
 				onValueCommit={handleSeekCommitted}
 			>
-				<Track />
-				<Thumb />
+				<Track className={styles.track}>
+					<Range className={styles.range} />
+				</Track>
+				<Thumb className={styles.thumb} />
 			</Root>
 		</form>
 	);
-})(css`
-	position: relative;
-	display: flex;
-	align-items: center;
-	user-select: none;
-	touch-action: none;
-	height: 1rem;
-`);
+};

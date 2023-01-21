@@ -1,3 +1,5 @@
+'use client';
+
 import { MutableRefObject, ReactNode, useReducer, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { VideoInfo } from '../types';

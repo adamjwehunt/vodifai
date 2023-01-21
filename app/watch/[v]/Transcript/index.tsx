@@ -1,13 +1,18 @@
-import { Top } from './Top';
+'use client';
+
 import { Bottom } from './Bottom';
-import { TranscriptControls } from './TranscriptControls';
 import { MotionConfig } from 'framer-motion';
 import { usePlayerState } from '../PlayerProvider/playerContext';
 import { TranscriptProvider } from '../TranscriptProvider';
+import { ReactElement } from 'react';
 
 export const expandDuration = 0.3;
 
-export const Transcript = () => {
+interface TranscriptProps {
+	children: ReactElement[];
+}
+
+export const Transcript = ({ children }: TranscriptProps) => {
 	const {
 		videoInfo: { captions },
 	} = usePlayerState();
@@ -23,9 +28,8 @@ export const Transcript = () => {
 			<TranscriptProvider>
 				{(captionsRef) => (
 					<>
-						<Top />
 						<Bottom captionsRef={captionsRef} />
-						<TranscriptControls />
+						{children}
 					</>
 				)}
 			</TranscriptProvider>

@@ -1,3 +1,5 @@
+'use client';
+
 import styled from '@emotion/styled';
 import { StyledComponent } from '../types';
 import Icon from '@/public/search-icon.svg';
@@ -10,13 +12,9 @@ const SearchIcon = styled(Icon)`
 	max-width: 100%;
 `;
 
-interface SearchTranscriptButtonProps extends StyledComponent {
-	onClick: () => void;
-}
-
 export const SearchTranscriptButton = styled(
-	({ onClick, className }: SearchTranscriptButtonProps) => (
-		<button className={className} aria-label={'Menu'} onClick={onClick}>
+	({ className }: StyledComponent) => (
+		<button className={className} aria-label={'Menu'} onClick={() => {}}>
 			<SearchIcon />
 		</button>
 	)

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { StyledComponent } from '../types';
+import { StyledComponent } from './types';
 import { css } from '@emotion/react';
 
 interface SecondaryButtonProps extends StyledComponent {
