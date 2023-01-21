@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import XIcon from '@/public/x-icon.svg';
-import styles from './search.module.css';
+import styles from './searchBar.module.css';
 
 interface SearchInputProps {
 	query?: string;

@@ -3,7 +3,7 @@ import ArrowIcon from '@/public/arrow-icon.svg';
 import Link from 'next/link';
 import SearchIcon from '@/public/search-icon.svg';
 import { SearchInput } from './SearchInput';
-import styles from './search.module.css';
+import styles from './searchBar.module.css';
 
 interface SearchBarProps {
 	query?: string;

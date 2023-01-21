@@ -1,4 +1,4 @@
-import { SearchBar } from '../SearchBar';
+import { SearchBar } from 'app/SearchBar';
 import { SearchResults } from './SearchResults';
 
 export default function Search({ params }: { params: { query: string } }) {

@@ -2,7 +2,7 @@ import { findBestTranscriptUrl, mapYoutubeCaptions } from './youtubeUtil';
 import { Caption, CaptionTrack, VideoInfo } from './types';
 import { DOMParser } from 'xmldom';
 import ytdl from 'ytdl-core';
-import { SearchBar } from 'app/search/SearchBar';
+import { SearchBar } from 'app/SearchBar';
 import { PlayerContainer } from './PlayerContainer';
 import { Marquee } from './Marquee';
 import { Controls } from './Controls';
