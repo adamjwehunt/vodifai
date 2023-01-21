@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 const debounce = (callback: () => void, delay: number, immediate?: boolean) => {
 	let timeout: NodeJS.Timeout | null;
 
-	return function (...args: []) {
+	return (...args: []) => {
 		const context = this;
 		const later = () => {
 			timeout = null;
@@ -12,7 +12,9 @@ const debounce = (callback: () => void, delay: number, immediate?: boolean) => {
 			}
 		};
 		const callNow = immediate && !timeout;
-		clearTimeout(timeout);
+		if (timeout) {
+			clearTimeout(timeout);
+		}
 		timeout = setTimeout(later, delay);
 		if (callNow) {
 			callback.apply(context, args);
