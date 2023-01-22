@@ -1,5 +1,8 @@
-import { RefObject, ReactNode, Ref, useReducer, useRef } from 'react';
+'use client';
+
+import { RefObject, ReactNode, useReducer, useRef } from 'react';
 import { CaptionsHandle } from '../Transcript/Captions';
+import { Caption } from '../types';
 import {
 	TranscriptStateContext,
 	TranscriptStateDispatchContext,
@@ -13,13 +16,17 @@ import { TranscriptReducerState, TranscriptReducerAction } from './types';
 
 interface TranscriptProviderProps {
 	children: (captionsRef: RefObject<CaptionsHandle>) => ReactNode;
+	captions: Caption[];
 }
 
-export const TranscriptProvider = ({ children }: TranscriptProviderProps) => {
+export const TranscriptProvider = ({
+	children,
+	captions,
+}: TranscriptProviderProps) => {
 	const [transcriptState, transcriptStateDispatch] = useReducer(
 		(previousState: TranscriptReducerState, action: TranscriptReducerAction) =>
 			transcriptReducer(previousState, action),
-		{ ...DEFAULT_TRANSCRIPT_REDUCER_STATE }
+		{ ...DEFAULT_TRANSCRIPT_REDUCER_STATE, captions }
 	);
 
 	const captionsRef = useRef<CaptionsHandle>(null);

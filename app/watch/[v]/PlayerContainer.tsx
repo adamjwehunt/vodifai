@@ -2,7 +2,6 @@
 
 import { PlayerProvider } from './PlayerProvider';
 import { Player } from './Player';
-import { Transcript } from './Transcript';
 import { VideoInfo } from './types';
 
 interface PlayerContainerProps {

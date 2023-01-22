@@ -8,6 +8,7 @@ export const DEFAULT_TRANSCRIPT_REDUCER_STATE: TranscriptReducerState =
 	Object.freeze({
 		isExpanded: false,
 		isAnimating: false,
+		captions: [],
 	});
 
 export const transcriptReducer: TranscriptReducer = (

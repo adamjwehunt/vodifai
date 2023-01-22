@@ -1,4 +1,5 @@
 import React, {
+	ForwardedRef,
 	forwardRef,
 	memo,
 	useCallback,
@@ -23,17 +24,11 @@ export interface CaptionsHandle {
 }
 
 export const Captions = memo(
-	forwardRef(({}, ref: React.ForwardedRef<CaptionsHandle>) => {
+	forwardRef(({}, ref: ForwardedRef<CaptionsHandle>) => {
 		const playerStateDispatch = usePlayerStateDispatch();
 		const { seekTo } = usePlayerRef();
-		const {
-			played,
-			isPlaying,
-			isSeeking,
-			hasSeeked,
-			videoInfo: { captions },
-		} = usePlayerState();
-		const { isAnimating } = useTranscriptState();
+		const { played, isPlaying, isSeeking, hasSeeked } = usePlayerState();
+		const { isAnimating, captions } = useTranscriptState();
 		const containerRef = useRef<HTMLDivElement>(null);
 		const activeCaptionRef = useRef<HTMLDivElement | null>(null);
 		const isScrolling = useIsScrolling(containerRef?.current, 1000);

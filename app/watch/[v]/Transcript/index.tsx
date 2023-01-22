@@ -1,38 +1,54 @@
-'use client';
-
-import { Bottom } from './Bottom';
-import { MotionConfig } from 'framer-motion';
-import { usePlayerState } from '../PlayerProvider/playerContext';
-import { TranscriptProvider } from '../TranscriptProvider';
 import { ReactElement } from 'react';
+import { DOMParser } from 'xmldom';
+import { captionTrack } from 'ytdl-core';
+import { Caption } from '../types';
+import { findBestTranscriptUrl, mapYoutubeCaptions } from '../youtubeUtil';
+import { TranscriptWrapper } from './TranscriptWrapper';
+
 
 export const expandDuration = 0.3;
 
-interface TranscriptProps {
+async function getYoutubeCaptions(
+	captionTracks: captionTrack[],
+	language = 'en'
+): Promise<Caption[]> {
+	const transcript = await fetch(findBestTranscriptUrl(captionTracks, language))
+		.then((response) => response.text())
+		.then((str) => {
+			const parser = new DOMParser();
+			return parser.parseFromString(str, 'text/xml');
+		});
+
+	return mapYoutubeCaptions(transcript);
+}
+
+async function getCaptions(
+	captionTracks: captionTrack[],
+	language = 'en'
+): Promise<Caption[]> {
+	let captions: Caption[] = [];
+
+	if (captionTracks.length) {
+		captions = await getYoutubeCaptions(captionTracks, language);
+	}
+
+	return captions;
+}
+
+interface TranscriptWrapperProps {
+	captionTracks: captionTrack[];
 	children: ReactElement[];
 }
 
-export const Transcript = ({ children }: TranscriptProps) => {
-	const {
-		videoInfo: { captions },
-	} = usePlayerState();
+export const Transcript = async ({
+	captionTracks,
+	children,
+}: TranscriptWrapperProps) => {
+	const captions = await getCaptions(captionTracks);
 
 	if (!captions.length) {
 		return null;
 	}
 
-	return (
-		<MotionConfig
-			transition={{ type: 'ease-in-out', duration: expandDuration }}
-		>
-			<TranscriptProvider>
-				{(captionsRef) => (
-					<>
-						{children}
-						<Bottom captionsRef={captionsRef} />
-					</>
-				)}
-			</TranscriptProvider>
-		</MotionConfig>
-	);
+	return <TranscriptWrapper captions={captions}>{children}</TranscriptWrapper>;
 };

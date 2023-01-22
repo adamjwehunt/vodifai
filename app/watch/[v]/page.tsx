@@ -1,65 +1,44 @@
-import { findBestTranscriptUrl, mapYoutubeCaptions } from './youtubeUtil';
-import { Caption, CaptionTrack, VideoInfo } from './types';
-import { DOMParser } from 'xmldom';
-import ytdl from 'ytdl-core';
+import { VideoInfo } from './types';
+import ytdl, { captionTrack } from 'ytdl-core';
 import { SearchBar } from 'app/SearchBar';
 import { PlayerContainer } from './PlayerContainer';
 import { Marquee } from './Marquee';
 import { Controls } from './Controls';
 import { DownloadButton } from './DownloadButton';
 import { ShareButton } from './ShareButton';
-import { Transcript } from './Transcript';
 import { TranscriptControls } from './Transcript/TranscriptControls';
 import { Top } from './Transcript/Top';
 import { MinimizeButton } from './Transcript/MinimizeButton';
 import { SearchTranscriptButton } from './Transcript/SearchTranscriptButton';
+import { Transcript } from './Transcript';
 import styles from './watch.module.scss';
 
 const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
 
-async function getYoutubeCaptions(
-	captionTracks: CaptionTrack[],
-	language = 'en'
-): Promise<Caption[]> {
-	const transcript = await fetch(findBestTranscriptUrl(captionTracks, language))
-		.then((response) => response.text())
-		.then((str) => {
-			const parser = new DOMParser();
-			return parser.parseFromString(str, 'text/xml');
-		});
-
-	return mapYoutubeCaptions(transcript);
-}
-
 async function getVideoInfo(
-	videoId: string,
-	language = 'en'
-): Promise<VideoInfo> {
+	videoId: string
+): Promise<{ videoInfo: VideoInfo; captionTracks: captionTrack[] }> {
 	const info = await ytdl.getInfo(videoId);
 
-	const tracks =
-		info.player_response.captions?.playerCaptionsTracklistRenderer
-			.captionTracks;
-
-	let captions: Caption[] = [];
-	if (tracks?.length) {
-		captions = await getYoutubeCaptions(tracks, language);
-	}
-
 	return {
-		id: videoId,
-		url: baseYoutubeUrl + videoId,
-		videoDetails: {
-			author: {
-				id: info.videoDetails.author.id,
-				name: info.videoDetails.author.name,
+		videoInfo: {
+			id: videoId,
+			url: baseYoutubeUrl + videoId,
+			videoDetails: {
+				author: {
+					id: info.videoDetails.author.id,
+					name: info.videoDetails.author.name,
+				},
+				description: info.videoDetails.description,
+				title: info.videoDetails.title,
+				duration: parseInt(info.videoDetails.lengthSeconds),
 			},
-			description: info.videoDetails.description,
-			title: info.videoDetails.title,
-			duration: parseInt(info.videoDetails.lengthSeconds),
+
+			formats: info.formats,
 		},
-		captions,
-		formats: info.formats,
+		captionTracks:
+			info.player_response.captions?.playerCaptionsTracklistRenderer
+				.captionTracks || [],
 	};
 }
 
@@ -67,8 +46,10 @@ interface WatchPageProps {
 	params: { v: string };
 }
 
-export default async function WatchPage({ params: { v } }: WatchPageProps) {
-	const videoInfo = await getVideoInfo(v);
+export default async function WatchPage({
+	params: { v: videoId },
+}: WatchPageProps) {
+	const { videoInfo, captionTracks } = await getVideoInfo(videoId);
 
 	const {
 		videoDetails: {
@@ -94,7 +75,8 @@ export default async function WatchPage({ params: { v } }: WatchPageProps) {
 						<ShareButton />
 					</div>
 				</div>
-				<Transcript>
+				{/* @ts-expect-error Server Component */}
+				<Transcript captionTracks={captionTracks}>
 					<Top>
 						<SearchTranscriptButton />
 						<div className={styles.transcriptDetails}>
