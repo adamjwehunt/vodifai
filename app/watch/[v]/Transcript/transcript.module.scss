@@ -59,20 +59,6 @@ $transcript-color: var(--transcript-color, rgb(185, 153, 190));
 	background-color: $transcript-color;
 }
 
-.transcriptHeader {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	padding: 0.7rem;
-	font-size: 1.1rem;
-	font-weight: 600;
-	height: 3rem;
-}
-
 .expandButton {
 	background-color: hsla(0, 0%, 0%, 0.3);
 	border-radius: 50%;

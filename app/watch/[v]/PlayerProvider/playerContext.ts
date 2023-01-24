@@ -5,8 +5,10 @@ import { PlayerReducerAction, PlayerReducerState } from './types';
 export const PlayerStateContext = createContext<PlayerReducerState | null>(
 	null
 );
+
 export const PlayerStateDispatchContext =
 	createContext<Dispatch<PlayerReducerAction> | null>(null);
+
 export const PlayerRefContext = createContext<RefObject<ReactPlayer> | null>(
 	null
 );

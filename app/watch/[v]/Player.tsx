@@ -27,7 +27,6 @@ export const Player = () => {
 		setIsSSR(false);
 	}, []);
 
-
 	const {
 		isPlaying,
 		isSeeking,

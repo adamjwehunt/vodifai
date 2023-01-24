@@ -4,8 +4,10 @@ import { TranscriptReducerAction, TranscriptReducerState } from './types';
 
 export const TranscriptStateContext =
 	createContext<TranscriptReducerState | null>(null);
+
 export const TranscriptStateDispatchContext =
 	createContext<Dispatch<TranscriptReducerAction> | null>(null);
+
 export const CaptionsRefContext =
 	createContext<RefObject<CaptionsHandle> | null>(null);
 

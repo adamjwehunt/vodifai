@@ -6,6 +6,7 @@ import {
 	getWatchViewBackground,
 	getWatchViewColors,
 } from './utils';
+import { CSSProperties } from 'react';
 import { SearchBar } from 'app/SearchBar';
 import { Player } from './Player';
 import { PlayerProvider } from './PlayerProvider';
@@ -17,7 +18,8 @@ import { Top } from './Transcript/Top';
 import { MinimizeButton } from './Transcript/MinimizeButton';
 import { SearchTranscriptButton } from './Transcript/SearchTranscriptButton';
 import { Transcript } from './Transcript';
-import { CSSProperties } from 'react';
+import { Bottom } from './Transcript/Bottom';
+import { ExpandButton } from './Transcript/ExpandButton';
 import styles from './watch.module.scss';
 
 const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
@@ -106,6 +108,12 @@ export default async function WatchPage({
 					<TranscriptControls>
 						<Controls />
 					</TranscriptControls>
+					<Bottom>
+						<div className={styles.transcriptHeader}>
+							<div>{'Transcript'}</div>
+							<ExpandButton />
+						</div>
+					</Bottom>
 				</Transcript>
 			</PlayerProvider>
 		</div>

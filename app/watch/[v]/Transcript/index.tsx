@@ -1,12 +1,9 @@
 import { ReactElement } from 'react';
 import { DOMParser } from 'xmldom';
 import { captionTrack } from 'ytdl-core';
+import { TranscriptProvider } from '../TranscriptProvider';
 import { Caption } from '../types';
 import { findBestTranscriptUrl, mapYoutubeCaptions } from '../youtubeUtil';
-import { TranscriptWrapper } from './TranscriptWrapper';
-
-
-export const expandDuration = 0.3;
 
 async function getYoutubeCaptions(
 	captionTracks: captionTrack[],
@@ -50,5 +47,7 @@ export const Transcript = async ({
 		return null;
 	}
 
-	return <TranscriptWrapper captions={captions}>{children}</TranscriptWrapper>;
+	return (
+		<TranscriptProvider captions={captions}>{children}</TranscriptProvider>
+	);
 };

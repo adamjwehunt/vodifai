@@ -1,18 +1,19 @@
-import { RefObject } from 'react';
+'use client';
+
+import { ReactElement } from 'react';
 import {
 	useTranscriptState,
 	useTranscriptStateDispatch,
 } from '../TranscriptProvider/transcriptContext';
 import { motion } from 'framer-motion';
-import { TranscriptHeader } from './TranscriptHeader';
-import { Captions, CaptionsHandle } from './Captions';
+import {Captions} from './Captions';
 import styles from './transcript.module.scss';
 
 interface BottomProps {
-	captionsRef: RefObject<CaptionsHandle>;
+	children: ReactElement;
 }
 
-export const Bottom = ({ captionsRef }: BottomProps) => {
+export const Bottom = ({ children }: BottomProps) => {
 	const { isExpanded } = useTranscriptState();
 	const transcriptStateDispatch = useTranscriptStateDispatch();
 
@@ -34,8 +35,8 @@ export const Bottom = ({ captionsRef }: BottomProps) => {
 				}),
 			}}
 		>
-			<TranscriptHeader />
-			<Captions ref={captionsRef} />
+			{children}
+			<Captions />
 		</motion.div>
 	);
 };

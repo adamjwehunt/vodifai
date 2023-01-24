@@ -1,6 +1,7 @@
 'use client';
 
-import { RefObject, ReactNode, useReducer, useRef } from 'react';
+import { MotionConfig } from 'framer-motion';
+import { useReducer, useRef, ReactElement } from 'react';
 import { CaptionsHandle } from '../Transcript/Captions';
 import { Caption } from '../types';
 import {
@@ -14,8 +15,10 @@ import {
 } from './transcriptReducer';
 import { TranscriptReducerState, TranscriptReducerAction } from './types';
 
+export const expandDuration = 0.3;
+
 interface TranscriptProviderProps {
-	children: (captionsRef: RefObject<CaptionsHandle>) => ReactNode;
+	children: ReactElement[];
 	captions: Caption[];
 }
 
@@ -35,7 +38,11 @@ export const TranscriptProvider = ({
 		<TranscriptStateContext.Provider value={transcriptState}>
 			<TranscriptStateDispatchContext.Provider value={transcriptStateDispatch}>
 				<CaptionsRefContext.Provider value={captionsRef}>
-					{children(captionsRef)}
+					<MotionConfig
+						transition={{ type: 'ease-in-out', duration: expandDuration }}
+					>
+						{children}
+					</MotionConfig>
 				</CaptionsRefContext.Provider>
 			</TranscriptStateDispatchContext.Provider>
 		</TranscriptStateContext.Provider>
