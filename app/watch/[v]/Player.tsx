@@ -1,11 +1,12 @@
 'use client';
 
-import { ForwardedRef, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ReactPlayer, { Config } from 'react-player';
 import { OnProgressProps } from 'react-player/base';
 import {
 	usePlayerStateDispatch,
 	usePlayerState,
+	PlayerRefContext,
 } from './PlayerProvider/playerContext';
 import styles from './watch.module.scss';
 
@@ -17,16 +18,15 @@ const reactPlayerConfig: Config = {
 	},
 };
 
-interface PlayerProps {
-	playerRef: ForwardedRef<ReactPlayer>;
-}
+export const Player = () => {
+	const playerRef = useContext(PlayerRefContext);
 
-export const Player = ({ playerRef }: PlayerProps) => {
 	// Render react-player on the client only
 	const [isSSR, setIsSSR] = useState(true);
 	useEffect(() => {
 		setIsSSR(false);
 	}, []);
+
 
 	const {
 		isPlaying,

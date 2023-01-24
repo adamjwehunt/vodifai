@@ -7,7 +7,8 @@ import {
 	getWatchViewColors,
 } from './utils';
 import { SearchBar } from 'app/SearchBar';
-import { PlayerContainer } from './PlayerContainer';
+import { Player } from './Player';
+import { PlayerProvider } from './PlayerProvider';
 import { Controls } from './Controls';
 import { DownloadButton } from './DownloadButton';
 import { ShareButton } from './ShareButton';
@@ -77,7 +78,8 @@ export default async function WatchPage({
 			}
 		>
 			<SearchBar button />
-			<PlayerContainer videoInfo={videoInfo}>
+			<PlayerProvider videoInfo={videoInfo}>
+				<Player />
 				<div className={styles.playerTray}>
 					<div className={styles.details}>
 						<div className={styles.detailsText}>
@@ -105,7 +107,7 @@ export default async function WatchPage({
 						<Controls />
 					</TranscriptControls>
 				</Transcript>
-			</PlayerContainer>
+			</PlayerProvider>
 		</div>
 	);
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { MutableRefObject, ReactNode, useReducer, useRef } from 'react';
+import { ReactElement, useReducer, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { VideoInfo } from '../types';
 import {
@@ -12,7 +12,7 @@ import { playerReducer, DEFAULT_PLAYER_REDUCER_STATE } from './playerReducer';
 import { PlayerReducerState, PlayerReducerAction } from './types';
 
 interface PlayerProviderProps {
-	children: (playerRef: MutableRefObject<ReactPlayer | null>) => ReactNode;
+	children: ReactElement[];
 	videoInfo: VideoInfo;
 }
 
@@ -32,7 +32,7 @@ export const PlayerProvider = ({
 		<PlayerStateContext.Provider value={playerState}>
 			<PlayerStateDispatchContext.Provider value={playerStateDispatch}>
 				<PlayerRefContext.Provider value={playerRef}>
-					{children(playerRef)}
+					{children}
 				</PlayerRefContext.Provider>
 			</PlayerStateDispatchContext.Provider>
 		</PlayerStateContext.Provider>
