@@ -1,3 +1,5 @@
+$transcript-color: var(--transcript-color, rgb(185, 153, 190));
+
 .top {
 	position: absolute;
 	left: 0;
@@ -7,7 +9,7 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 1rem;
-	background-color: rgb(185, 153, 190);
+	background-color: $transcript-color;
 }
 
 .searchTranscriptButton {
@@ -54,7 +56,7 @@
 	padding-top: 3rem;
 	padding-bottom: 0;
 	border-radius: 0.3rem;
-	background-color: rgb(185, 153, 190);
+	background-color: $transcript-color;
 }
 
 .transcriptHeader {
@@ -96,7 +98,7 @@
 	top: calc(100dvh - 2rem);
 	z-index: 3;
 	padding: 0px 1.5rem 4rem;
-	background-color: rgb(185, 153, 190);
+	background-color: $transcript-color;
 }
 
 .captionsWrapper {
@@ -112,7 +114,7 @@
 		background-image: linear-gradient(
 			to #{$location},
 			rgba(185, 153, 190, 0),
-			rgb(185, 153, 190) 90%
+			$transcript-color 90%
 		);
 	}
 
@@ -122,7 +124,7 @@
 	flex-direction: column;
 	align-items: flex-start;
 	padding: 0.1rem 0;
-	background-color: rgb(185, 153, 190);
+	background-color: $transcript-color;
 
 	&:before {
 		@include captionsPseudoBase(top);

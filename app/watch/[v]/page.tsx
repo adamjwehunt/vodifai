@@ -1,5 +1,11 @@
 import { VideoInfo } from './types';
 import ytdl, { captionTrack } from 'ytdl-core';
+import {
+	getTranscriptBackground,
+	getVideoColors,
+	getWatchViewBackground,
+	getWatchViewColors,
+} from './utils';
 import { SearchBar } from 'app/SearchBar';
 import { PlayerContainer } from './PlayerContainer';
 import { Controls } from './Controls';
@@ -10,6 +16,7 @@ import { Top } from './Transcript/Top';
 import { MinimizeButton } from './Transcript/MinimizeButton';
 import { SearchTranscriptButton } from './Transcript/SearchTranscriptButton';
 import { Transcript } from './Transcript';
+import { CSSProperties } from 'react';
 import styles from './watch.module.scss';
 
 const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
@@ -18,6 +25,7 @@ async function getVideoInfo(
 	videoId: string
 ): Promise<{ videoInfo: VideoInfo; captionTracks: captionTrack[] }> {
 	const info = await ytdl.getInfo(videoId);
+	const videoColors = await getVideoColors(info.videoDetails.thumbnails);
 
 	return {
 		videoInfo: {
@@ -32,7 +40,7 @@ async function getVideoInfo(
 				title: info.videoDetails.title,
 				duration: parseInt(info.videoDetails.lengthSeconds),
 			},
-
+			videoColors: getWatchViewColors(videoColors),
 			formats: info.formats,
 		},
 		captionTracks:
@@ -55,10 +63,19 @@ export default async function WatchPage({
 			title: videoTitle,
 			author: { name: authorName },
 		},
+		videoColors: { primaryBackground, secondaryBackground },
 	} = videoInfo;
 
 	return (
-		<>
+		<div
+			className={styles.watchView}
+			style={
+				{
+					background: getWatchViewBackground(primaryBackground),
+					'--transcript-color': getTranscriptBackground(secondaryBackground),
+				} as CSSProperties
+			}
+		>
 			<SearchBar button />
 			<PlayerContainer videoInfo={videoInfo}>
 				<div className={styles.playerTray}>
@@ -89,6 +106,6 @@ export default async function WatchPage({
 					</TranscriptControls>
 				</Transcript>
 			</PlayerContainer>
-		</>
+		</div>
 	);
 }

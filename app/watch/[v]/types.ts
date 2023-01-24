@@ -1,4 +1,4 @@
-import { captionTrack, videoFormat } from 'ytdl-core';
+import { videoFormat } from 'ytdl-core';
 
 export interface Video {
 	type: string;
@@ -27,4 +27,25 @@ export interface VideoInfo {
 	url: string;
 	formats: videoFormat[];
 	videoDetails: VideoDetails;
+	videoColors: WatchViewColors;
+}
+
+export interface Palette {
+	Vibrant: Swatch | null;
+	Muted: Swatch | null;
+	DarkVibrant: Swatch | null;
+	DarkMuted: Swatch | null;
+	LightVibrant: Swatch | null;
+	LightMuted: Swatch | null;
+	[name: string]: Swatch | null;
+}
+interface Swatch {
+	_rgb: number[];
+	_population: number;
+	_hsl?: number[];
+}
+
+export interface WatchViewColors {
+	primaryBackground: number[] | null;
+	secondaryBackground: number[] | null;
 }
