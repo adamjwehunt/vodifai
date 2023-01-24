@@ -2,7 +2,6 @@ import { VideoInfo } from './types';
 import ytdl, { captionTrack } from 'ytdl-core';
 import { SearchBar } from 'app/SearchBar';
 import { PlayerContainer } from './PlayerContainer';
-import { Marquee } from './Marquee';
 import { Controls } from './Controls';
 import { DownloadButton } from './DownloadButton';
 import { ShareButton } from './ShareButton';
@@ -65,8 +64,8 @@ export default async function WatchPage({
 				<div className={styles.playerTray}>
 					<div className={styles.details}>
 						<div className={styles.detailsText}>
-							<Marquee className={styles.title}>{videoTitle}</Marquee>
-							<Marquee className={styles.author}>{authorName}</Marquee>
+							<span className={styles.title}>{videoTitle}</span>
+							<span className={styles.author}>{authorName}</span>
 						</div>
 					</div>
 					<Controls />
@@ -80,7 +79,7 @@ export default async function WatchPage({
 					<Top>
 						<SearchTranscriptButton />
 						<div className={styles.transcriptDetails}>
-							<div>{videoTitle}</div>
+							<div className={styles.transcriptTitle}>{videoTitle}</div>
 							<div>{authorName}</div>
 						</div>
 						<MinimizeButton />

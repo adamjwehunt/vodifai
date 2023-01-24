@@ -29,20 +29,16 @@
 .detailsText {
 	width: 100%;
 	display: flex;
-	flex-wrap: wrap;
 	justify-content: center;
 	flex-direction: column;
-	line-height: 1.2;
-}
 
-.marqueeWrapper {
-	width: 100%;
-	overflow: hidden;
-}
-
-.marqueeText {
-	text-align: justify;
-	white-space: nowrap;
+	> span {
+		text-align: justify;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		width: 100%;
+	}
 }
 
 .title {
@@ -86,8 +82,8 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+}
 
-	div:first-of-type {
-		font-weight: 600;
-	}
+.transcriptTitle {
+	font-weight: 600;
 }
