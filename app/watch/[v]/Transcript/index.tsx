@@ -43,11 +43,7 @@ export const Transcript = async ({
 }: TranscriptWrapperProps) => {
 	const captions = await getCaptions(captionTracks);
 
-	if (!captions.length) {
-		return null;
-	}
-
-	return (
+	return !captions.length ? null : (
 		<TranscriptProvider captions={captions}>{children}</TranscriptProvider>
 	);
 };

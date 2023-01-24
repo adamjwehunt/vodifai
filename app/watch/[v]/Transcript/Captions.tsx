@@ -19,7 +19,6 @@ import {
 	CaptionsRefContext,
 	useTranscriptState,
 } from '../TranscriptProvider/transcriptContext';
-import { CaptionText } from './CaptionText';
 import styles from './transcript.module.scss';
 
 export interface CaptionsHandle {
@@ -33,10 +32,9 @@ export const Captions = () => {
 	const { isAnimating, captions } = useTranscriptState();
 	const containerRef = useRef<HTMLDivElement>(null);
 	const activeCaptionRef = useRef<HTMLDivElement | null>(null);
+	const captionsRef = useContext(CaptionsRefContext);
 	const isScrolling = useIsScrolling(containerRef?.current, 1000);
 	const activeCaptionId = useActiveCaptionId(captions, played, isAnimating);
-
-	const captionsRef = useContext(CaptionsRefContext);
 
 	useImperativeHandle(captionsRef, () => ({
 		centerActiveCaption() {
@@ -70,7 +68,8 @@ export const Captions = () => {
 			activeCaptionRef.current = caption;
 
 			if (isSeeking || hasSeeked) {
-				return scrollToCaption(caption, false);
+				scrollToCaption(caption, false);
+				return;
 			}
 
 			if (isScrolling || !isPlaying) {
@@ -86,31 +85,30 @@ export const Captions = () => {
 		element: HTMLDivElement,
 		captionStart: number
 	) => {
-		captionStart = captionStart < 1 ? Math.ceil(captionStart) : captionStart;
+		const seconds = captionStart < 1 ? Math.ceil(captionStart) : captionStart;
 		scrollToCaption(element);
-		seekTo(captionStart);
-		playerStateDispatch({ type: 'played', seconds: captionStart });
+		seekTo(seconds);
 	};
 
 	return (
-		<div className={styles.captionsWrapper}>
-			<div className={styles.captions} ref={containerRef}>
-				{captions.map(({ start, text, id }: Caption, i: number) => (
-					<CaptionText
-						key={i}
-						isHighlighted={
-							activeCaptionId !== undefined ? id <= activeCaptionId : false
-						}
-						captionRef={
-							id === activeCaptionId ? handleActiveCaptionChange : null
-						}
-						onClick={({ target }) => {
-							handleCaptionClick(target as HTMLDivElement, start);
-						}}
-						text={text}
-					/>
-				))}
-			</div>
+		<div className={styles.captions} ref={containerRef}>
+			{captions.map(({ start, text, id }: Caption, index: number) => (
+				<div
+					key={index}
+					ref={id === activeCaptionId ? handleActiveCaptionChange : null}
+					className={styles.captionText}
+					style={
+						activeCaptionId !== undefined && id <= activeCaptionId
+							? { color: '#fff' }
+							: {}
+					}
+					onClick={({ target }) => {
+						handleCaptionClick(target as HTMLDivElement, start);
+					}}
+				>
+					{text}
+				</div>
+			))}
 		</div>
 	);
 };

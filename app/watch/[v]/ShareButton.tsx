@@ -4,13 +4,13 @@ import ShareIcon from '@/public/share-icon.svg';
 import styles from './watch.module.scss';
 
 export const ShareButton = () => {
-	const handleShareButtonClick = () => {};
+	const handleOnShareButtonClick = () => {};
 
 	return (
 		<button
 			className={styles.shareButton}
 			aria-label={'Share Video'}
-			onClick={handleShareButtonClick}
+			onClick={handleOnShareButtonClick}
 		>
 			<ShareIcon className={styles.secondaryButtonIcon} />
 		</button>

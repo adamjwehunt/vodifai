@@ -1,10 +1,6 @@
 'use client';
 
-import {
-	usePlayerRef,
-	usePlayerState,
-	usePlayerStateDispatch,
-} from '../PlayerProvider/playerContext';
+import { usePlayerRef, usePlayerState } from '../PlayerProvider/playerContext';
 import { clamp } from './util';
 
 const SKIP_COUNT_SECONDS = 15;
@@ -16,8 +12,11 @@ interface SkipButtonProps {
 
 export const SkipButton = ({ back, children }: SkipButtonProps) => {
 	const { duration, played } = usePlayerState();
-	const playerStateDispatch = usePlayerStateDispatch();
 	const { seekTo } = usePlayerRef();
+
+	const ariaLabel = `Skip ${
+		back ? 'back' : 'forward'
+	} ${SKIP_COUNT_SECONDS} seconds`;
 
 	const handleSkip = () => {
 		const seconds = clamp(
@@ -26,21 +25,11 @@ export const SkipButton = ({ back, children }: SkipButtonProps) => {
 			duration
 		);
 
-		if (seconds === played) {
-			return;
-		}
-
-		seekTo(seconds);
-		playerStateDispatch({ type: 'seekEnd', seconds });
+		return seconds !== played ? seekTo(seconds) : null;
 	};
 
 	return (
-		<button
-			aria-label={`Skip ${
-				back ? 'back' : 'forward'
-			} ${SKIP_COUNT_SECONDS} seconds`}
-			onClick={handleSkip}
-		>
+		<button aria-label={ariaLabel} onClick={handleSkip}>
 			{children}
 		</button>
 	);

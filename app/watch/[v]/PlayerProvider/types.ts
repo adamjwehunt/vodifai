@@ -23,7 +23,7 @@ export type PlayerReducerAction =
 			type: 'pause';
 	  }
 	| {
-			type: 'seek';
+			type: 'seekStart';
 			seconds: number;
 	  }
 	| {

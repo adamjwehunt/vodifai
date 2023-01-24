@@ -17,15 +17,10 @@ export const Slider = () => {
 	const playerStateDispatch = usePlayerStateDispatch();
 	const { seekTo } = usePlayerRef();
 
-	const handleSeek = (value: number[]) => {
-		playerStateDispatch({ type: 'seek', seconds: value[0] });
-	};
+	const handleSeek = ([seconds]: number[]) =>
+		playerStateDispatch({ type: 'seekStart', seconds });
 
-	const handleSeekCommitted = (value: number[]) => {
-		const seconds = value[0];
-		playerStateDispatch({ type: 'seekEnd', seconds });
-		seekTo(seconds);
-	};
+	const handleSeekCommitted = ([seconds]: number[]) => seekTo(seconds);
 
 	return (
 		<form>

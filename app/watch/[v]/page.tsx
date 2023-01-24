@@ -20,7 +20,9 @@ import { SearchTranscriptButton } from './Transcript/SearchTranscriptButton';
 import { Transcript } from './Transcript';
 import { Bottom } from './Transcript/Bottom';
 import { ExpandButton } from './Transcript/ExpandButton';
+import { Captions } from './Transcript/Captions';
 import styles from './watch.module.scss';
+import transcriptStyles from './Transcript/transcript.module.scss';
 
 const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
 
@@ -33,7 +35,7 @@ async function getVideoInfo(
 	return {
 		videoInfo: {
 			id: videoId,
-			url: baseYoutubeUrl + videoId,
+			url: `${baseYoutubeUrl}${videoId}`,
 			videoDetails: {
 				author: {
 					id: info.videoDetails.author.id,
@@ -99,8 +101,10 @@ export default async function WatchPage({
 				<Transcript captionTracks={captionTracks}>
 					<Top>
 						<SearchTranscriptButton />
-						<div className={styles.transcriptDetails}>
-							<div className={styles.transcriptTitle}>{videoTitle}</div>
+						<div className={transcriptStyles.transcriptDetails}>
+							<div className={transcriptStyles.transcriptTitle}>
+								{videoTitle}
+							</div>
 							<div>{authorName}</div>
 						</div>
 						<MinimizeButton />
@@ -109,9 +113,12 @@ export default async function WatchPage({
 						<Controls />
 					</TranscriptControls>
 					<Bottom>
-						<div className={styles.transcriptHeader}>
+						<div className={transcriptStyles.transcriptHeader}>
 							<div>{'Transcript'}</div>
 							<ExpandButton />
+						</div>
+						<div className={transcriptStyles.captionsWrapper}>
+							<Captions />
 						</div>
 					</Bottom>
 				</Transcript>

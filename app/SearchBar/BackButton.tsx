@@ -10,8 +10,10 @@ interface BackButtonProps {
 export const BackButton = ({ children }: BackButtonProps) => {
 	const router = useRouter();
 
+	const handleBackButtonClick = () => router.back();
+
 	return (
-		<button onClick={() => router.back()} className={styles.backButton}>
+		<button onClick={handleBackButtonClick} className={styles.backButton}>
 			{children}
 		</button>
 	);

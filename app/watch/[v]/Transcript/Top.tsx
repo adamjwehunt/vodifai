@@ -12,14 +12,9 @@ interface TopProps {
 export const Top = ({ children }: TopProps) => {
 	const { isExpanded } = useTranscriptState();
 
-	if (!isExpanded) {
-		// Animates exit
-		return <AnimatePresence />;
-	}
-
 	return (
 		<AnimatePresence>
-			{
+			{!isExpanded ? null : (
 				<motion.div
 					className={styles.top}
 					initial={{ y: '-5rem', opacity: 0 }}
@@ -28,7 +23,7 @@ export const Top = ({ children }: TopProps) => {
 				>
 					{children}
 				</motion.div>
-			}
+			)}
 		</AnimatePresence>
 	);
 };

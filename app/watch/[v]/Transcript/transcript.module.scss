@@ -77,6 +77,56 @@ $transcript-color: var(--transcript-color, rgb(185, 153, 190));
 	}
 }
 
+.transcriptDetails {
+	padding: 0 1rem;
+	overflow: hidden;
+	text-align: center;
+	white-space: nowrap;
+	line-height: 1.45rem;
+	letter-spacing: 0.03rem;
+
+	> div {
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+.transcriptTitle {
+	font-weight: 600;
+}
+
+.transcriptHeader {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding: 0.7rem;
+	font-size: 1.1rem;
+	font-weight: 600;
+	height: 3rem;
+}
+
+.expandButton {
+	background-color: hsla(0, 0%, 0%, 0.3);
+	border-radius: 50%;
+	padding: 0.3rem;
+	height: 100%;
+}
+
+.expandIcon {
+	display: flex;
+	height: 100%;
+	fill: #fff;
+	max-width: 100%;
+
+	&:focus {
+		outline: none;
+	}
+}
+
 .transcriptControls {
 	position: fixed;
 	left: 0;

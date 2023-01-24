@@ -43,7 +43,7 @@ export const playerReducer: PlayerReducer = (
 				...previousState,
 				isPlaying: false,
 			};
-		case 'seek':
+		case 'seekStart':
 			return {
 				...previousState,
 				isSeeking: true,

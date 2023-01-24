@@ -35,10 +35,17 @@ export const usePlayerStateDispatch = () => {
 
 export const usePlayerRef = () => {
 	const playerRef = useContext(PlayerRefContext);
+	const playerStateDispatch = usePlayerStateDispatch();
+
 
 	if (playerRef === null) {
 		throw Error('PlayerRefContext has not been provided.');
 	}
 
-	return { seekTo: (seconds: number) => playerRef.current?.seekTo(seconds) };
+	const handleSeekTo = (seconds: number) => {
+		playerStateDispatch({ type: 'seekEnd', seconds });
+		playerRef.current?.seekTo(seconds);
+	};
+
+	return { seekTo: handleSeekTo };
 };
