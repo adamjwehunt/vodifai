@@ -15,14 +15,12 @@ $transcript-color: var(--transcript-color, rgb(185, 153, 190));
 .searchTranscriptButton {
 	height: 2rem;
 	width: 2rem;
-	padding: 0 0.275rem;
 }
 
 .searchIcon {
-	display: flex;
-	height: 100%;
+	height: -webkit-fill-available;
+	padding: 0.2rem;
 	fill: #fff;
-	max-width: 100%;
 }
 
 .minimizeButton {

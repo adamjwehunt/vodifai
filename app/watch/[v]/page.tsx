@@ -113,7 +113,7 @@ export default async function WatchPage({
 					<Top>
 						<SearchTranscriptButton
 							ariaLabel={'Search transcript'}
-							icon={<SearchIcon className={styles.searchIcon} />}
+							icon={<SearchIcon className={transcriptStyles.searchIcon} />}
 						/>
 						<div className={transcriptStyles.transcriptDetails}>
 							<div className={transcriptStyles.transcriptTitle}>
