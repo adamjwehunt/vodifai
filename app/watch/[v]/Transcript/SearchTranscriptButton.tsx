@@ -1,18 +1,29 @@
 'use client';
 
-import SearchIcon from '@/public/search-icon.svg';
+import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import styles from './transcript.module.scss';
 
-export const SearchTranscriptButton = () => {
+interface SearchTranscriptButtonProps {
+	ariaLabel: string;
+	icon: React.ReactNode;
+}
+
+export const SearchTranscriptButton = ({
+	ariaLabel,
+	icon,
+}: SearchTranscriptButtonProps) => {
+	const { isExpanded } = useTranscriptState();
+
 	const handleOnSearchTranscriptButtonClick = () => {};
 
 	return (
 		<button
 			className={styles.searchTranscriptButton}
-			aria-label={'Menu'}
+			aria-label={ariaLabel}
+			tabIndex={isExpanded ? 0 : -1}
 			onClick={handleOnSearchTranscriptButtonClick}
 		>
-			<SearchIcon className={styles.searchIcon} />
+			{icon}
 		</button>
 	);
 };

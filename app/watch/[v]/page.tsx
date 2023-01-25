@@ -12,14 +12,19 @@ import { Player } from './Player';
 import { PlayerProvider } from './PlayerProvider';
 import { Controls } from './Controls';
 import { DownloadButton } from './DownloadButton';
+import FileDownloadIcon from '@/public/file-download-icon.svg';
 import { ShareButton } from './ShareButton';
+import ShareIcon from '@/public/share-icon.svg';
 import { TranscriptControls } from './Transcript/TranscriptControls';
 import { Top } from './Transcript/Top';
+import SearchIcon from '@/public/search-icon.svg';
 import { MinimizeButton } from './Transcript/MinimizeButton';
+import ChevronDownIcon from '@/public/chevron-back-icon.svg';
 import { SearchTranscriptButton } from './Transcript/SearchTranscriptButton';
 import { Transcript } from './Transcript';
 import { Bottom } from './Transcript/Bottom';
 import { ExpandButton } from './Transcript/ExpandButton';
+import ExpandIcon from '@/public/expand-icon.svg';
 import { Captions } from './Transcript/Captions';
 import styles from './watch.module.scss';
 import transcriptStyles from './Transcript/transcript.module.scss';
@@ -81,7 +86,7 @@ export default async function WatchPage({
 				} as CSSProperties
 			}
 		>
-			<SearchBar button />
+			<SearchBar isButton />
 			<PlayerProvider videoInfo={videoInfo}>
 				<Player />
 				<div className={styles.playerTray}>
@@ -93,21 +98,35 @@ export default async function WatchPage({
 					</div>
 					<Controls />
 					<div className={styles.secondaryControls}>
-						<DownloadButton />
-						<ShareButton />
+						<DownloadButton
+							ariaLabel={'Open downloads menu'}
+							icon={<FileDownloadIcon className={styles.secondaryButtonIcon} />}
+						/>
+						<ShareButton
+							ariaLabel={'Share Video'}
+							icon={<ShareIcon className={styles.secondaryButtonIcon} />}
+						/>
 					</div>
 				</div>
 				{/* @ts-expect-error Server Component */}
 				<Transcript captionTracks={captionTracks}>
 					<Top>
-						<SearchTranscriptButton />
+						<SearchTranscriptButton
+							ariaLabel={'Search transcript'}
+							icon={<SearchIcon className={styles.searchIcon} />}
+						/>
 						<div className={transcriptStyles.transcriptDetails}>
 							<div className={transcriptStyles.transcriptTitle}>
 								{videoTitle}
 							</div>
 							<div>{authorName}</div>
 						</div>
-						<MinimizeButton />
+						<MinimizeButton
+							ariaLabel={'Minimize transcript'}
+							icon={
+								<ChevronDownIcon className={transcriptStyles.chevronDownIcon} />
+							}
+						/>
 					</Top>
 					<TranscriptControls>
 						<Controls />
@@ -115,7 +134,12 @@ export default async function WatchPage({
 					<Bottom>
 						<div className={transcriptStyles.transcriptHeader}>
 							<div>{'Transcript'}</div>
-							<ExpandButton />
+							<div className={transcriptStyles.bottomButtons}>
+								<ExpandButton
+									ariaLabel={'Expand transcript'}
+									icon={<ExpandIcon className={transcriptStyles.expandIcon} />}
+								/>
+							</div>
 						</div>
 						<div className={transcriptStyles.captionsWrapper}>
 							<Captions />

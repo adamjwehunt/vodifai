@@ -4,22 +4,27 @@ import {
 	usePlayerStateDispatch,
 	usePlayerState,
 } from '../PlayerProvider/playerContext';
-import { Children, JSXElementConstructor, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import styles from './controls.module.scss';
 
 interface PlayPauseButtonProps {
-	children: ReactElement[];
+	playAriaLabel: string;
+	pauseAriaLabel: string;
+	playIcon: ReactElement;
+	pauseIcon: ReactElement;
 }
 
-export const PlayPauseButton = ({ children }: PlayPauseButtonProps) => {
+export const PlayPauseButton = ({
+	playAriaLabel,
+	pauseAriaLabel,
+	playIcon,
+	pauseIcon,
+}: PlayPauseButtonProps) => {
 	const { isPlaying } = usePlayerState();
 	const playerStateDispatch = usePlayerStateDispatch();
 
-	const Icon = Children.toArray(children).find(({ props: { id } }: any) =>
-		isPlaying ? id === 'pause-icon' : id === 'play-icon'
-	) as ReactElement<any, string | JSXElementConstructor<any>>;
-
-	const ariaLabel = isPlaying ? 'Pause' : 'Play';
+	const Icon = isPlaying ? pauseIcon : playIcon;
+	const ariaLabel = isPlaying ? pauseAriaLabel : playAriaLabel;
 
 	const handOnClick = () =>
 		playerStateDispatch({ type: isPlaying ? 'pause' : 'play' });

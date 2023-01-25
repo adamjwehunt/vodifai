@@ -1,17 +1,16 @@
 'use client';
 
-import FileDownloadIcon from '@/public/file-download-icon.svg';
-import styles from './watch.module.scss';
+interface DownloadButtonProps {
+	ariaLabel: string;
+	icon: React.ReactNode;
+}
 
-export const DownloadButton = () => {
+export const DownloadButton = ({ ariaLabel, icon }: DownloadButtonProps) => {
 	const handleOnDownloadButtonClick = () => {};
 
 	return (
-		<button
-			aria-label={'Open downloads menu'}
-			onClick={handleOnDownloadButtonClick}
-		>
-			<FileDownloadIcon className={styles.secondaryButtonIcon} />
+		<button aria-label={ariaLabel} onClick={handleOnDownloadButtonClick}>
+			{icon}
 		</button>
 	);
 };

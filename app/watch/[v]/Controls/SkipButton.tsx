@@ -3,24 +3,25 @@
 import { usePlayerRef, usePlayerState } from '../PlayerProvider/playerContext';
 import { clamp } from './util';
 
-const SKIP_COUNT_SECONDS = 15;
-
 interface SkipButtonProps {
 	back?: boolean;
-	children?: React.ReactElement;
+	skipCount: number;
+	ariaLabel: string;
+	icon: React.ReactElement;
 }
 
-export const SkipButton = ({ back, children }: SkipButtonProps) => {
+export const SkipButton = ({
+	back,
+	skipCount,
+	ariaLabel,
+	icon,
+}: SkipButtonProps) => {
 	const { duration, played } = usePlayerState();
 	const { seekTo } = usePlayerRef();
 
-	const ariaLabel = `Skip ${
-		back ? 'back' : 'forward'
-	} ${SKIP_COUNT_SECONDS} seconds`;
-
 	const handleSkip = () => {
 		const seconds = clamp(
-			played + (back ? -SKIP_COUNT_SECONDS : SKIP_COUNT_SECONDS),
+			played + (back ? -skipCount : skipCount),
 			0,
 			duration
 		);
@@ -30,7 +31,7 @@ export const SkipButton = ({ back, children }: SkipButtonProps) => {
 
 	return (
 		<button aria-label={ariaLabel} onClick={handleSkip}>
-			{children}
+			{icon}
 		</button>
 	);
 };

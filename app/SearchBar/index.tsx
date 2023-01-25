@@ -7,15 +7,16 @@ import styles from './searchBar.module.css';
 
 interface SearchBarProps {
 	query?: string;
-	button?: boolean;
+	isButton?: boolean;
 }
 
-export const SearchBar = ({ query, button }: SearchBarProps) => (
+export const SearchBar = ({ query, isButton }: SearchBarProps) => (
 	<div className={styles.searchBar}>
-		<BackButton>
-			<ArrowIcon className={styles.arrowIcon} />
-		</BackButton>
-		{button ? (
+		<BackButton
+			ariaLabel={'Go back'}
+			icon={<ArrowIcon className={styles.arrowIcon} />}
+		/>
+		{isButton ? (
 			<Link href={'/search'} className={styles.inputWrapper}>
 				<SearchIcon className={styles.searchIcon} />
 				<SearchInput noFocus />

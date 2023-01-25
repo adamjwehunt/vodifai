@@ -1,15 +1,15 @@
 'use client';
 
-import { Children, cloneElement } from 'react';
+import { Children, cloneElement, ReactElement } from 'react';
 import { usePlayerState } from '../PlayerProvider/playerContext';
 import { formatPlayerTime } from './util';
 
 interface PlayedLabelProps {
-	children: React.ReactElement;
+	label: ReactElement;
 }
 
-export const PlayedLabel = ({ children }: PlayedLabelProps) => {
+export const PlayedLabel = ({ label }: PlayedLabelProps) => {
 	const { played } = usePlayerState();
 
-	return cloneElement(Children.only(children), {}, formatPlayerTime(played));
+	return cloneElement(Children.only(label), {}, formatPlayerTime(played));
 };

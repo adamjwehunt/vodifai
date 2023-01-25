@@ -1,14 +1,14 @@
 'use client';
 
-import { Children, cloneElement } from 'react';
+import { Children, cloneElement, ReactElement } from 'react';
 import { usePlayerState } from '../PlayerProvider/playerContext';
 import { formatPlayerTime } from './util';
 
 interface TimeLeftLabelProps {
-	children: React.ReactElement;
+	label: ReactElement;
 }
 
-export const TimeLeftLabel = ({ children }: TimeLeftLabelProps) => {
+export const TimeLeftLabel = ({ label }: TimeLeftLabelProps) => {
 	const {
 		duration,
 		played,
@@ -17,7 +17,7 @@ export const TimeLeftLabel = ({ children }: TimeLeftLabelProps) => {
 	const total = duration || videoDetails.duration;
 
 	return cloneElement(
-		Children.only(children),
+		Children.only(label),
 		{},
 		`${total === played ? '' : '-'}${formatPlayerTime(total - played)}`
 	);

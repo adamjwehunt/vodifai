@@ -1,18 +1,22 @@
 'use client';
 
-import ShareIcon from '@/public/share-icon.svg';
 import styles from './watch.module.scss';
 
-export const ShareButton = () => {
+interface ShareButtonProps {
+	ariaLabel: string;
+	icon: React.ReactNode;
+}
+
+export const ShareButton = ({ ariaLabel, icon }: ShareButtonProps) => {
 	const handleOnShareButtonClick = () => {};
 
 	return (
 		<button
 			className={styles.shareButton}
-			aria-label={'Share Video'}
+			aria-label={ariaLabel}
 			onClick={handleOnShareButtonClick}
 		>
-			<ShareIcon className={styles.secondaryButtonIcon} />
+			{icon}
 		</button>
 	);
 };

@@ -8,7 +8,11 @@ import {
 import { Root, Track, Range, Thumb } from '@radix-ui/react-slider';
 import styles from './controls.module.scss';
 
-export const Slider = () => {
+interface SliderProps {
+	ariaLabel: string;
+}
+
+export const Slider = ({ ariaLabel }: SliderProps) => {
 	const {
 		duration,
 		played,
@@ -26,10 +30,10 @@ export const Slider = () => {
 		<form>
 			<Root
 				className={styles.slider}
+				aria-label={ariaLabel}
 				value={[played]}
 				max={duration || videoDetails.duration}
 				step={1}
-				aria-label="Player scrubber"
 				onValueChange={handleSeek}
 				onValueCommit={handleSeekCommitted}
 			>

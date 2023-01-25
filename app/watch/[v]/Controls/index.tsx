@@ -10,35 +10,40 @@ import PauseIcon from '@/public/pause-icon.svg';
 import { BufferSpinner } from './BufferSpinner';
 import styles from './controls.module.scss';
 
+const SKIP_COUNT_SECONDS = 15;
+
 export const Controls = () => (
 	<div className={styles.controls}>
 		<div className={styles.scrubberWrapper}>
 			<div className={styles.scrubber}>
-				<Slider />
+				<Slider ariaLabel={'Player scrubber'} />
 				<div className={styles.scrubberLabels}>
-					<PlayedLabel>
-						<div className={styles.scrubberLabel} />
-					</PlayedLabel>
-					<TimeLeftLabel>
-						<div className={styles.scrubberLabel} />
-					</TimeLeftLabel>
+					<PlayedLabel label={<div className={styles.scrubberLabel} />} />
+					<TimeLeftLabel label={<div className={styles.scrubberLabel} />} />
 				</div>
 			</div>
 		</div>
 		<div className={styles.controlsButtons}>
-			<SkipButton back>
-				<SkipBackIcon className={styles.skipIcon} />
-			</SkipButton>
+			<SkipButton
+				back
+				skipCount={SKIP_COUNT_SECONDS}
+				ariaLabel={`Skip back ${SKIP_COUNT_SECONDS} seconds`}
+				icon={<SkipBackIcon className={styles.skipIcon} />}
+			/>
 			<div className={styles.playPause}>
-				<PlayPauseButton>
-					<PlayIcon id={'play-icon'} />
-					<PauseIcon id={'pause-icon'} />
-				</PlayPauseButton>
+				<PlayPauseButton
+					playAriaLabel={'Play'}
+					pauseAriaLabel={'Pause'}
+					playIcon={<PlayIcon />}
+					pauseIcon={<PauseIcon />}
+				/>
 				<BufferSpinner />
 			</div>
-			<SkipButton>
-				<SkipForwardIcon className={styles.skipIcon} />
-			</SkipButton>
+			<SkipButton
+				skipCount={SKIP_COUNT_SECONDS}
+				ariaLabel={`Skip forward ${SKIP_COUNT_SECONDS} seconds`}
+				icon={<SkipForwardIcon className={styles.skipIcon} />}
+			/>
 		</div>
 	</div>
 );

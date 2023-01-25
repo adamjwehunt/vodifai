@@ -5,10 +5,14 @@ import {
 	useTranscriptState,
 	useTranscriptStateDispatch,
 } from '../TranscriptProvider/transcriptContext';
-import ExpandIcon from '@/public/expand-icon.svg';
 import styles from './transcript.module.scss';
 
-export const ExpandButton = () => {
+interface ExpandButtonProps {
+	ariaLabel: string;
+	icon: React.ReactNode;
+}
+
+export const ExpandButton = ({ ariaLabel, icon }: ExpandButtonProps) => {
 	const transcriptStateDispatch = useTranscriptStateDispatch();
 	const { centerActiveCaption } = useCaptionsRef();
 	const { isExpanded } = useTranscriptState();
@@ -21,11 +25,11 @@ export const ExpandButton = () => {
 	return (
 		<button
 			className={styles.expandButton}
-			aria-label={'Expand transcript'}
+			aria-label={ariaLabel}
 			tabIndex={isExpanded ? -1 : 0}
 			onClick={handleExpandButtonClick}
 		>
-			<ExpandIcon className={styles.expandIcon} />
+			{icon}
 		</button>
 	);
 };
