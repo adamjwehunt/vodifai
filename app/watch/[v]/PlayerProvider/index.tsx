@@ -1,5 +1,6 @@
 'use client';
 
+import { MotionConfig } from 'framer-motion';
 import { ReactElement, useReducer, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { VideoInfo } from '../types';
@@ -10,6 +11,8 @@ import {
 } from './playerContext';
 import { playerReducer, DEFAULT_PLAYER_REDUCER_STATE } from './playerReducer';
 import { PlayerReducerState, PlayerReducerAction } from './types';
+
+export const expandDuration = 0.3;
 
 interface PlayerProviderProps {
 	children: ReactElement[];
@@ -32,7 +35,11 @@ export const PlayerProvider = ({
 		<PlayerStateContext.Provider value={playerState}>
 			<PlayerStateDispatchContext.Provider value={playerStateDispatch}>
 				<PlayerRefContext.Provider value={playerRef}>
-					{children}
+					<MotionConfig
+						transition={{ type: 'ease-in-out', duration: expandDuration }}
+					>
+						{children}
+					</MotionConfig>
 				</PlayerRefContext.Provider>
 			</PlayerStateDispatchContext.Provider>
 		</PlayerStateContext.Provider>

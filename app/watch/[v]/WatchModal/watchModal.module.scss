@@ -1,0 +1,62 @@
+.modalBackdrop,
+.modal {
+	position: fixed;
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(2px);
+}
+
+.modalBackdrop {
+	inset: 0;
+}
+
+.modal {
+	top: 5rem;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.modalTop {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.closeButtonTop {
+	fill: #fff;
+	padding: 1.5rem;
+
+	svg {
+		transform: scale(1.5);
+	}
+}
+
+.loadingSpinner {
+	height: -webkit-fill-available;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modalContent {
+	height: -webkit-fill-available;
+	font-size: 1.25rem;
+	line-height: 1.5;
+	padding: 0px 2rem;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.modalBottom {
+	display: flex;
+	justify-content: center;
+}
+
+.closeButtonBottom {
+	color: #fff;
+	padding: 1.5rem;
+	font-size: 1rem;
+}

@@ -1,4 +1,4 @@
-import { videoFormat } from 'ytdl-core';
+import { Chapter, videoFormat } from 'ytdl-core';
 
 export interface Video {
 	type: string;
@@ -12,6 +12,12 @@ export interface Caption {
 	text: string;
 }
 
+export interface ChapterWithCaptions {
+	title: string;
+	start_time: number;
+	captions: Caption[];
+}
+
 export interface VideoDetails {
 	title: string;
 	description: string | null;
@@ -20,6 +26,8 @@ export interface VideoDetails {
 		id: string;
 	};
 	duration: number;
+	keywords: string[];
+	chapters: Chapter[];
 }
 
 export interface VideoInfo {
@@ -39,6 +47,7 @@ export interface Palette {
 	LightMuted: Swatch | null;
 	[name: string]: Swatch | null;
 }
+
 interface Swatch {
 	_rgb: number[];
 	_population: number;

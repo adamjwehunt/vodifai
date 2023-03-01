@@ -6,12 +6,7 @@ import React, {
 	useImperativeHandle,
 	useRef,
 } from 'react';
-import {
-	usePlayerStateDispatch,
-	usePlayerRef,
-	usePlayerState,
-} from '../PlayerProvider/playerContext';
-import { expandDuration } from '../TranscriptProvider';
+import { usePlayerRef, usePlayerState } from '../PlayerProvider/playerContext';
 import { Caption } from '../types';
 import { useIsScrolling } from './hooks/useIsScrolling';
 import { useActiveCaptionId } from './hooks/useActiveCaptionId';
@@ -20,13 +15,13 @@ import {
 	useTranscriptState,
 } from '../TranscriptProvider/transcriptContext';
 import styles from './transcript.module.scss';
+import { expandDuration } from '../PlayerProvider';
 
 export interface CaptionsHandle {
 	centerActiveCaption: () => void;
 }
 
 export const Captions = () => {
-	const playerStateDispatch = usePlayerStateDispatch();
 	const { seekTo } = usePlayerRef();
 	const { played, isPlaying, isSeeking, hasSeeked } = usePlayerState();
 	const { isAnimating, captions } = useTranscriptState();

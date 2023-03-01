@@ -23,6 +23,9 @@ import ChevronDownIcon from '@/public/chevron-back-icon.svg';
 import { SearchTranscriptButton } from './Transcript/SearchTranscriptButton';
 import { Transcript } from './Transcript';
 import { Bottom } from './Transcript/Bottom';
+import { RecapButton } from './Transcript/RecapButton';
+import RecapIcon from '@/public/ai-icon.svg';
+import LoadingSpinner from '@/public/loading-spinner.svg';
 import { ExpandButton } from './Transcript/ExpandButton';
 import ExpandIcon from '@/public/expand-icon.svg';
 import { Captions } from './Transcript/Captions';
@@ -46,9 +49,11 @@ async function getVideoInfo(
 					id: info.videoDetails.author.id,
 					name: info.videoDetails.author.name,
 				},
-				description: info.videoDetails.description,
+				description: info.videoDetails.description ?? '',
 				title: info.videoDetails.title,
 				duration: parseInt(info.videoDetails.lengthSeconds),
+				keywords: info.videoDetails.keywords ?? [],
+				chapters: info.videoDetails.chapters ?? [],
 			},
 			videoColors: getWatchViewColors(videoColors),
 			formats: info.formats,
@@ -69,12 +74,13 @@ export default async function WatchPage({
 	const { videoInfo, captionTracks } = await getVideoInfo(videoId);
 
 	const {
-		videoDetails: {
-			title: videoTitle,
-			author: { name: authorName },
-		},
+		videoDetails,
 		videoColors: { primaryBackground, secondaryBackground },
 	} = videoInfo;
+	const {
+		title: videoTitle,
+		author: { name: authorName },
+	} = videoDetails;
 
 	return (
 		<div
@@ -109,7 +115,7 @@ export default async function WatchPage({
 					</div>
 				</div>
 				{/* @ts-expect-error Server Component */}
-				<Transcript captionTracks={captionTracks}>
+				<Transcript captionTracks={captionTracks} videoDetails={videoDetails}>
 					<Top>
 						<SearchTranscriptButton
 							ariaLabel={'Search transcript'}
@@ -135,6 +141,12 @@ export default async function WatchPage({
 						<div className={transcriptStyles.transcriptHeader}>
 							<div>{'Transcript'}</div>
 							<div className={transcriptStyles.bottomButtons}>
+								<RecapButton
+									text={'Recap'}
+									ariaLabel={'Show AI recap'}
+									icon={<RecapIcon className={transcriptStyles.recapIcon} />}
+									loadingSpinner={<LoadingSpinner />}
+								/>
 								<ExpandButton
 									ariaLabel={'Expand transcript'}
 									icon={<ExpandIcon className={transcriptStyles.expandIcon} />}

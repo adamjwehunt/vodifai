@@ -1,10 +1,11 @@
 import { Reducer } from 'react';
-import { Caption } from '../types';
+import { Caption, VideoDetails } from '../types';
 
 export interface TranscriptReducerState {
 	isExpanded: boolean;
 	isAnimating: boolean;
 	captions: Caption[];
+	videoDetails: VideoDetails;
 }
 
 export type TranscriptReducerAction =
