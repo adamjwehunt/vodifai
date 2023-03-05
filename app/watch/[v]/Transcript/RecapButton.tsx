@@ -97,6 +97,7 @@ export const RecapButton = ({
 			</button>
 			<WatchModal
 				ref={modalRef}
+				title={'AI-generated Recap'}
 				loadingSpinner={loadingSpinner}
 				isLoading={isLoading}
 			>

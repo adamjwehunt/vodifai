@@ -134,9 +134,6 @@ export default async function WatchPage({
 							}
 						/>
 					</Top>
-					<TranscriptControls>
-						<Controls />
-					</TranscriptControls>
 					<Bottom>
 						<div className={transcriptStyles.transcriptHeader}>
 							<div>{'Transcript'}</div>
@@ -157,6 +154,9 @@ export default async function WatchPage({
 							<Captions />
 						</div>
 					</Bottom>
+					<TranscriptControls>
+						<Controls />
+					</TranscriptControls>
 				</Transcript>
 			</PlayerProvider>
 		</div>

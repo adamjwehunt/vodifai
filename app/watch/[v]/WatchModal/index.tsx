@@ -1,9 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { applyAriaHidden, applyTabindex, findFocusableElements } from './util';
 import XIcon from '@/public/x-icon.svg';
 import styles from './watchModal.module.scss';
 
 interface WatchModalProps {
+	title: string;
 	children: React.ReactNode;
 	isLoading?: boolean;
 	loadingSpinner?: React.ReactNode;
@@ -14,7 +16,7 @@ export interface WatchModalRef {
 }
 
 export const WatchModal = forwardRef(function WatchModal(
-	{ children, isLoading, loadingSpinner }: WatchModalProps,
+	{ title, children, isLoading, loadingSpinner }: WatchModalProps,
 	ref
 ) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,6 +37,22 @@ export const WatchModal = forwardRef(function WatchModal(
 			// remove aria-hidden for body and main content
 			document.body.removeAttribute('aria-hidden');
 			document.body.classList.remove('modal-open');
+
+			// reset tabindex of previously hidden elements
+			const previouslyHiddenElements =
+				document.body.querySelectorAll<HTMLElement>(
+					'[data-previously-hidden="true"]'
+				);
+			applyTabindex(previouslyHiddenElements, '0');
+
+			// remove event listener
+			document.removeEventListener('keydown', handleKeyDown);
+		}
+
+		function handleKeyDown(event: KeyboardEvent) {
+			if (event.key === 'Escape') {
+				setIsModalOpen(false);
+			}
 		}
 
 		if (isModalOpen) {
@@ -46,11 +64,12 @@ export const WatchModal = forwardRef(function WatchModal(
 			// set aria-hidden for body and main content
 			document.body.setAttribute('aria-hidden', 'true');
 			document.body.classList.add('modal-open');
-		} else {
-			handleModalClose();
-		}
 
-		return () => handleModalClose();
+			// add event listener for Esc key
+			document.addEventListener('keydown', handleKeyDown);
+
+			return () => handleModalClose();
+		}
 	}, [isModalOpen]);
 
 	return (
@@ -71,7 +90,9 @@ export const WatchModal = forwardRef(function WatchModal(
 						exit={{ top: '100dvh' }}
 					>
 						<div className={styles.modalTop}>
+							<div className={styles.modalTitle}>{title}</div>
 							<button
+								id={'watch-modal-close-button'}
 								className={styles.closeButtonTop}
 								aria-label={'Close recap'}
 								onClick={() => setIsModalOpen(false)}
@@ -86,6 +107,7 @@ export const WatchModal = forwardRef(function WatchModal(
 						)}
 						<div className={styles.modalBottom}>
 							<button
+								id={'watch-modal-close-button'}
 								className={styles.closeButtonBottom}
 								aria-label={'Close recap'}
 								onClick={() => setIsModalOpen(false)}
@@ -99,22 +121,3 @@ export const WatchModal = forwardRef(function WatchModal(
 		</AnimatePresence>
 	);
 });
-
-function findFocusableElements(rootElement: HTMLElement) {
-	return rootElement.querySelectorAll<HTMLElement>(
-		'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-	);
-}
-
-function applyAriaHidden(elements: NodeListOf<HTMLElement>, value: string) {
-	elements.forEach((el) => {
-		el.setAttribute('aria-hidden', value);
-		el.setAttribute('tabindex', '-1');
-	});
-}
-
-function applyTabindex(elements: NodeListOf<HTMLElement>, value: string) {
-	elements.forEach((el) => {
-		el.setAttribute('tabindex', value);
-	});
-}

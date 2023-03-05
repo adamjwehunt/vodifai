@@ -22,12 +22,18 @@
 
 .modalTop {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	height: 4rem;
+	font-size: 1rem;
 }
 
 .closeButtonTop {
 	fill: #fff;
-	padding: 1.5rem;
+	padding: 1.25rem;
+	position: absolute;
+	right: 0;
 
 	svg {
 		transform: scale(1.5);
@@ -53,10 +59,11 @@
 .modalBottom {
 	display: flex;
 	justify-content: center;
+	height: 4rem;
 }
 
 .closeButtonBottom {
 	color: #fff;
-	padding: 1.5rem;
+	padding: 1.25rem;
 	font-size: 1rem;
 }
