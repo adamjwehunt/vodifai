@@ -1,7 +1,9 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
-import ReactPlayer, { Config } from 'react-player';
+import { useContext } from 'react';
+import dynamic from 'next/dynamic';
+const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
+import { Config } from 'react-player';
 import { OnProgressProps } from 'react-player/base';
 import {
 	usePlayerStateDispatch,
@@ -20,13 +22,6 @@ const reactPlayerConfig: Config = {
 
 export const Player = () => {
 	const playerRef = useContext(PlayerRefContext);
-
-	// Render react-player on the client only
-	const [isSSR, setIsSSR] = useState(true);
-	useEffect(() => {
-		setIsSSR(false);
-	}, []);
-
 	const {
 		isPlaying,
 		isSeeking,
@@ -67,26 +62,25 @@ export const Player = () => {
 
 	return (
 		<div className={styles.player}>
-			{isSSR ? null : (
-				<ReactPlayer
-					ref={playerRef}
-					playing={isPlaying}
-					url={url}
-					muted={true}
-					controls={true}
-					config={reactPlayerConfig}
-					style={{ position: 'sticky', top: '8dvh' }}
-					width={'100%'}
-					height={'56.25dvw'}
-					onSeek={handleSeek}
-					onPlay={handlePlay}
-					onPause={handlePause}
-					onBuffer={handleBuffer}
-					onBufferEnd={handleBufferEnd}
-					onProgress={handleProgress}
-					onDuration={handleDuration}
-				/>
-			)}
+			<ReactPlayer
+				ref={playerRef}
+				playing={isPlaying}
+				url={url}
+				// temporary for development
+				muted
+				controls
+				config={reactPlayerConfig}
+				style={{ position: 'sticky', top: '8dvh' }}
+				width={'100%'}
+				height={'56.25dvw'}
+				onSeek={handleSeek}
+				onPlay={handlePlay}
+				onPause={handlePause}
+				onBuffer={handleBuffer}
+				onBufferEnd={handleBufferEnd}
+				onProgress={handleProgress}
+				onDuration={handleDuration}
+			/>
 		</div>
 	);
 };
