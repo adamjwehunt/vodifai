@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import XIcon from '@/public/x-icon.svg';
 import styles from './searchBar.module.css';
 
@@ -13,6 +13,7 @@ interface SearchInputProps {
 export const SearchInput = ({ query, noFocus }: SearchInputProps) => {
 	const router = useRouter();
 	const [value, setValue] = useState(query);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const handleKeyDown = async (
 		event: React.KeyboardEvent<HTMLInputElement>
@@ -25,14 +26,16 @@ export const SearchInput = ({ query, noFocus }: SearchInputProps) => {
 			);
 		}
 	};
+
 	const handleClearInput = () => {
 		setValue('');
-		router.push(`/search`);
+		inputRef.current?.focus();
 	};
 
 	return (
 		<>
 			<input
+				ref={inputRef}
 				autoFocus={!noFocus}
 				tabIndex={noFocus ? -1 : 0}
 				type={'text'}
