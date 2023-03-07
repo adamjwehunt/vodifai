@@ -3,6 +3,26 @@ import { DOMParser } from 'xmldom';
 import { Caption } from '../types';
 import { findBestTranscriptUrl, mapYoutubeCaptions } from '../youtubeUtil';
 
+export async function getCaptions(
+	captionTracks: captionTrack[],
+	language = 'en'
+): Promise<Caption[]> {
+	if (!captionTracks.length) {
+		return [];
+	}
+
+	let captions: Caption[] = [];
+
+	captions = await getYoutubeCaptions(captionTracks, language);
+
+	captions = captions.map((caption) => ({
+		...caption,
+		text: replaceQuotes(caption.text),
+	}));
+
+	return captions;
+}
+
 async function getYoutubeCaptions(
 	captionTracks: captionTrack[],
 	language = 'en'
@@ -17,24 +37,64 @@ async function getYoutubeCaptions(
 	return mapYoutubeCaptions(transcript);
 }
 
-export async function getCaptions(
-	captionTracks: captionTrack[],
-	language = 'en'
-): Promise<Caption[]> {
-	let captions: Caption[] = [];
-
-	if (captionTracks.length) {
-		captions = await getYoutubeCaptions(captionTracks, language);
-	}
-
-	captions = captions.map((caption) => ({
-		...caption,
-		text: replaceQuotes(caption.text),
-	}));
-
-	return captions;
-}
-
 function replaceQuotes(str: string): string {
 	return str.replace(/&quot;/g, '"');
 }
+
+export function createSearchTranscriptWords(captions: Caption[]): string[] {
+	if (!captions.length) {
+		return [];
+	}
+
+	let words = stripTranscriptText(
+		captions.map((caption) => caption.text).join(' ')
+	).split(' ');
+
+	words = removeDuplicates(words);
+	words = words.sort();
+
+	return words;
+}
+
+function removeDuplicates(strings: string[]): string[] {
+	if (!strings.length) {
+		return [];
+	}
+
+	const uniqueStrings: string[] = [];
+
+	for (const string of strings) {
+		if (!uniqueStrings.includes(string)) {
+			uniqueStrings.push(string);
+		}
+	}
+
+	return uniqueStrings;
+}
+
+export function getCaptionsWithSelectedItem(
+	captions: Caption[],
+	selectedItem: string | null | undefined
+) {
+	if (!selectedItem) {
+		return [];
+	}
+
+	return captions.filter((caption) => {
+		const strippedText = stripTranscriptText(caption.text);
+		return strippedText.split(' ').includes(selectedItem);
+	});
+}
+
+export const stripTranscriptText = (text: string) =>
+	text
+		// remove bracketed text (e.g. [Music])
+		.replace(/\[.*?\]/g, '')
+		// remove new lines
+		.replace(/[\r\n]+/g, ' ')
+		// remove extra spaces
+		.replace(/\s+/g, ' ')
+		// remove punctuation from end of words
+		.replace(/(\w+['’]?\w*)[^\w\s]*\s*/g, '$1 ')
+		.toLowerCase()
+		.trim();

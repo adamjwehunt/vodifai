@@ -70,6 +70,9 @@ function reduceTranscript(
 	let newChapters = [...chapters];
 	let newKey = key;
 
+
+	// Removes center word from each chapter until the total length is less than maxLength
+	// Maintains the ratio of the lengths of each chapter
 	while (
 		newChapters.join(' ').trim().length + ` ${newKey}`.length >
 		maxLength

@@ -5,7 +5,9 @@ export interface TranscriptReducerState {
 	isExpanded: boolean;
 	isAnimating: boolean;
 	captions: Caption[];
-	videoDetails: VideoDetails;
+	videoDetails: Partial<VideoDetails>;
+	highlightedWord: string;
+	centeredCaptionId: number | null;
 }
 
 export type TranscriptReducerAction =
@@ -17,6 +19,14 @@ export type TranscriptReducerAction =
 	  }
 	| {
 			type: 'animateEnd';
+	  }
+	| {
+			type: 'highlightTranscriptWord';
+			word: string;
+	  }
+	| {
+			type: 'centerCaption';
+			captionId: number | null;
 	  };
 
 export type TranscriptReducer = Reducer<

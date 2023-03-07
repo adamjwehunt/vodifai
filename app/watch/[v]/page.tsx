@@ -5,7 +5,7 @@ import {
 	getVideoColors,
 	getWatchViewBackground,
 	getWatchViewColors,
-} from './utils';
+} from './util';
 import { CSSProperties } from 'react';
 import { SearchBar } from 'app/SearchBar';
 import { Player } from './Player';

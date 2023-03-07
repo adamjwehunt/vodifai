@@ -21,7 +21,7 @@ export const Top = ({ children }: TopProps) => {
 					animate={{ y: 0, opacity: 1 }}
 					exit={{ y: '-5rem', opacity: 0 }}
 				>
-					{children}
+					<div className={styles.topContainer}>{children}</div>
 				</motion.div>
 			)}
 		</AnimatePresence>

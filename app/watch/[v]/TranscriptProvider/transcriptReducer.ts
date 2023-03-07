@@ -9,6 +9,9 @@ export const DEFAULT_TRANSCRIPT_REDUCER_STATE: TranscriptReducerState =
 		isExpanded: false,
 		isAnimating: false,
 		captions: [],
+		videoDetails: {},
+		highlightedWord: '',
+		centeredCaptionId: null,
 	});
 
 export const transcriptReducer: TranscriptReducer = (
@@ -30,6 +33,16 @@ export const transcriptReducer: TranscriptReducer = (
 			return {
 				...previousState,
 				isAnimating: false,
+			};
+		case 'highlightTranscriptWord':
+			return {
+				...previousState,
+				highlightedWord: action.word,
+			};
+		case 'centerCaption':
+			return {
+				...previousState,
+				centeredCaptionId: action.captionId,
 			};
 
 		default:

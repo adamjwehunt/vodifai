@@ -3,6 +3,7 @@
 import React, {
 	useCallback,
 	useContext,
+	useEffect,
 	useImperativeHandle,
 	useRef,
 } from 'react';
@@ -14,8 +15,9 @@ import {
 	CaptionsRefContext,
 	useTranscriptState,
 } from '../TranscriptProvider/transcriptContext';
-import styles from './transcript.module.scss';
 import { expandDuration } from '../PlayerProvider';
+import styles from './transcript.module.scss';
+import { stripTranscriptText } from './util';
 
 export interface CaptionsHandle {
 	centerActiveCaption: () => void;
@@ -24,7 +26,8 @@ export interface CaptionsHandle {
 export const Captions = () => {
 	const { seekTo } = usePlayerRef();
 	const { played, isPlaying, isSeeking, hasSeeked } = usePlayerState();
-	const { isAnimating, captions } = useTranscriptState();
+	const { isAnimating, captions, highlightedWord, centeredCaptionId } =
+		useTranscriptState();
 	const containerRef = useRef<HTMLDivElement>(null);
 	const activeCaptionRef = useRef<HTMLDivElement | null>(null);
 	const captionsRef = useContext(CaptionsRefContext);
@@ -42,7 +45,7 @@ export const Captions = () => {
 	}));
 
 	const scrollToCaption = useCallback(
-		(caption: HTMLDivElement, isSmooth = true) => {
+		(caption: HTMLDivElement | HTMLElement, isSmooth = true) => {
 			const container = containerRef?.current;
 			if (caption && container) {
 				const captionComputedStyle = getComputedStyle(caption);
@@ -57,6 +60,18 @@ export const Captions = () => {
 		},
 		[]
 	);
+
+	useEffect(() => {
+		if (centeredCaptionId !== null && highlightedWord) {
+			const centeredCaption = document.getElementById(
+				`caption-${centeredCaptionId}`
+			);
+
+			if (centeredCaption) {
+				scrollToCaption(centeredCaption, false);
+			}
+		}
+	}, [centeredCaptionId, highlightedWord, scrollToCaption]);
 
 	const handleActiveCaptionChange = useCallback(
 		(caption: HTMLDivElement) => {
@@ -87,23 +102,51 @@ export const Captions = () => {
 
 	return (
 		<div className={styles.captions} ref={containerRef}>
-			{captions.map(({ start, text, id }: Caption, index: number) => (
-				<div
-					key={index}
-					ref={id === activeCaptionId ? handleActiveCaptionChange : null}
-					className={styles.captionText}
-					style={
-						activeCaptionId !== undefined && id <= activeCaptionId
-							? { color: '#fff' }
-							: {}
-					}
-					onClick={({ target }) => {
-						handleCaptionClick(target as HTMLDivElement, start);
-					}}
-				>
-					{text}
-				</div>
-			))}
+			{captions.map(({ start, text, id }: Caption, index: number) => {
+				const words = highlightedWord
+					? text
+							// remove new lines
+							.replace(/[\r\n]+/g, ' ')
+							.trim()
+							.split(' ')
+							.map((word, index) =>
+								stripTranscriptText(word) === highlightedWord ? (
+									<span key={index}>
+										<span
+											style={{
+												backgroundColor:
+													centeredCaptionId === id ? 'orange' : 'yellow',
+												color: 'initial',
+											}}
+										>
+											{word}
+										</span>{' '}
+									</span>
+								) : (
+									<span key={index}>{word} </span>
+								)
+							)
+					: text;
+
+				return (
+					<div
+						key={index}
+						id={`caption-${id}`}
+						ref={id === activeCaptionId ? handleActiveCaptionChange : null}
+						className={styles.captionText}
+						style={
+							activeCaptionId !== undefined && id <= activeCaptionId
+								? { color: '#fff' }
+								: {}
+						}
+						onClick={({ target }) => {
+							handleCaptionClick(target as HTMLDivElement, start);
+						}}
+					>
+						{words}
+					</div>
+				);
+			})}
 		</div>
 	);
 };

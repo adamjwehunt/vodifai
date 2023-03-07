@@ -1,31 +1,140 @@
 $transcript-color: var(--transcript-color, rgb(185, 153, 190));
+$horizontal-padding: 1rem;
+$top-button-size: 2rem;
+$button-color: #fff;
 
 .top {
 	position: absolute;
 	left: 0;
 	right: 0;
 	z-index: 3;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 1rem;
 	background-color: $transcript-color;
 }
 
+.topContainer {
+	display: flex;
+	position: relative;
+	justify-content: space-between;
+	align-items: center;
+	padding: $horizontal-padding;
+}
+
 .searchTranscriptButton {
-	height: 2rem;
-	width: 2rem;
+	height: $top-button-size;
+	width: $top-button-size;
+	z-index: 4;
+	margin-top: 2px;
 }
 
 .searchIcon {
 	height: -webkit-fill-available;
 	padding: 0.2rem;
-	fill: #fff;
+	fill: $button-color;
+}
+
+$input-offset: 0.75rem;
+$search-wrapper-size: $top-button-size + $input-offset;
+$search-border: 3px solid $button-color;
+$expanded-border-radius: calc($search-wrapper-size / 2);
+
+.searchTranscriptWrapper {
+	position: absolute;
+	left: $horizontal-padding - 0.5rem;
+	right: $horizontal-padding + $search-wrapper-size;
+	height: $search-wrapper-size;
+	z-index: 3;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: $search-border;
+	border-radius: $search-wrapper-size;
+	padding: 0 $input-offset 0 $search-wrapper-size;
+	background-color: $transcript-color;
+
+	&.expanded {
+		border-bottom: 3px solid transparent;
+		border-radius: $expanded-border-radius $expanded-border-radius 0px 0px;
+	}
+}
+
+.searchTranscriptInputContainer {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	z-index: 1;
+	display: flex;
+}
+
+.searchTranscriptInput,
+.searchTranscriptAutoComplete {
+	background-color: transparent;
+	width: 100%;
+	color: $button-color;
+	font-size: 1.25rem;
+	z-index: 1;
+	text-transform: lowercase;
+}
+
+.searchTranscriptAutoComplete {
+	background-color: $transcript-color;
+	color: hsla(0, 0%, 0%, 0.3);
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: auto;
+	z-index: 0;
+}
+
+.inputButtonsContainer {
+	display: flex;
+	align-items: center;
+	z-index: 1;
+	gap: 0.2rem;
+
+	button {
+		width: $top-button-size;
+		height: $top-button-size;
+		fill: $button-color;
+	}
+}
+
+.selectedItemOccurrences {
+	flex-shrink: 0;
+	padding: 0 0.25rem;
+}
+
+.searchTranscriptSelector {
+	padding-left: 0.65rem;
+}
+
+$menu-item-height: 2.5rem;
+
+.searchTranscriptMenu {
+	background-color: $transcript-color;
+	position: absolute;
+	top: 1.875rem;
+	left: -3px;
+	right: -3px;
+	border: $search-border;
+	border-bottom-left-radius: calc($search-wrapper-size / 2);
+	border-bottom-right-radius: calc($search-wrapper-size / 2);
+	border-top: none;
+	max-height: calc($menu-item-height * 5);
+	overflow: scroll;
+	margin-top: 0.5rem;
+}
+
+.searchTranscriptMenuItem {
+	padding-left: $search-wrapper-size;
+	height: $menu-item-height;
+	display: flex;
+	align-items: center;
 }
 
 .minimizeButton {
-	height: 2rem;
-	width: 2rem;
+	height: $top-button-size;
+	width: $top-button-size;
 	border-radius: 50%;
 	padding: 0 0.4rem;
 	flex-shrink: 0;
@@ -34,7 +143,7 @@ $transcript-color: var(--transcript-color, rgb(185, 153, 190));
 
 .chevronDownIcon {
 	transform: rotate(-90deg);
-	fill: #fff;
+	fill: $button-color;
 	margin-top: -0.3rem;
 
 	&:focus {
@@ -75,7 +184,7 @@ $transcript-color: var(--transcript-color, rgb(185, 153, 190));
 	display: flex;
 	align-items: center;
 	gap: 0.275rem;
-	color: #fff;
+	color: $button-color;
 	border-radius: 1rem;
 	padding: 0.3rem 0.5rem;
 }
@@ -84,7 +193,7 @@ $transcript-color: var(--transcript-color, rgb(185, 153, 190));
 .recapIcon {
 	display: flex;
 	height: 100%;
-	fill: #fff;
+	fill: $button-color;
 	max-width: 100%;
 
 	&:focus {
@@ -170,6 +279,7 @@ $transcript-color: var(--transcript-color, rgb(185, 153, 190));
 
 .captions {
 	overflow-y: scroll;
+	overflow-x: hidden;
 	width: 100%;
 	padding: 1rem 0;
 
@@ -183,6 +293,7 @@ $transcript-color: var(--transcript-color, rgb(185, 153, 190));
 	font-size: 1.8rem;
 	font-weight: 600;
 	padding: 0 1.5rem 1.5rem;
+	overflow-wrap: break-word;
 
 	&:first-letter {
 		text-transform: capitalize;
