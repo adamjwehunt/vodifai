@@ -1,4 +1,5 @@
 import { captionTrack } from 'ytdl-core';
+import he from 'he';
 import { DOMParser } from 'xmldom';
 import { Caption } from '../types';
 import { findBestTranscriptUrl, mapYoutubeCaptions } from '../youtubeUtil';
@@ -17,7 +18,7 @@ export async function getCaptions(
 
 	captions = captions.map((caption) => ({
 		...caption,
-		text: replaceQuotes(caption.text),
+		text: he.decode(caption.text),
 	}));
 
 	return captions;
@@ -35,10 +36,6 @@ async function getYoutubeCaptions(
 		});
 
 	return mapYoutubeCaptions(transcript);
-}
-
-function replaceQuotes(str: string): string {
-	return str.replace(/&quot;/g, '"');
 }
 
 export function createSearchTranscriptWords(captions: Caption[]): string[] {
