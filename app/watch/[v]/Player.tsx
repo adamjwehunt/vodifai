@@ -2,7 +2,10 @@
 
 import { useContext } from 'react';
 import dynamic from 'next/dynamic';
-const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
+const ReactPlayer = dynamic(() => import('./ReactPlayer'), {
+	ssr: false,
+});
+
 import { Config } from 'react-player';
 import { OnProgressProps } from 'react-player/base';
 import {
@@ -63,7 +66,7 @@ export const Player = () => {
 	return (
 		<div className={styles.player}>
 			<ReactPlayer
-				ref={playerRef}
+				playerRef={playerRef}
 				playing={isPlaying}
 				url={url}
 				// temporary for development
