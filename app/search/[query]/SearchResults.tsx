@@ -1,42 +1,102 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { YoutubeSearchResult } from './types';
+import { SearchItem } from './SearchItem';
+import styles from './search.module.scss';
+import { formatDate, formatDuration, formatViewCount } from './util';
 
-async function getVideos(query: string): Promise<YoutubeSearchResult | null> {
-	if (!query) {
-		return null;
-	}
-
-	const res = await fetch(
-		`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${query}&type=video&key=${process.env.YOUTUBE_API_KEY}`
-	);
-
-	return res.json();
+const API_KEY = process.env.YOUTUBE_API_KEY;
+const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
+export interface SearchResult {
+	videoId: string;
+	title: string;
+	channelTitle: string;
+	viewCount: number;
+	videoLength: number;
+	publishedAt: string;
+	thumbnails: {
+		default: Thumbnail;
+		medium: Thumbnail;
+		high: Thumbnail;
+	};
+	channelThumbnails: {
+		default: Thumbnail;
+		medium: Thumbnail;
+		high: Thumbnail;
+	};
 }
 
+export interface Thumbnail {
+	url: string;
+	width: number;
+	height: number;
+}
+
+async function searchVideos(query: string): Promise<SearchResult[]> {
+	if (!API_KEY) {
+		throw new Error('Missing env var from Youtube');
+	}
+
+	const params = new URLSearchParams({
+		part: 'snippet',
+		q: query,
+		type: 'video',
+		key: API_KEY,
+		maxResults: '30',
+	});
+	const response = await fetch(`${BASE_URL}?${params.toString()}`);
+
+	const data = await response.json();
+	const videoIds = data.items.map((item: any) => item.id.videoId).join(',');
+	const videoParams = new URLSearchParams({
+		part: 'snippet,statistics,contentDetails',
+		id: videoIds,
+		key: API_KEY,
+	});
+	const videoResponse = await fetch(
+		`https://www.googleapis.com/youtube/v3/videos?${videoParams.toString()}`
+	);
+
+	const videoData = await videoResponse.json();
+	const channelIds = videoData.items
+		.map((item: any) => item.snippet.channelId)
+		.join(',');
+	const channelParams = new URLSearchParams({
+		part: 'snippet',
+		id: channelIds,
+		key: API_KEY,
+	});
+	const channelResponse = await fetch(
+		`https://www.googleapis.com/youtube/v3/channels?${channelParams.toString()}`
+	);
+	const channelData = await channelResponse.json();
+
+	return videoData.items.map((item: any) => {
+		const channel = channelData.items.find(
+			(channel: any) => channel.id === item.snippet.channelId
+		);
+
+		return {
+			videoId: item.id,
+			title: item.snippet.title,
+			channelTitle: item.snippet.channelTitle,
+			viewCount: formatViewCount(item.statistics.viewCount),
+			videoLength: formatDuration(item.contentDetails.duration),
+			publishedAt: formatDate(item.snippet.publishedAt),
+			thumbnails: item.snippet.thumbnails,
+			channelThumbnails: channel.snippet.thumbnails,
+		};
+	});
+}
 interface SearchResultsProps {
 	query: string;
 }
 
 export const SearchResults = async ({ query }: SearchResultsProps) => {
-	const videos = await getVideos(query);
+	const videos = await searchVideos(query);
 
 	return (
-		<div>
-			{videos?.items.map((video) => {
-				return (
-					<Link key={video.id.videoId} href={`/watch/${video.id.videoId}`}>
-						<h3>{video.snippet.title}</h3>
-						<p>{video.snippet.description}</p>
-						<Image
-							src={video.snippet.thumbnails.high?.url || ''}
-							alt={video.snippet.title || ''}
-							width={video.snippet.thumbnails.high?.width || 0}
-							height={video.snippet.thumbnails.high?.height || 0}
-						/>
-					</Link>
-				);
-			})}
+		<div className={styles.searchResults}>
+			{videos.map((video) => (
+				<SearchItem key={video.videoId} video={video} />
+			))}
 		</div>
 	);
 };
