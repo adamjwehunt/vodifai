@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import styles from './transcript.module.scss';
 
 interface TranscriptControlsProps {
-	children: ReactElement;
+	children: ReactElement[];
 }
 
 export const TranscriptControls = ({ children }: TranscriptControlsProps) => {

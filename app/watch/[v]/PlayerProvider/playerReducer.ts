@@ -26,6 +26,7 @@ export const DEFAULT_PLAYER_REDUCER_STATE: PlayerReducerState = Object.freeze({
 			duration: 0,
 		},
 	},
+	toast: '',
 });
 
 export const playerReducer: PlayerReducer = (
@@ -80,6 +81,11 @@ export const playerReducer: PlayerReducer = (
 			return {
 				...previousState,
 				played: action.seconds,
+			};
+		case 'toggleToast':
+			return {
+				...previousState,
+				toast: action.message,
 			};
 
 		default:

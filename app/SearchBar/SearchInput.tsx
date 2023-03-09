@@ -7,10 +7,10 @@ import styles from './searchBar.module.css';
 
 interface SearchInputProps {
 	query?: string;
-	noFocus?: boolean;
+	readOnly?: boolean;
 }
 
-export const SearchInput = ({ query, noFocus }: SearchInputProps) => {
+export const SearchInput = ({ query, readOnly = false }: SearchInputProps) => {
 	const router = useRouter();
 	const [value, setValue] = useState(query);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -36,8 +36,9 @@ export const SearchInput = ({ query, noFocus }: SearchInputProps) => {
 		<>
 			<input
 				ref={inputRef}
-				autoFocus={!noFocus}
-				tabIndex={noFocus ? -1 : 0}
+				autoFocus={!readOnly}
+				tabIndex={readOnly ? -1 : 0}
+				readOnly={readOnly}
 				type={'text'}
 				className={styles.input}
 				value={value}

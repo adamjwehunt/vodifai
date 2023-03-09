@@ -9,6 +9,7 @@ export interface PlayerReducerState {
 	duration: number;
 	played: number;
 	videoInfo: VideoInfo;
+	toast: string;
 }
 
 export type PlayerReducerAction =
@@ -46,6 +47,10 @@ export type PlayerReducerAction =
 	| {
 			type: 'played';
 			seconds: number;
+	  }
+	| {
+			type: 'toggleToast';
+			message: string;
 	  };
 
 export type PlayerReducer = Reducer<PlayerReducerState, PlayerReducerAction>;

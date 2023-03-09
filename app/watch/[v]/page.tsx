@@ -13,7 +13,7 @@ import { PlayerProvider } from './PlayerProvider';
 import { Controls } from './Controls';
 import { DownloadButton } from './DownloadButton';
 import FileDownloadIcon from '@/public/file-download-icon.svg';
-import { ShareButton } from './ShareButton';
+import { CopyURLButton } from './CopyURLButton';
 import ShareIcon from '@/public/share-icon.svg';
 import { TranscriptControls } from './Transcript/TranscriptControls';
 import { Top } from './Transcript/Top';
@@ -29,6 +29,9 @@ import LoadingSpinner from '@/public/loading-spinner.svg';
 import { ExpandButton } from './Transcript/ExpandButton';
 import ExpandIcon from '@/public/expand-icon.svg';
 import { Captions } from './Transcript/Captions';
+import { CopyTranscriptButton } from './Transcript/CopyTranscriptButton';
+import ClipboardIcon from '@/public/clipboard-icon.svg';
+import classNames from 'classnames';
 import styles from './watch.module.scss';
 import transcriptStyles from './Transcript/transcript.module.scss';
 
@@ -108,8 +111,9 @@ export default async function WatchPage({
 							ariaLabel={'Open downloads menu'}
 							icon={<FileDownloadIcon className={styles.secondaryButtonIcon} />}
 						/>
-						<ShareButton
-							ariaLabel={'Share Video'}
+						<CopyURLButton
+							ariaLabel={'Copy Video Link'}
+							toast={'Link copied to clipboard'}
 							icon={<ShareIcon className={styles.secondaryButtonIcon} />}
 						/>
 					</div>
@@ -156,6 +160,18 @@ export default async function WatchPage({
 					</Bottom>
 					<TranscriptControls>
 						<Controls />
+						<div
+							className={classNames(
+								styles.secondaryControls,
+								transcriptStyles.transcriptSecondaryControls
+							)}
+						>
+							<CopyTranscriptButton
+								ariaLabel={'Copy Transcript Text'}
+								toast={'Transcript copied to clipboard'}
+								icon={<ClipboardIcon className={styles.secondaryButtonIcon} />}
+							/>
+						</div>
 					</TranscriptControls>
 				</Transcript>
 			</PlayerProvider>

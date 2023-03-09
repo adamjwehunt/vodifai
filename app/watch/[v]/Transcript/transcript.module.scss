@@ -243,6 +243,10 @@ $menu-item-height: 2.5rem;
 	background-color: $transcript-color;
 }
 
+.transcriptSecondaryControls {
+	justify-content: flex-end;
+}
+
 .captionsWrapper {
 	@mixin captionsPseudoBase($location) {
 		content: '';

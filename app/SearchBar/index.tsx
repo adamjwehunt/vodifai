@@ -19,7 +19,7 @@ export const SearchBar = ({ query, isButton }: SearchBarProps) => (
 		{isButton ? (
 			<Link href={'/search'} className={styles.inputWrapper}>
 				<SearchIcon className={styles.searchIcon} />
-				<SearchInput noFocus />
+				<SearchInput readOnly />
 			</Link>
 		) : (
 			<div className={styles.inputWrapper}>
