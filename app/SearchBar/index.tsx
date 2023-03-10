@@ -24,7 +24,7 @@ export const SearchBar = ({ query, isButton }: SearchBarProps) => (
 		) : (
 			<div className={styles.inputWrapper}>
 				<SearchIcon className={styles.searchIcon} />
-				<SearchInput query={query} />
+				<SearchInput query={query} placeholder={'What do you want to watch?'} />
 			</div>
 		)}
 	</div>

@@ -1,19 +1,32 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import XIcon from '@/public/x-icon.svg';
 import styles from './searchBar.module.css';
+import { getYoutubeVideoIdFromUrl } from './util';
 
 interface SearchInputProps {
 	query?: string;
 	readOnly?: boolean;
+	placeholder?: string;
 }
 
-export const SearchInput = ({ query, readOnly = false }: SearchInputProps) => {
+export const SearchInput = ({
+	query,
+	placeholder = 'What do you want to watch?',
+	readOnly = false,
+}: SearchInputProps) => {
 	const router = useRouter();
 	const [value, setValue] = useState(query);
 	const inputRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		const youtubeVideoId = getYoutubeVideoIdFromUrl(value);
+		if (youtubeVideoId) {
+			router.push(`/watch/${youtubeVideoId}`);
+		}
+	}, [value, router]);
 
 	const handleKeyDown = async (
 		event: React.KeyboardEvent<HTMLInputElement>
@@ -42,7 +55,7 @@ export const SearchInput = ({ query, readOnly = false }: SearchInputProps) => {
 				type={'text'}
 				className={styles.input}
 				value={value}
-				placeholder="What do you want to watch?"
+				placeholder={placeholder}
 				onChange={(event) => setValue(event.target.value)}
 				onKeyDown={handleKeyDown}
 			/>
