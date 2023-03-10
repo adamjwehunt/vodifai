@@ -104,6 +104,7 @@ const DownloadItems = ({ formats, header }: DownloadItemsProps) => {
 						{formatGroups[qualityLabel].map(({ format, url }) => (
 							<a href={url} target="_blank" download key={format.itag}>
 								<div>{format.container}</div>
+								<div>{'-'}</div>
 								<div>{format.contentLength}</div>
 							</a>
 						))}
