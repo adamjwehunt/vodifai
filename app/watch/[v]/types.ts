@@ -38,6 +38,25 @@ export interface VideoInfo {
 	videoColors: WatchViewColors;
 }
 
+export interface VideoFormat {
+	itag: number;
+	container: string;
+	qualityLabel: string;
+	bitrate?: number;
+	type?: string;
+	contentLength: string;
+}
+
+export interface Download {
+	format: VideoFormat;
+	url: string;
+}
+
+export interface Downloads {
+	videoFormats: Download[];
+	audioFormats: Download[];
+}
+
 export interface Palette {
 	Vibrant: Swatch | null;
 	Muted: Swatch | null;

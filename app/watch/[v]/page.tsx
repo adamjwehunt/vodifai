@@ -110,6 +110,7 @@ export default async function WatchPage({
 						<DownloadButton
 							ariaLabel={'Open downloads menu'}
 							icon={<FileDownloadIcon className={styles.secondaryButtonIcon} />}
+							modalTitle={'Downloads'}
 						/>
 						<CopyURLButton
 							ariaLabel={'Copy Video Link'}
@@ -146,6 +147,7 @@ export default async function WatchPage({
 									text={'Recap'}
 									ariaLabel={'Show AI recap'}
 									icon={<RecapIcon className={transcriptStyles.recapIcon} />}
+									modalTitle={'AI-generated Recap'}
 									loadingSpinner={<LoadingSpinner />}
 								/>
 								<ExpandButton

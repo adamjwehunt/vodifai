@@ -10,6 +10,7 @@ interface RecapButtonProps {
 	text: string;
 	ariaLabel: string;
 	icon: React.ReactNode;
+	modalTitle: string;
 	loadingSpinner: React.ReactNode;
 }
 
@@ -17,6 +18,7 @@ export const RecapButton = ({
 	text,
 	ariaLabel,
 	icon,
+	modalTitle,
 	loadingSpinner,
 }: RecapButtonProps) => {
 	const {
@@ -97,7 +99,7 @@ export const RecapButton = ({
 			</button>
 			<WatchModal
 				ref={modalRef}
-				title={'AI-generated Recap'}
+				title={modalTitle}
 				loadingSpinner={loadingSpinner}
 				isLoading={isLoading}
 			>
