@@ -25,6 +25,14 @@
 	flex-direction: row;
 }
 
+.searchButton {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 2.35rem;
+}
+
 .searchIcon {
 	color: #000;
 	position: absolute;

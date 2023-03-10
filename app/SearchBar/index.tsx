@@ -18,13 +18,19 @@ export const SearchBar = ({ query, isButton }: SearchBarProps) => (
 		/>
 		{isButton ? (
 			<Link href={'/search'} className={styles.inputWrapper}>
-				<SearchIcon className={styles.searchIcon} />
-				<SearchInput readOnly />
+				<SearchInput
+					icon={<SearchIcon className={styles.searchIcon} />}
+					placeholder={'What do you want to watch?'}
+					readOnly
+				/>
 			</Link>
 		) : (
 			<div className={styles.inputWrapper}>
-				<SearchIcon className={styles.searchIcon} />
-				<SearchInput query={query} placeholder={'What do you want to watch?'} />
+				<SearchInput
+					icon={<SearchIcon className={styles.searchIcon} />}
+					query={query}
+					placeholder={'What do you want to watch?'}
+				/>
 			</div>
 		)}
 	</div>
