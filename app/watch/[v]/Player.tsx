@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import dynamic from 'next/dynamic';
 const ReactPlayer = dynamic(() => import('./ReactPlayer'), {
 	ssr: false,
@@ -31,6 +31,7 @@ export const Player = () => {
 		hasSeeked,
 		videoInfo: { url },
 	} = usePlayerState();
+	const [hasPlayed, setHasPlayed] = useState(false);
 
 	const playerStateDispatch = usePlayerStateDispatch();
 
@@ -58,9 +59,13 @@ export const Player = () => {
 	const handleSeek = (seconds: number) => dispatchPlayed(seconds);
 	const handleProgress = ({ playedSeconds }: OnProgressProps) =>
 		dispatchPlayed(playedSeconds);
-	const handlePlay = () => playerStateDispatch({ type: 'play' });
+	const handlePlay = () => {
+		setHasPlayed(true);
+		playerStateDispatch({ type: 'play' });
+	};
 	const handlePause = () => playerStateDispatch({ type: 'pause' });
-	const handleBuffer = () => playerStateDispatch({ type: 'buffer' });
+	const handleBuffer = () =>
+		hasPlayed && playerStateDispatch({ type: 'buffer' });
 	const handleBufferEnd = () => playerStateDispatch({ type: 'bufferEnd' });
 
 	return (
