@@ -1,9 +1,9 @@
 'use client';
 
+import { VideoInfo } from 'app/types';
 import { MotionConfig } from 'framer-motion';
 import { ReactElement, useReducer, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { VideoInfo } from '../types';
 import {
 	PlayerStateContext,
 	PlayerStateDispatchContext,

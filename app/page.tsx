@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { Categories } from './Categories';
-import styles from './page.module.css';
 import SearchIcon from '@/public/search-icon.svg';
+import { Categories } from './Categories';
+import styles from './page.module.scss';
 
 export default async function Home() {
 	return (
@@ -15,8 +15,7 @@ export default async function Home() {
 					</div>
 				</button>
 			</Link>
-
-			<h2 className={styles.browseAllHeader}>{'Browse all'}</h2>
+			{/* @ts-expect-error Server Component */}
 			<Categories />
 		</div>
 	);

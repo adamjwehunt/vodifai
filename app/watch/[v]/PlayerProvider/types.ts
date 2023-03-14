@@ -1,5 +1,5 @@
+import { VideoInfo } from 'app/types';
 import { Reducer } from 'react';
-import { VideoInfo } from '../types';
 
 export interface PlayerReducerState {
 	isPlaying: boolean;

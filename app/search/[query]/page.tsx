@@ -1,13 +1,18 @@
 import { SearchBar } from 'app/SearchBar';
 import { SearchResults } from './SearchResults';
 
-export default function Search({ params }: { params: { query: string } }) {
-	const query = decodeURIComponent(params.query);
+interface SearchProps {
+	params: { query: string };
+}
+
+export default function Search({ params: { query } }: SearchProps) {
+	const decodedQuery = decodeURIComponent(query);
+
 	return (
 		<>
-			<SearchBar query={query} />
+			<SearchBar query={decodedQuery} />
 			{/* @ts-expect-error Server Component */}
-			<SearchResults query={query} />
+			<SearchResults query={decodedQuery} />
 		</>
 	);
 }

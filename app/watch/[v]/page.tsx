@@ -1,10 +1,7 @@
-import { VideoInfo } from './types';
-import ytdl, { captionTrack } from 'ytdl-core';
+import { getVideoInfo } from 'utils/youtubeApi';
 import {
 	getTranscriptBackground,
-	getVideoColors,
 	getWatchViewBackground,
-	getWatchViewColors,
 } from './util';
 import { CSSProperties } from 'react';
 import { SearchBar } from 'app/SearchBar';
@@ -35,38 +32,6 @@ import classNames from 'classnames';
 import styles from './watch.module.scss';
 import transcriptStyles from './Transcript/transcript.module.scss';
 
-const baseYoutubeUrl = 'https://www.youtube.com/watch?v=';
-
-async function getVideoInfo(
-	videoId: string
-): Promise<{ videoInfo: VideoInfo; captionTracks: captionTrack[] }> {
-	const info = await ytdl.getInfo(videoId);
-	const videoColors = await getVideoColors(info.videoDetails.thumbnails);
-
-	return {
-		videoInfo: {
-			id: videoId,
-			url: `${baseYoutubeUrl}${videoId}`,
-			videoDetails: {
-				author: {
-					id: info.videoDetails.author.id,
-					name: info.videoDetails.author.name,
-				},
-				description: info.videoDetails.description ?? '',
-				title: info.videoDetails.title,
-				duration: parseInt(info.videoDetails.lengthSeconds),
-				keywords: info.videoDetails.keywords ?? [],
-				chapters: info.videoDetails.chapters ?? [],
-			},
-			videoColors: getWatchViewColors(videoColors),
-			formats: info.formats,
-		},
-		captionTracks:
-			info.player_response.captions?.playerCaptionsTracklistRenderer
-				.captionTracks || [],
-	};
-}
-
 interface WatchPageProps {
 	params: { v: string };
 }
@@ -95,7 +60,7 @@ export default async function WatchPage({
 				} as CSSProperties
 			}
 		>
-			<SearchBar isButton />
+			<SearchBar button />
 			<PlayerProvider videoInfo={videoInfo}>
 				<Player />
 				<div className={styles.playerTray}>

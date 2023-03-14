@@ -1,3 +1,66 @@
+.browseWrapper {
+	padding: 1rem;
+}
+
+.browseHeader {
+	margin-top: 1.5rem;
+	margin-bottom: 1rem;
+	font-size: 2rem;
+	font-weight: 700;
+}
+
+.searchButton {
+	align-items: center;
+	background-color: #fff;
+	border-radius: 0.25rem;
+	color: #000;
+	display: flex;
+	gap: 0.75rem;
+	height: 2.75rem;
+	padding: 0 1rem;
+	white-space: nowrap;
+	width: 100%;
+	font-size: 1rem;
+	cursor: text;
+}
+
+.searchIcon {
+	height: 1.25rem;
+}
+
+.searchButtonText {
+	margin-top: 0.2rem;
+}
+
+.browseAllHeader {
+	margin-bottom: 1.25rem;
+	margin-top: 2rem;
+	font-size: 1rem;
+}
+
+.categoriesContainer {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: 1fr 1fr;
+}
+
+.category {
+	height: 6rem;
+	border-radius: 0.25rem;
+	/* fall back color */
+	background-color: gray;
+}
+
+.categoryText {
+	padding: 0.75rem;
+	font-weight: 400;
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent);
+	display: block;
+	height: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .searchResults {
 	position: absolute;
 	inset: 0;
@@ -39,10 +102,7 @@
 	height: 100%;
 	object-fit: cover;
 	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
+	inset: 0;
 	width: 100%;
 	min-height: 100%;
 	margin: auto;

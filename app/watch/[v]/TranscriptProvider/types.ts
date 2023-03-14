@@ -1,5 +1,6 @@
+import { VideoDetails } from 'app/types';
 import { Reducer } from 'react';
-import { Caption, VideoDetails } from '../types';
+import { Caption } from '../types';
 
 export interface TranscriptReducerState {
 	isExpanded: boolean;

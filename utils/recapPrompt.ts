@@ -120,7 +120,7 @@ function countSpaces(text: string): number {
 	return count;
 }
 
-function removeSpaces(text: string): string {
+export function removeSpaces(text: string): string {
 	const spacePattern = /\s+/g;
 	const result = text.replace(spacePattern, '');
 

@@ -1,41 +1,41 @@
-import styles from './page.module.css';
+import { getCategories } from '../utils/youtubeApi';
+import Link from 'next/link';
+import styles from './page.module.scss';
 
-// Mock categories
-const categories = [
-	{ id: 1, name: 'Podcasts', backgroundColor: 'rgb(20,138, 8)' },
-	{ id: 2, name: 'Music', backgroundColor: 'rgb(141,103, 171)' },
-	{ id: 3, name: 'News', backgroundColor: 'rgb(240,55, 165)' },
-	{ id: 4, name: 'Sports', backgroundColor: 'rgb(39, 133, 106)' },
-	{ id: 5, name: 'Comedy', backgroundColor: 'rgb(232,17, 91)' },
-	{ id: 6, name: 'Arts', backgroundColor: 'rgb(30,50, 100)' },
-	{ id: 7, name: 'Business', backgroundColor: 'rgb(65,0, 245)' },
-	{ id: 8, name: 'Education', backgroundColor: 'rgb(230,30, 50)' },
-	{ id: 9, name: 'Games & Hobbies', backgroundColor: 'rgb(165, 103, 82)' },
-	{
-		id: 10,
-		name: 'Government & Organizations',
-		backgroundColor: 'rgb(186, 93, 7)',
-	},
-	{ id: 11, name: 'Health', backgroundColor: 'rgb(20,138, 8)' },
-	{ id: 12, name: 'Kids & Family', backgroundColor: 'rgb(141,103, 171)' },
-	{
-		id: 13,
-		name: 'Religion & Spirituality',
-		backgroundColor: 'rgb(240,55, 165)',
-	},
-	{ id: 14, name: 'Science & Medicine', backgroundColor: 'rgb(39, 133, 106)' },
-	{ id: 15, name: 'Society & Culture', backgroundColor: 'rgb(232,17, 91)' },
-	{ id: 16, name: 'TV & Film', backgroundColor: 'rgb(30,50, 100)' },
+export const DEFAULT_FALLBACK_THUMBNAIL_COLOR = '#FF0000';
+
+export const categoryColors = [
+	'rgb(20, 138, 8)',
+	'rgb(141, 103, 171)',
+	'rgb(240, 55, 165)',
+	'rgb(39, 133, 106)',
+	'rgb(232, 17, 91)',
+	'rgb(30, 50, 100)',
+	'rgb(180, 155, 200)',
+	'rgb(65, 0, 245)',
+	'rgb(230, 30, 50)',
+	'rgb(165, 103, 82)',
+	'rgb(186, 93, 7)',
 ];
 
-export const Categories = () => {
-	return (
-		<div className={styles.categoriesContainer}>
-			{categories.map(({ id, name, backgroundColor }) => (
-				<div key={id} className={styles.category} style={{ backgroundColor }}>
-					<div className={styles.categoryText}>{name}</div>
-				</div>
-			))}
-		</div>
+export const Categories = async () => {
+	const categories = await getCategories();
+
+	return !categories.length ? null : (
+		<>
+			<h2 className={styles.browseAllHeader}>{'Browse all'}</h2>
+			<div className={styles.categoriesContainer}>
+				{categories.map(({ id, title, backgroundColor }) => (
+					<Link
+						key={id}
+						className={styles.category}
+						style={{ backgroundColor }}
+						href={`/browse/${id}`}
+					>
+						<div className={styles.categoryText}>{title}</div>
+					</Link>
+				))}
+			</div>
+		</>
 	);
 };
