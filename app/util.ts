@@ -3,7 +3,6 @@ import { Palette, WatchViewColors } from './types';
 import { DateTime } from 'luxon';
 import sharp from 'sharp';
 import Vibrant from 'node-vibrant';
-import { thumbnail } from 'ytdl-core';
 
 export function formatPublishedAtDate(dateString: string): string {
 	const date = DateTime.fromISO(dateString);
@@ -133,8 +132,8 @@ export const rgbArrayToString = (rgb: number[]) => {
 	return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
 };
 
-export async function generateThumbnailColor(
-	background: string
+export async function generateComplimentaryColor(
+	color: string
 ): Promise<string | undefined> {
 	try {
 		const thumbnailBuffer: Buffer = await sharp({
@@ -142,7 +141,7 @@ export async function generateThumbnailColor(
 				width: 3,
 				height: 3,
 				channels: 3,
-				background,
+				background: color,
 			},
 		})
 			.toFormat('png')
@@ -151,17 +150,17 @@ export async function generateThumbnailColor(
 		const vibrant: Vibrant = new Vibrant(thumbnailBuffer);
 		const palette: any = await vibrant.getPalette();
 		const colors = extractColors(palette);
-		const color = getBestColor(colors, [
+		const newColor = getBestColor(colors, [
 			'darkVibrant',
 			'darkMuted',
 			'muted',
 			'vibrant',
 		]);
 
-		if (!color) {
+		if (!newColor) {
 			return;
 		}
-		return rgbArrayToString(color);
+		return rgbArrayToString(newColor);
 	} catch (error) {
 		return;
 	}
@@ -203,9 +202,17 @@ function toCamelCase(str: string) {
 }
 
 export async function getVideoColors(
-	thumbnails: thumbnail[]
-): Promise<{ [key: string]: number[] }> {
-	let videoColors = {};
+	thumbnails: youtube_v3.Schema$ThumbnailDetails | undefined
+): Promise<
+	Partial<{ [key in keyof youtube_v3.Schema$ThumbnailDetails]: number[] }>
+> {
+	if (!thumbnails) {
+		return {};
+	}
+
+	let videoColors: Partial<{
+		[key in keyof youtube_v3.Schema$ThumbnailDetails]: number[];
+	}> = {};
 
 	if (thumbnails) {
 		const smallestThumbnailUrl = getSmallestThumbnail(thumbnails).url;
@@ -221,12 +228,15 @@ export async function getVideoColors(
 	return videoColors;
 }
 
-function getSmallestThumbnail(thumbnails: thumbnail[]) {
-	let smallestThumbnail = thumbnails[0];
+function getSmallestThumbnail(
+	thumbnails: youtube_v3.Schema$ThumbnailDetails
+): youtube_v3.Schema$Thumbnail {
+	const thumbnailArray = Object.values(thumbnails);
+	let smallestThumbnail = thumbnailArray[0];
 	let smallestResolution = Number.MAX_SAFE_INTEGER;
 
-	thumbnails.forEach((thumbnail) => {
-		const resolution = thumbnail.width * thumbnail.height;
+	thumbnailArray.forEach((thumbnail) => {
+		const resolution = thumbnail.width! * thumbnail.height!;
 
 		if (resolution < smallestResolution) {
 			smallestResolution = resolution;
@@ -258,4 +268,22 @@ export function getWatchViewColors(rgbArray: {
 		]) || null;
 
 	return colors;
+}
+
+export async function getSearchResultsBackgroundImage(
+	thumbnails: youtube_v3.Schema$ThumbnailDetails | undefined
+) {
+	const backgroundImage = `linear-gradient(150deg,#999 0,#000 200px)`;
+
+	const firstVideoColors = await getVideoColors(thumbnails);
+	const browseResultsBackground =
+		getWatchViewColors(firstVideoColors).secondaryBackground;
+
+	if (!browseResultsBackground) {
+		return backgroundImage;
+	}
+
+	return `linear-gradient(150deg,${rgbArrayToString(
+		browseResultsBackground
+	)} 0,#000 200px)`;
 }

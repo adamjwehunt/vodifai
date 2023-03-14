@@ -1,6 +1,7 @@
 import { searchVideos } from 'utils/youtubeApi';
 import { SearchItem } from './SearchItem';
-import styles from 'app/page.module.scss';
+import { getSearchResultsBackgroundImage } from 'app/util';
+import { VideoResults } from 'app/VideoResults';
 
 interface SearchResultsProps {
 	query: string;
@@ -9,11 +10,19 @@ interface SearchResultsProps {
 export const SearchResults = async ({ query }: SearchResultsProps) => {
 	const videos = await searchVideos(query);
 
-	return !videos.length ? null : (
-		<div className={styles.searchResults}>
+	if (!videos.length) {
+		return null;
+	}
+
+	const backgroundImage = await getSearchResultsBackgroundImage(
+		videos[0].thumbnails
+	);
+
+	return (
+		<VideoResults backgroundImage={backgroundImage} isVisible={!!videos.length}>
 			{videos.map((video) => (
 				<SearchItem key={video.videoId} video={video} />
 			))}
-		</div>
+		</VideoResults>
 	);
 };

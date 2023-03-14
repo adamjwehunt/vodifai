@@ -1,12 +1,15 @@
 import { google, youtube_v3 } from 'googleapis';
-import ytdl, { captionTrack } from 'ytdl-core';
-import { categoryColors, DEFAULT_FALLBACK_THUMBNAIL_COLOR } from '../app/Categories';
+import ytdl, { captionTrack, thumbnail } from 'ytdl-core';
+import {
+	categoryColors,
+	DEFAULT_FALLBACK_THUMBNAIL_COLOR,
+} from '../app/Categories';
 import { Category, SearchResult, VideoInfo } from '../app/types';
 import {
 	formatPublishedAtDate,
 	formatDuration,
 	formatViewCount,
-	generateThumbnailColor,
+	generateComplimentaryColor,
 	getVideoColors,
 	getWatchViewColors,
 } from '../app/util';
@@ -60,10 +63,8 @@ export async function searchVideos(query: string): Promise<SearchResult[]> {
 	return searchResults;
 }
 
-export async function getCategoryName(
-	categoryId: string
-): Promise<string | null | undefined> {
-	let categoryName;
+export async function getCategoryName(categoryId: string): Promise<string> {
+	let categoryName = '';
 
 	try {
 		const { data } = await youtube().videoCategories.list({
@@ -71,9 +72,9 @@ export async function getCategoryName(
 			id: [categoryId],
 		});
 
-		categoryName = data.items?.[0]?.snippet?.title;
+		categoryName = data.items?.[0]?.snippet?.title ?? categoryName;
 	} catch (error) {
-		categoryName = null;
+		return categoryName;
 	}
 
 	return categoryName;
@@ -245,7 +246,7 @@ async function getCategoryThumbnails(categories: Category[]) {
 		}
 
 		if (!noThumbnail) {
-			const complementaryColor = await generateThumbnailColor(
+			const complementaryColor = await generateComplimentaryColor(
 				category.backgroundColor
 			);
 
@@ -266,7 +267,9 @@ export async function getVideoInfo(
 	videoId: string
 ): Promise<{ videoInfo: VideoInfo; captionTracks: captionTrack[] }> {
 	const info = await ytdl.getInfo(videoId);
-	const videoColors = await getVideoColors(info.videoDetails.thumbnails);
+	const videoColors = await getVideoColors(
+		convertToThumbnailDetails(info.videoDetails.thumbnails)
+	);
 
 	return {
 		videoInfo: {
@@ -292,3 +295,21 @@ export async function getVideoInfo(
 	};
 }
 
+function convertToThumbnailDetails(
+	thumbnails: thumbnail[]
+): youtube_v3.Schema$ThumbnailDetails {
+	const thumbnailDetails: youtube_v3.Schema$ThumbnailDetails = {};
+
+	for (const thumbnail of thumbnails) {
+		if (thumbnail.width && thumbnail.height) {
+			const size = `${thumbnail.width}x${thumbnail.height}`;
+			thumbnailDetails[size] = {
+				url: thumbnail.url,
+				width: thumbnail.width,
+				height: thumbnail.height,
+			};
+		}
+	}
+
+	return thumbnailDetails;
+}

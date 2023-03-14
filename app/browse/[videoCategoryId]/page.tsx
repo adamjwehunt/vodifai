@@ -14,16 +14,11 @@ export default async function Search({
 	return (
 		<>
 			<SearchBar button />
-			{!categoryName ? null : (
-				<>
-					<div>{categoryName}</div>
-					{/* @ts-expect-error Server Component */}
-					<BrowseResults
-						videoCategoryId={videoCategoryId}
-						categoryName={categoryName}
-					/>
-				</>
-			)}
+			{/* @ts-expect-error Server Component */}
+			<BrowseResults
+				videoCategoryId={videoCategoryId}
+				categoryName={categoryName}
+			/>
 		</>
 	);
 }

@@ -1,16 +1,22 @@
-import { thumbnail } from 'ytdl-core';
 import { rgbArrayToString } from 'app/util';
+import { youtube_v3 } from 'googleapis';
 
-export function getBestSizedThumbnail(thumbnails: thumbnail[], width: number) {
-	let bestThumbnail = thumbnails[0];
+export function getBestSizedThumbnail(
+	thumbnails: youtube_v3.Schema$ThumbnailDetails,
+	width: number
+): youtube_v3.Schema$Thumbnail | undefined {
+	const thumbnailArray = Object.values(thumbnails);
+	let bestThumbnail: youtube_v3.Schema$Thumbnail | undefined;
 	let bestDifference = Number.MAX_SAFE_INTEGER;
 
-	thumbnails.forEach((thumbnail) => {
-		const difference = Math.abs(thumbnail.width - width);
+	thumbnailArray.forEach((thumbnail) => {
+		if (thumbnail.width && thumbnail.width >= width) {
+			const difference = Math.abs(thumbnail.width - width);
 
-		if (difference < bestDifference && thumbnail.width >= width) {
-			bestDifference = difference;
-			bestThumbnail = thumbnail;
+			if (difference < bestDifference) {
+				bestDifference = difference;
+				bestThumbnail = thumbnail;
+			}
 		}
 	});
 

@@ -61,10 +61,15 @@
 	text-overflow: ellipsis;
 }
 
+.categoryHeader {
+	font-size: 2rem;
+	padding: 5rem 2rem;
+}
+
 .searchResults {
 	position: absolute;
 	inset: 0;
-	top: 8dvh;
+	padding-top: 9dvh;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -72,10 +77,12 @@
 	overflow-y: scroll;
 	height: -webkit-fill-available;
 	flex-flow: wrap;
+	opacity: 0;
+	animation: fadeIn 1s ease-in-out forwards;
 }
 
 .searchItemContainer {
-	margin-bottom: 1.5rem;
+	margin: 1.5rem 0;
 	width: -webkit-fill-available;
 }
 
