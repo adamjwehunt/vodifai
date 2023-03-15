@@ -19,7 +19,7 @@ export const SearchResults = async ({ query }: SearchResultsProps) => {
 	);
 
 	return (
-		<VideoResults backgroundImage={backgroundImage} isVisible={!!videos.length}>
+		<VideoResults backgroundImage={backgroundImage}>
 			{videos.map((video) => (
 				<SearchItem key={video.videoId} video={video} />
 			))}

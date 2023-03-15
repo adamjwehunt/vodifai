@@ -1,4 +1,8 @@
-import { getCategoryTitle, getVideosByCategory, searchVideos } from 'app/api/youtube';
+import {
+	getCategoryTitle,
+	getVideosByCategory,
+	searchVideos,
+} from 'app/api/youtube';
 import { getSearchResultsBackgroundImage } from 'app/util';
 import { VideoResults } from 'app/VideoResults';
 import { SearchItem } from './SearchItem';
@@ -27,7 +31,7 @@ export const BrowseResults = async ({
 	);
 
 	return (
-		<VideoResults backgroundImage={backgroundImage} isVisible={!!videos.length}>
+		<VideoResults backgroundImage={backgroundImage}>
 			<>
 				{!categoryName ? null : (
 					<div className={styles.categoryHeader}>{categoryName}</div>
