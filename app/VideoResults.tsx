@@ -4,8 +4,8 @@ import { ReactElement } from 'react';
 import {
 	DEFAULT_FOREGROUND_DELAY,
 	DEFAULT_FOREGROUND_DURATION,
-	FadeIn,
-} from './FadeIn';
+	Fade,
+} from './Fade';
 import styles from './page.module.scss';
 
 interface VideoResultsProps {
@@ -18,13 +18,13 @@ export const VideoResults = ({
 	children,
 }: VideoResultsProps) => (
 	<>
-		<FadeIn className={styles.searchResults} style={{ backgroundImage }} />
-		<FadeIn
+		<Fade className={styles.searchResults} style={{ backgroundImage }} />
+		<Fade
 			className={styles.searchResults}
 			duration={DEFAULT_FOREGROUND_DURATION}
 			delay={DEFAULT_FOREGROUND_DELAY}
 		>
 			{children}
-		</FadeIn>
+		</Fade>
 	</>
 );

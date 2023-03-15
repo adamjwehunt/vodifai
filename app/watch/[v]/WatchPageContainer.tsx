@@ -4,8 +4,8 @@ import { ReactElement } from 'react';
 import {
 	DEFAULT_FOREGROUND_DELAY,
 	DEFAULT_FOREGROUND_DURATION,
-	FadeIn,
-} from 'app/FadeIn';
+	Fade,
+} from 'app/Fade';
 import styles from './watch.module.scss';
 
 interface WatchPageContainerProps {
@@ -20,13 +20,13 @@ export const WatchPageContainer = ({
 	children,
 }: WatchPageContainerProps) => (
 	<div style={style}>
-		<FadeIn className={styles.watchView} style={{ background }} />
-		<FadeIn
+		<Fade className={styles.watchView} style={{ background }} />
+		<Fade
 			className={styles.watchView}
 			duration={DEFAULT_FOREGROUND_DURATION}
 			delay={DEFAULT_FOREGROUND_DELAY}
 		>
 			{children}
-		</FadeIn>
+		</Fade>
 	</div>
 );

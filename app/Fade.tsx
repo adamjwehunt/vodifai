@@ -6,7 +6,7 @@ const DEFAULT_DELAY = 0;
 export const DEFAULT_FOREGROUND_DURATION = 0.1;
 export const DEFAULT_FOREGROUND_DELAY = 0.1;
 
-interface FadeInProps {
+interface FadeProps {
 	duration?: number;
 	delay?: number;
 	className?: string;
@@ -14,13 +14,13 @@ interface FadeInProps {
 	children?: ReactElement | ReactElement[];
 }
 
-export const FadeIn = ({
+export const Fade = ({
 	duration = DEFAULT_DURATION,
 	delay = DEFAULT_DELAY,
 	className,
 	style,
 	children,
-}: FadeInProps) => (
+}: FadeProps) => (
 	<AnimatePresence>
 		<motion.div
 			className={className}
