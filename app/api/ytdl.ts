@@ -8,9 +8,7 @@ import {
 
 export async function getVideoInfo(
 	videoId: string
-): Promise<
-	{ videoInfo: VideoInfo; captionTracks: captionTrack[] } | undefined
-> {
+): Promise<{ videoInfo?: VideoInfo; captionTracks?: captionTrack[] }> {
 	try {
 		const info = await ytdl.getInfo(videoId);
 
@@ -46,5 +44,6 @@ export async function getVideoInfo(
 		};
 	} catch (error) {
 		console.error(error);
+		return { videoInfo: undefined, captionTracks: undefined };
 	}
 }
