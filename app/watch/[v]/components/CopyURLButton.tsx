@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ClipboardButton } from './ClipboardButton';
+import { ClipboardButton } from '../ClipboardButton';
 
 interface CopyURLButtonProps {
 	toast: string;

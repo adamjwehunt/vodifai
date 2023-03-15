@@ -1,10 +1,10 @@
 'use client';
 
 import { useRef } from 'react';
-import { usePlayerState } from './PlayerProvider/playerContext';
-import { Download } from './types';
-import { WatchModal, WatchModalRef } from './WatchModal';
-import styles from './watch.module.scss';
+import { usePlayerState } from '../PlayerProvider/playerContext';
+import { Download } from '../types';
+import { WatchModal, WatchModalRef } from '../WatchModal';
+import styles from '../watch.module.scss';
 
 export interface DownloadButtonProps {
 	ariaLabel: string;

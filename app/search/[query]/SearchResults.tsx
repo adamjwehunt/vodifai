@@ -1,7 +1,7 @@
 import { searchVideos } from 'app/api/youtube';
 import { SearchItem } from './SearchItem';
 import { getSearchResultsBackgroundImage } from 'app/util';
-import { VideoResults } from 'app/VideoResults';
+import { VideoResults } from 'app/components/VideoResults';
 
 interface SearchResultsProps {
 	query: string;

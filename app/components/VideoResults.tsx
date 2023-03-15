@@ -6,7 +6,7 @@ import {
 	DEFAULT_FOREGROUND_DURATION,
 	Fade,
 } from './Fade';
-import styles from './page.module.scss';
+import styles from 'app/page.module.scss';
 
 interface VideoResultsProps {
 	backgroundImage: string;
