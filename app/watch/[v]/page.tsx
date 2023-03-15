@@ -1,8 +1,5 @@
 import { getVideoInfo } from 'app/api/ytdl';
-import {
-	getTranscriptBackground,
-	getWatchViewBackground,
-} from './util';
+import { getTranscriptBackground, getWatchViewBackground } from './util';
 import { CSSProperties } from 'react';
 import { SearchBar } from 'app/SearchBar';
 import { Player } from './Player';
@@ -40,6 +37,17 @@ export default async function WatchPage({
 	params: { v: videoId },
 }: WatchPageProps) {
 	const { videoInfo, captionTracks } = await getVideoInfo(videoId);
+
+	if (!videoInfo) {
+		return (
+			<div className={styles.watchView}>
+				<SearchBar button />
+				<div className={styles.videoNotFound}>
+					<h3>{`Video not found.`}</h3>
+				</div>
+			</div>
+		);
+	}
 
 	const {
 		videoDetails,

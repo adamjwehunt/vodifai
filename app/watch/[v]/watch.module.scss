@@ -4,6 +4,14 @@
 	position: absolute;
 }
 
+.videoNotFound {
+	height: -webkit-fill-available;
+	width: -webkit-fill-available;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .player {
 	position: absolute;
 	top: 8dvh;
@@ -71,7 +79,6 @@
 	flex-direction: column;
 	letter-spacing: 0.02rem;
 }
-
 
 .formatGroup {
 	display: flex;
