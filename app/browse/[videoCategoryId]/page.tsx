@@ -1,24 +1,18 @@
 import { SearchBar } from 'app/SearchBar';
-import { getCategoryName } from 'utils/youtubeApi';
 import { BrowseResults } from './BrowseResults';
 
-interface SearchProps {
+interface BrowseProps {
 	params: { videoCategoryId: string };
 }
 
-export default async function Search({
+export default async function Browse({
 	params: { videoCategoryId },
-}: SearchProps) {
-	const categoryName = await getCategoryName(videoCategoryId);
-
+}: BrowseProps) {
 	return (
 		<>
 			<SearchBar button />
 			{/* @ts-expect-error Server Component */}
-			<BrowseResults
-				videoCategoryId={videoCategoryId}
-				categoryName={categoryName}
-			/>
+			<BrowseResults videoCategoryId={videoCategoryId} />
 		</>
 	);
 }
