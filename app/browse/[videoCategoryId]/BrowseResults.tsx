@@ -1,18 +1,18 @@
-import { getVideosByCategory, searchVideos } from 'utils/youtubeApi';
-import { SearchItem } from './SearchItem';
-import styles from 'app/page.module.scss';
+import { getCategoryTitle, getVideosByCategory, searchVideos } from 'app/api/youtube';
 import { getSearchResultsBackgroundImage } from 'app/util';
 import { VideoResults } from 'app/VideoResults';
+import { SearchItem } from './SearchItem';
+import styles from 'app/page.module.scss';
 
 interface BrowseResultsProps {
 	videoCategoryId: string;
-	categoryName: string;
 }
 
 export const BrowseResults = async ({
 	videoCategoryId,
-	categoryName,
 }: BrowseResultsProps) => {
+	const categoryName = await getCategoryTitle(videoCategoryId);
+
 	let videos = await getVideosByCategory(videoCategoryId);
 	if (!videos.length) {
 		videos = await searchVideos(categoryName);

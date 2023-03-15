@@ -1,4 +1,4 @@
-import { getVideoInfo } from 'utils/youtubeApi';
+import { getVideoInfo } from 'app/api/ytdl';
 import {
 	getTranscriptBackground,
 	getWatchViewBackground,

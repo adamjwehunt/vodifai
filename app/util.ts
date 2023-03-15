@@ -3,6 +3,7 @@ import { Palette, WatchViewColors } from './types';
 import { DateTime } from 'luxon';
 import sharp from 'sharp';
 import Vibrant from 'node-vibrant';
+import { thumbnail } from 'ytdl-core';
 
 export function formatPublishedAtDate(dateString: string): string {
 	const date = DateTime.fromISO(dateString);
@@ -286,4 +287,21 @@ export async function getSearchResultsBackgroundImage(
 	return `linear-gradient(150deg,${rgbArrayToString(
 		browseResultsBackground
 	)} 0,#000 200px)`;
+}
+
+export function mapThumbnailDetails(thumbnails: thumbnail[]) {
+	const thumbnailDetails: { [key: string]: youtube_v3.Schema$Thumbnail } = {};
+
+	for (const thumbnail of thumbnails) {
+		if (thumbnail.width && thumbnail.height) {
+			const size = `${thumbnail.width}x${thumbnail.height}`;
+			thumbnailDetails[size] = {
+				url: thumbnail.url,
+				width: thumbnail.width,
+				height: thumbnail.height,
+			};
+		}
+	}
+
+	return thumbnailDetails;
 }

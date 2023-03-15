@@ -1,4 +1,4 @@
-import { getCategories } from '../utils/youtubeApi';
+import { getCategories } from './api/youtube';
 import Link from 'next/link';
 import styles from './page.module.scss';
 

@@ -1,4 +1,4 @@
-import { searchVideos } from 'utils/youtubeApi';
+import { searchVideos } from 'app/api/youtube';
 import { SearchItem } from './SearchItem';
 import { getSearchResultsBackgroundImage } from 'app/util';
 import { VideoResults } from 'app/VideoResults';

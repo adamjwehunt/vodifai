@@ -26,7 +26,7 @@ export const ClipboardButton = ({
 				setShowToast(true);
 			})
 			.catch((err) => {
-				console.log(err);
+				console.warn(err);
 			});
 	};
 
