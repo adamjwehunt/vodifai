@@ -61,8 +61,20 @@
 
 .modalBottom {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
+	align-items: center;
 	height: 4rem;
+	padding: 0 1.5rem;
+}
+
+.buttonLeft,
+.buttonRight {
+	width: 1.5rem;
+	fill: #fff;
+
+	button {
+		width: -webkit-fill-available;
+	}
 }
 
 .closeButtonBottom {

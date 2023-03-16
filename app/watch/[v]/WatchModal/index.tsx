@@ -9,6 +9,8 @@ interface WatchModalProps {
 	children: React.ReactNode;
 	isLoading?: boolean;
 	loadingSpinner?: React.ReactNode;
+	buttonLeft?: React.ReactNode;
+	buttonRight?: React.ReactNode;
 }
 
 export interface WatchModalRef {
@@ -16,7 +18,14 @@ export interface WatchModalRef {
 }
 
 export const WatchModal = forwardRef(function WatchModal(
-	{ title, children, isLoading, loadingSpinner }: WatchModalProps,
+	{
+		title,
+		children,
+		isLoading,
+		loadingSpinner,
+		buttonLeft,
+		buttonRight,
+	}: WatchModalProps,
 	ref
 ) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -106,6 +115,7 @@ export const WatchModal = forwardRef(function WatchModal(
 							<div className={styles.modalContent}>{children}</div>
 						)}
 						<div className={styles.modalBottom}>
+							<div className={styles.buttonLeft}>{buttonLeft}</div>
 							<button
 								id={'watch-modal-close-button'}
 								className={styles.closeButtonBottom}
@@ -114,6 +124,7 @@ export const WatchModal = forwardRef(function WatchModal(
 							>
 								{'Close'}
 							</button>
+							<div className={styles.buttonRight}>{buttonRight}</div>
 						</div>
 					</motion.div>
 				</>

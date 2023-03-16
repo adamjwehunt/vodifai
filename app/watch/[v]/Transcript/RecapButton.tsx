@@ -2,8 +2,10 @@
 
 import { trimRecap } from 'app/api/recap/recapPrompt';
 import { useCallback, useRef, useState } from 'react';
+import { ClipboardButton } from '../ClipboardButton';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { WatchModal, WatchModalRef } from '../WatchModal';
+import ClipboardIcon from '@/public/clipboard-icon.svg';
 import styles from './transcript.module.scss';
 
 interface RecapButtonProps {
@@ -29,6 +31,11 @@ export const RecapButton = ({
 
 	const [generatedRecap, setGeneratedRecap] = useState('');
 	const [isRecapFinished, setIsRecapFinished] = useState(false);
+	console.log(
+		`app/watch/[v]/Transcript/RecapButton.tsx - 34 => isRecapFinished: `,
+		'\n',
+		isRecapFinished
+	);
 	const [isLoading, setLoading] = useState(false);
 
 	const modalRef = useRef<WatchModalRef>(null);
@@ -102,6 +109,16 @@ export const RecapButton = ({
 				title={modalTitle}
 				loadingSpinner={loadingSpinner}
 				isLoading={isLoading}
+				buttonRight={
+					!isRecapFinished ? null : (
+						<ClipboardButton
+							ariaLabel={'Copy Recap'}
+							toast={'Recap copied to clipboard'}
+							icon={<ClipboardIcon className={styles.secondaryButtonIcon} />}
+							text={trimmedRecap}
+						/>
+					)
+				}
 			>
 				{trimmedRecap}
 			</WatchModal>
