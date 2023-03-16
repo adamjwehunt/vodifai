@@ -5,7 +5,7 @@ import {
 } from 'app/api/youtube';
 import { getSearchResultsBackgroundImage } from 'app/util';
 import { VideoResults } from 'app/components/VideoResults';
-import { SearchItem } from './SearchItem';
+import { SearchItem } from 'app/components/SearchItem';
 import styles from 'app/page.module.scss';
 
 interface BrowseResultsProps {

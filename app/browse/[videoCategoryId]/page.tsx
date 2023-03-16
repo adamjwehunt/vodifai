@@ -10,7 +10,6 @@ export default async function Browse({
 }: BrowseProps) {
 	return (
 		<>
-			<SearchBar button />
 			{/* @ts-expect-error Server Component */}
 			<BrowseResults videoCategoryId={videoCategoryId} />
 		</>

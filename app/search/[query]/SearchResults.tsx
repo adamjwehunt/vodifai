@@ -1,5 +1,5 @@
 import { searchVideos } from 'app/api/youtube';
-import { SearchItem } from './SearchItem';
+import { SearchItem } from '../../components/SearchItem';
 import { getSearchResultsBackgroundImage } from 'app/util';
 import { VideoResults } from 'app/components/VideoResults';
 

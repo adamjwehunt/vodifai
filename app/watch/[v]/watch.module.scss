@@ -4,6 +4,14 @@
 	position: absolute;
 }
 
+.loadingSpinnerWrapper {
+	height: -webkit-fill-available;
+	width: -webkit-fill-available;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .videoNotFound {
 	height: -webkit-fill-available;
 	width: -webkit-fill-available;
