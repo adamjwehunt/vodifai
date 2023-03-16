@@ -1,8 +1,8 @@
 'use client';
 
+import { trimRecap } from 'app/api/recap/recapPrompt';
 import { useCallback, useRef, useState } from 'react';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
-import { trimRecap } from 'pages/api/recapPrompt';
 import { WatchModal, WatchModalRef } from '../WatchModal';
 import styles from './transcript.module.scss';
 
@@ -43,7 +43,7 @@ export const RecapButton = ({
 		setGeneratedRecap('');
 		setLoading(true);
 
-		const response = await fetch('/api/generateRecap', {
+		const response = await fetch('/api/recap', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

@@ -1,7 +1,7 @@
-import { createRecapPrompt } from 'pages/api/recapPrompt';
-import { OpenAIStream } from 'pages/api/OpenAIStream';
-import { Caption, OpenAIStreamPayload } from 'app/types';
-import { Chapter } from 'ytdl-core';
+import { Caption, OpenAIStreamPayload } from "app/types";
+import { Chapter } from "ytdl-core";
+import { OpenAIStream } from "./OpenAIStream";
+import { createRecapPrompt } from "./recapPrompt";
 
 const AI_MODEL = 'text-davinci-003';
 const MAX_REQUEST = 4000;
@@ -10,10 +10,7 @@ const RECAP_LENGTH = 280;
 if (!process.env.OPENAI_API_KEY) {
 	throw new Error('Missing env var from OpenAI');
 }
-
-export const config = {
-	runtime: 'edge',
-};
+export const runtime = 'experimental-edge';
 
 interface RecapRequestBody {
 	title?: string;
@@ -23,9 +20,9 @@ interface RecapRequestBody {
 	captions?: Caption[];
 }
 
-const handler = async (req: Request): Promise<Response> => {
+export async function POST(request: Request) {
 	const { title, keywords, description, captions, chapters } =
-		(await req.json()) as RecapRequestBody;
+		(await request.json()) as RecapRequestBody;
 
 	const prompt = createRecapPrompt(
 		title || '',
@@ -40,7 +37,7 @@ const handler = async (req: Request): Promise<Response> => {
 		return new Response('No prompt in the request', { status: 400 });
 	}
 
-	const payload: OpenAIStreamPayload = {
+  const payload: OpenAIStreamPayload = {
 		model: AI_MODEL,
 		prompt,
 		temperature: 0.7,
@@ -52,8 +49,7 @@ const handler = async (req: Request): Promise<Response> => {
 		n: 1,
 	};
 
-	const stream = await OpenAIStream(payload);
-	return new Response(stream);
-};
+  const stream = await OpenAIStream(payload);
 
-export default handler;
+  return new Response(stream);
+}
