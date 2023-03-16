@@ -1,4 +1,4 @@
-import { rgbArrayToString } from 'app/util';
+import { rgbArrayToString } from 'app/(utils)';
 import { youtube_v3 } from 'googleapis';
 
 export function getBestSizedThumbnail(

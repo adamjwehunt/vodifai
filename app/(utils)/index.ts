@@ -1,5 +1,5 @@
 import { youtube_v3 } from 'googleapis';
-import { Palette, WatchViewColors } from './types';
+import { Palette, WatchViewColors } from '../types';
 import { DateTime } from 'luxon';
 import sharp from 'sharp';
 import Vibrant from 'node-vibrant';

@@ -2,14 +2,14 @@ import { youtube_v3 } from 'googleapis';
 import {
 	categoryColors,
 	DEFAULT_FALLBACK_THUMBNAIL_COLOR,
-} from '../Categories';
+} from '../(components)/Categories';
 import { Category, SearchResult } from '../types';
 import {
 	formatViewCount,
 	formatDuration,
 	formatPublishedAtDate,
 	generateComplimentaryColor,
-} from '../util';
+} from '../(utils)';
 
 const BASE_YOUTUBE_URL = 'https://youtube.googleapis.com/youtube/v3';
 

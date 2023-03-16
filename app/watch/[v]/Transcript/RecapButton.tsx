@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
-import { trimRecap } from 'utils/recapPrompt';
+import { trimRecap } from 'pages/api/recapPrompt';
 import { WatchModal, WatchModalRef } from '../WatchModal';
 import styles from './transcript.module.scss';
 

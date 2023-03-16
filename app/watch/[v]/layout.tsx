@@ -1,4 +1,4 @@
-import { SearchBar } from 'app/SearchBar';
+import { SearchBar } from 'app/(components)/SearchBar';
 import styles from './watch.module.scss';
 
 interface WatchLayoutProps {
@@ -7,9 +7,9 @@ interface WatchLayoutProps {
 
 export default function WatchLayout({ children }: WatchLayoutProps) {
 	return (
-		<div className={styles.watchView}>
+		<>
 			<SearchBar button />
-			{children}
-		</div>
+			<div className={styles.watchView}>{children}</div>
+		</>
 	);
 }

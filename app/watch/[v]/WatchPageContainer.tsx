@@ -5,7 +5,7 @@ import {
 	DEFAULT_FOREGROUND_DELAY,
 	DEFAULT_FOREGROUND_DURATION,
 	Fade,
-} from 'app/components/Fade';
+} from 'app/(components)/Fade';
 import styles from './watch.module.scss';
 
 interface WatchPageContainerProps {

@@ -1,5 +1,5 @@
-import { createRecapPrompt } from 'utils/recapPrompt';
-import { OpenAIStream } from 'utils/OpenAIStream';
+import { createRecapPrompt } from 'pages/api/recapPrompt';
+import { OpenAIStream } from 'pages/api/OpenAIStream';
 import { Caption, OpenAIStreamPayload } from 'app/types';
 import { Chapter } from 'ytdl-core';
 

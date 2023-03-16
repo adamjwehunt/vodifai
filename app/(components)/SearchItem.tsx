@@ -1,5 +1,5 @@
 import { SearchResult } from 'app/types';
-import { getBestThumbnail } from 'app/util';
+import { getBestThumbnail } from 'app/(utils)';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from 'app/page.module.scss';

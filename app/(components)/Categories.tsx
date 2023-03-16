@@ -1,6 +1,6 @@
-import { getCategories } from './api/youtube';
+import { getCategories } from '../(externalApi)/youtube';
 import Link from 'next/link';
-import styles from './page.module.scss';
+import styles from '../page.module.scss';
 
 export const DEFAULT_FALLBACK_THUMBNAIL_COLOR = '#FF0000';
 
