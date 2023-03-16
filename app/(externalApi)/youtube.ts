@@ -9,7 +9,7 @@ import {
 	formatDuration,
 	formatPublishedAtDate,
 	generateComplimentaryColor,
-} from '../(utils)';
+} from './util';
 
 const BASE_YOUTUBE_URL = 'https://youtube.googleapis.com/youtube/v3';
 
