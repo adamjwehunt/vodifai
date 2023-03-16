@@ -18,7 +18,7 @@ export const categoryColors = [
 	'rgb(186, 93, 7)',
 ];
 
-export const Categories = async () => {
+export async function Categories() {
 	const categories = await getCategories();
 
 	return !categories.length ? null : (
@@ -38,4 +38,4 @@ export const Categories = async () => {
 			</div>
 		</>
 	);
-};
+}

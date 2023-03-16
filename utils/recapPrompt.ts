@@ -1,4 +1,4 @@
-import { Caption, ChapterWithCaptions } from 'app/watch/[v]/types';
+import { Caption, ChapterWithCaptions } from 'app/types';
 import { stemmer } from 'stemmer';
 import { Chapter } from 'ytdl-core';
 

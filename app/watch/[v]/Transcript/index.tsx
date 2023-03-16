@@ -2,6 +2,7 @@ import { captionTrack } from 'ytdl-core';
 import { TranscriptProvider } from '../TranscriptProvider';
 import { VideoDetails } from 'app/types';
 import { getCaptions } from './util';
+
 interface TranscriptWrapperProps {
 	captionTracks: captionTrack[];
 	videoDetails: VideoDetails;

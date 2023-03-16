@@ -1,5 +1,5 @@
+import { Caption } from 'app/types';
 import { useMemo, useRef } from 'react';
-import { Caption } from '../../types';
 
 export const useActiveCaptionId = (
 	captions: Caption[],

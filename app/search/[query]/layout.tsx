@@ -1,19 +1,16 @@
 import { SearchBar } from 'app/SearchBar';
 
-export default function SearchLayout({
-	children,
-	params,
-}: {
+interface SearchLayoutProps {
 	children: React.ReactNode;
 	params: {
 		query: string;
 	};
-}) {
-	const decodedQuery = decodeURIComponent(params.query);
+}
 
+export default function SearchLayout({ children, params }: SearchLayoutProps) {
 	return (
 		<>
-			<SearchBar query={decodedQuery} />
+			<SearchBar query={decodeURIComponent(params.query)} />
 			{children}
 		</>
 	);

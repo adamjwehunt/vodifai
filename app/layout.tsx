@@ -1,16 +1,15 @@
-import { Cabin } from "next/font/google";
+import { Cabin } from 'next/font/google';
 import './globals.css';
 
 const cabin = Cabin({
-	weight: ['400', '700'],
 	subsets: ['latin'],
 });
 
-export default function RootLayout({
-	children,
-}: {
+interface RootLayoutProps {
 	children: React.ReactNode;
-}) {
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
 	return (
 		<html lang="en" className={cabin.className}>
 			{/*

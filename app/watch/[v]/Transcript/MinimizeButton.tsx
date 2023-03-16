@@ -15,6 +15,7 @@ interface MinimizeButtonProps {
 export const MinimizeButton = ({ ariaLabel, icon }: MinimizeButtonProps) => {
 	const transcriptStateDispatch = useTranscriptStateDispatch();
 	const { centerActiveCaption } = useCaptionsRef();
+
 	const { isExpanded } = useTranscriptState();
 
 	const handleMinimizeButtonClick = () => {

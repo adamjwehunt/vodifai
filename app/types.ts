@@ -60,3 +60,47 @@ export interface WatchViewColors {
 	primaryBackground: number[] | null;
 	secondaryBackground: number[] | null;
 }
+
+export interface Caption {
+	id: number;
+	start: number;
+	duration: number;
+	text: string;
+}
+
+export interface ChapterWithCaptions {
+	title: string;
+	start_time: number;
+	captions: Caption[];
+}
+
+interface VideoFormat {
+	itag: number;
+	container: string;
+	qualityLabel: string;
+	bitrate?: number;
+	type?: string;
+	contentLength: string;
+}
+
+export interface Download {
+	format: VideoFormat;
+	url: string;
+}
+
+export interface Downloads {
+	videoFormats: Download[];
+	audioFormats: Download[];
+}
+
+export interface OpenAIStreamPayload {
+	model: string;
+	prompt: string;
+	temperature: number;
+	top_p: number;
+	frequency_penalty: number;
+	presence_penalty: number;
+	max_tokens: number;
+	stream: boolean;
+	n: number;
+}

@@ -24,6 +24,7 @@ export const SearchInput = ({
 	readOnly = false,
 }: SearchInputProps) => {
 	const router = useRouter();
+
 	const [value, setValue] = useState(query);
 	const inputRef = useRef<HTMLInputElement>(null);
 

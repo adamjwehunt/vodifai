@@ -1,6 +1,6 @@
 import { createRecapPrompt } from 'utils/recapPrompt';
-import { OpenAIStream, OpenAIStreamPayload } from 'utils/OpenAIStream';
-import { Caption } from 'app/watch/[v]/types';
+import { OpenAIStream } from 'utils/OpenAIStream';
+import { Caption, OpenAIStreamPayload } from 'app/types';
 import { Chapter } from 'ytdl-core';
 
 const AI_MODEL = 'text-davinci-003';
