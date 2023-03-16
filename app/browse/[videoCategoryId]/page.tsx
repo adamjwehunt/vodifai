@@ -12,7 +12,7 @@ interface BrowseProps {
 	params: { videoCategoryId: string };
 }
 
-export default async function Browse({
+export default async function BrowsePage({
 	params: { videoCategoryId },
 }: BrowseProps) {
 	let [videos, categoryName] = await Promise.all([

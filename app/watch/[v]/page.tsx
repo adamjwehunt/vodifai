@@ -2,7 +2,6 @@ import { getVideoInfo } from 'app/api/ytdl';
 import { WatchPageContainer } from './WatchPageContainer';
 import { getTranscriptBackground, getWatchViewBackground } from './util';
 import { CSSProperties } from 'react';
-import { SearchBar } from 'app/SearchBar';
 import { Player } from './Player';
 import { PlayerProvider } from './PlayerProvider';
 import { Controls } from './Controls';
@@ -41,11 +40,8 @@ export default async function WatchPage({
 
 	if (!videoInfo) {
 		return (
-			<div className={styles.watchView}>
-				<SearchBar button />
-				<div className={styles.videoNotFound}>
-					<h3>{`Video not found.`}</h3>
-				</div>
+			<div className={styles.videoNotFound}>
+				<h3>{`Video not found.`}</h3>
 			</div>
 		);
 	}
@@ -60,106 +56,95 @@ export default async function WatchPage({
 	} = videoDetails;
 
 	return (
-		<>
-			<SearchBar button />
-			<WatchPageContainer
-				background={getWatchViewBackground(primaryBackground)}
-				style={
-					{
-						'--transcript-color': getTranscriptBackground(secondaryBackground),
-					} as CSSProperties
-				}
-			>
-				<PlayerProvider videoInfo={videoInfo}>
-					<Player />
-					<div className={styles.playerTray}>
-						<div className={styles.details}>
-							<div className={styles.detailsText}>
-								<span className={styles.title}>{videoTitle}</span>
-								<span className={styles.author}>{authorName}</span>
-							</div>
-						</div>
-						<Controls />
-						<div className={styles.secondaryControls}>
-							<DownloadButton
-								ariaLabel={'Open downloads menu'}
-								icon={
-									<FileDownloadIcon className={styles.secondaryButtonIcon} />
-								}
-								modalTitle={'Downloads'}
-							/>
-							<CopyURLButton
-								ariaLabel={'Copy Video Link'}
-								toast={'Link copied to clipboard'}
-								icon={<ShareIcon className={styles.secondaryButtonIcon} />}
-							/>
+		<WatchPageContainer
+			background={getWatchViewBackground(primaryBackground)}
+			style={
+				{
+					'--transcript-color': getTranscriptBackground(secondaryBackground),
+				} as CSSProperties
+			}
+		>
+			<PlayerProvider videoInfo={videoInfo}>
+				<Player />
+				<div className={styles.playerTray}>
+					<div className={styles.details}>
+						<div className={styles.detailsText}>
+							<span className={styles.title}>{videoTitle}</span>
+							<span className={styles.author}>{authorName}</span>
 						</div>
 					</div>
-					{/* @ts-expect-error Server Component */}
-					<Transcript captionTracks={captionTracks} videoDetails={videoDetails}>
-						<Top>
-							<SearchTranscriptButton
-								ariaLabel={'Search transcript'}
-								icon={<SearchIcon className={transcriptStyles.searchIcon} />}
-							/>
-							<div className={transcriptStyles.transcriptDetails}>
-								<div className={transcriptStyles.transcriptTitle}>
-									{videoTitle}
-								</div>
-								<div>{authorName}</div>
+					<Controls />
+					<div className={styles.secondaryControls}>
+						<DownloadButton
+							ariaLabel={'Open downloads menu'}
+							icon={<FileDownloadIcon className={styles.secondaryButtonIcon} />}
+							modalTitle={'Downloads'}
+						/>
+						<CopyURLButton
+							ariaLabel={'Copy Video Link'}
+							toast={'Link copied to clipboard'}
+							icon={<ShareIcon className={styles.secondaryButtonIcon} />}
+						/>
+					</div>
+				</div>
+				{/* @ts-expect-error Server Component */}
+				<Transcript captionTracks={captionTracks} videoDetails={videoDetails}>
+					<Top>
+						<SearchTranscriptButton
+							ariaLabel={'Search transcript'}
+							icon={<SearchIcon className={transcriptStyles.searchIcon} />}
+						/>
+						<div className={transcriptStyles.transcriptDetails}>
+							<div className={transcriptStyles.transcriptTitle}>
+								{videoTitle}
 							</div>
-							<MinimizeButton
-								ariaLabel={'Minimize transcript'}
-								icon={
-									<ChevronDownIcon
-										className={transcriptStyles.chevronDownIcon}
-									/>
-								}
-							/>
-						</Top>
-						<Bottom>
-							<div className={transcriptStyles.transcriptHeader}>
-								<div>{'Transcript'}</div>
-								<div className={transcriptStyles.bottomButtons}>
-									<RecapButton
-										text={'Recap'}
-										ariaLabel={'Show AI recap'}
-										icon={<RecapIcon className={transcriptStyles.recapIcon} />}
-										modalTitle={'AI-generated Recap'}
-										loadingSpinner={<LoadingSpinner />}
-									/>
-									<ExpandButton
-										ariaLabel={'Expand transcript'}
-										icon={
-											<ExpandIcon className={transcriptStyles.expandIcon} />
-										}
-									/>
-								</div>
-							</div>
-							<div className={transcriptStyles.captionsWrapper}>
-								<Captions />
-							</div>
-						</Bottom>
-						<TranscriptControls>
-							<Controls />
-							<div
-								className={classNames(
-									styles.secondaryControls,
-									transcriptStyles.transcriptSecondaryControls
-								)}
-							>
-								<CopyTranscriptButton
-									ariaLabel={'Copy Transcript Text'}
-									toast={'Transcript copied to clipboard'}
-									icon={
-										<ClipboardIcon className={styles.secondaryButtonIcon} />
-									}
+							<div>{authorName}</div>
+						</div>
+						<MinimizeButton
+							ariaLabel={'Minimize transcript'}
+							icon={
+								<ChevronDownIcon className={transcriptStyles.chevronDownIcon} />
+							}
+						/>
+					</Top>
+					<Bottom>
+						<div className={transcriptStyles.transcriptHeader}>
+							<div>{'Transcript'}</div>
+							<div className={transcriptStyles.bottomButtons}>
+								<RecapButton
+									text={'Recap'}
+									ariaLabel={'Show AI recap'}
+									icon={<RecapIcon className={transcriptStyles.recapIcon} />}
+									modalTitle={'AI-generated Recap'}
+									loadingSpinner={<LoadingSpinner />}
+								/>
+								<ExpandButton
+									ariaLabel={'Expand transcript'}
+									icon={<ExpandIcon className={transcriptStyles.expandIcon} />}
 								/>
 							</div>
-						</TranscriptControls>
-					</Transcript>
-				</PlayerProvider>
-			</WatchPageContainer>
-		</>
+						</div>
+						<div className={transcriptStyles.captionsWrapper}>
+							<Captions />
+						</div>
+					</Bottom>
+					<TranscriptControls>
+						<Controls />
+						<div
+							className={classNames(
+								styles.secondaryControls,
+								transcriptStyles.transcriptSecondaryControls
+							)}
+						>
+							<CopyTranscriptButton
+								ariaLabel={'Copy Transcript Text'}
+								toast={'Transcript copied to clipboard'}
+								icon={<ClipboardIcon className={styles.secondaryButtonIcon} />}
+							/>
+						</div>
+					</TranscriptControls>
+				</Transcript>
+			</PlayerProvider>
+		</WatchPageContainer>
 	);
 }
