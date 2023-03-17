@@ -9,7 +9,6 @@ export interface PlayerReducerState {
 	duration: number;
 	played: number;
 	videoInfo: VideoInfo;
-	toast: string;
 }
 
 export type PlayerReducerAction =

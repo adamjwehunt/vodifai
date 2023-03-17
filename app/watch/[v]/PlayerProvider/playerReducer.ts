@@ -26,7 +26,6 @@ export const DEFAULT_PLAYER_REDUCER_STATE: PlayerReducerState = Object.freeze({
 			duration: 0,
 		},
 	},
-	toast: '',
 });
 
 export const playerReducer: PlayerReducer = (
