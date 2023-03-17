@@ -11,6 +11,7 @@ interface WatchModalProps {
 	loadingSpinner?: React.ReactNode;
 	buttonLeft?: React.ReactNode;
 	buttonRight?: React.ReactNode;
+	onClose?: () => void;
 }
 
 export interface WatchModalRef {
@@ -25,6 +26,7 @@ export const WatchModal = forwardRef(function WatchModal(
 		loadingSpinner,
 		buttonLeft,
 		buttonRight,
+		onClose,
 	}: WatchModalProps,
 	ref
 ) {
@@ -36,6 +38,8 @@ export const WatchModal = forwardRef(function WatchModal(
 
 	useEffect(() => {
 		function handleModalClose() {
+			onClose?.();
+
 			// remove aria-hidden from all focusable elements
 			const focusableElements = document.body.querySelectorAll<HTMLElement>(
 				'[aria-hidden="true"]'

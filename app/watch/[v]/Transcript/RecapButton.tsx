@@ -1,7 +1,7 @@
 'use client';
 
 import { trimRecap } from 'app/api/recap/recapPrompt';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ClipboardButton } from '../ClipboardButton';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { WatchModal, WatchModalRef } from '../WatchModal';
@@ -39,6 +39,12 @@ export const RecapButton = ({
 
 	const modalRef = useRef<WatchModalRef>(null);
 	const textToSpeechRef = useRef<TextToSpeechRef>(null);
+
+	useEffect(() => {
+		return () => {
+			setIsTextToSpeechPlaying(false);
+		};
+	}, []);
 
 	const handleShowRecap = useCallback(async () => {
 		modalRef.current?.open();
@@ -96,6 +102,8 @@ export const RecapButton = ({
 			? textToSpeechRef.current?.play()
 			: textToSpeechRef.current?.pause();
 
+	const handleModalClose = () => setIsTextToSpeechPlaying(false);
+
 	const trimmedRecap = trimRecap(generatedRecap);
 
 	return (
@@ -134,6 +142,7 @@ export const RecapButton = ({
 						/>
 					)
 				}
+				onClose={handleModalClose}
 			>
 				{!isRecapFinished ? (
 					trimmedRecap
