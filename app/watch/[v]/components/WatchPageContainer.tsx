@@ -6,7 +6,7 @@ import {
 	DEFAULT_FOREGROUND_DURATION,
 	Fade,
 } from 'app/components/Fade';
-import styles from './watch.module.scss';
+import styles from '../watch.module.scss';
 
 interface WatchPageContainerProps {
 	background: string;
