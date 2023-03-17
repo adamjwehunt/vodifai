@@ -29,7 +29,7 @@ a {
 input {
 	border: none;
 	color: #000;
-	font-size: 16px;
+	font-size: 1.5rem;
 	line-height: normal;
 	text-transform: none;
 	border: none;
@@ -57,5 +57,5 @@ h4 {
 	line-height: 1.25;
 	text-overflow: ellipsis;
 	font-weight: normal;
-	margin: 0 0 3px;
+	margin: 0 0 0.125rem;
 }

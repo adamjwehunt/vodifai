@@ -72,7 +72,7 @@ export function getWatchViewColors(rgbArray: {
 export async function getSearchResultsBackgroundImage(
 	thumbnails: youtube_v3.Schema$ThumbnailDetails | undefined
 ) {
-	const backgroundImage = `linear-gradient(150deg,#999 0,#000 200px)`;
+	const backgroundImage = `linear-gradient(150deg,#999 0,#000 12rem)`;
 
 	const firstVideoColors = await getVideoColors(thumbnails);
 	const browseResultsBackground =
@@ -84,7 +84,7 @@ export async function getSearchResultsBackgroundImage(
 
 	return `linear-gradient(150deg,${rgbArrayToString(
 		browseResultsBackground
-	)} 0,#000 200px)`;
+	)} 0,#000 12rem)`;
 }
 
 export function mapThumbnailDetails(thumbnails: thumbnail[]) {

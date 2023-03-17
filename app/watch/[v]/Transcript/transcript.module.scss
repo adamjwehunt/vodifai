@@ -23,7 +23,7 @@ $button-color: #fff;
 	height: $top-button-size;
 	width: $top-button-size;
 	z-index: 4;
-	margin-top: 2px;
+	margin-top: 0.125rem;
 }
 
 .searchIcon {
@@ -34,7 +34,7 @@ $button-color: #fff;
 
 $input-offset: 0.75rem;
 $search-wrapper-size: $top-button-size + $input-offset;
-$search-border: 3px solid $button-color;
+$search-border: 0.125rem solid $button-color;
 $expanded-border-radius: calc($search-wrapper-size / 2);
 
 .searchTranscriptWrapper {
@@ -52,14 +52,13 @@ $expanded-border-radius: calc($search-wrapper-size / 2);
 	background-color: $transcript-color;
 
 	&.expanded {
-		border-bottom: 3px solid transparent;
-		border-radius: $expanded-border-radius $expanded-border-radius 0px 0px;
+		border-bottom: 0.125rem solid transparent;
+		border-radius: $expanded-border-radius $expanded-border-radius 0 0;
 	}
 }
 
 .searchTranscriptInputContainer {
 	position: relative;
-	height: 100%;
 	width: 100%;
 	z-index: 1;
 	display: flex;
@@ -114,8 +113,8 @@ $menu-item-height: 2.5rem;
 	background-color: $transcript-color;
 	position: absolute;
 	top: 1.875rem;
-	left: -3px;
-	right: -3px;
+	left: -0.125rem;
+	right: -0.125rem;
 	border: $search-border;
 	border-bottom-left-radius: calc($search-wrapper-size / 2);
 	border-bottom-right-radius: calc($search-wrapper-size / 2);
@@ -154,7 +153,7 @@ $menu-item-height: 2.5rem;
 .bottom {
 	position: absolute;
 	top: calc(100dvh - 2.3rem);
-	bottom: -300px;
+	bottom: -20rem;
 	left: 4.5dvw;
 	right: 4.5dvw;
 	z-index: 2;
@@ -239,7 +238,7 @@ $menu-item-height: 2.5rem;
 	right: 0;
 	top: calc(100dvh - 2rem);
 	z-index: 3;
-	padding: 0px 1.5rem 4rem;
+	padding: 0 1.5rem 4rem;
 	background-color: $transcript-color;
 }
 

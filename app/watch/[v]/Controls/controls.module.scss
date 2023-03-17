@@ -9,7 +9,7 @@
 .bufferSpinner {
 	@mixin bufferSpinnerInset {
 		position: absolute;
-		inset: 1px;
+		inset: 0.075rem;
 	}
 
 	@mixin bufferSpinnerPseudoBase {
@@ -59,13 +59,13 @@
 	background-color: hsla(0, 0%, 100%, 0.3);
 	position: relative;
 	flex-grow: 1;
-	border-radius: 9999px;
+	border-radius: 0.25rem;
 }
 
 .range {
 	position: absolute;
 	background-color: white;
-	border-radius: 9999px;
+	border-radius: 0.25rem;
 	height: 100%;
 }
 
@@ -97,7 +97,7 @@
 
 .controlsButtons {
 	display: flex;
-	gap: 32px;
+	gap: 2rem;
 }
 
 .skipIcon {
