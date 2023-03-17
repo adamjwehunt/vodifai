@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import SearchIcon from '@/public/search-icon.svg';
-import { Categories } from './(components)/Categories';
+import { Categories } from './components/Categories';
 import styles from './page.module.scss';
 
 const SEARCH_HEADER = 'Search';

@@ -2,7 +2,7 @@ import { youtube_v3 } from 'googleapis';
 import {
 	categoryColors,
 	DEFAULT_FALLBACK_THUMBNAIL_COLOR,
-} from '../(components)/Categories';
+} from '../components/Categories';
 import { Category, SearchResult } from '../types';
 import {
 	formatViewCount,

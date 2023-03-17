@@ -1,4 +1,4 @@
-import { getCategories } from '../(externalApi)/youtube';
+import { getCategories } from '../externalApi/youtube';
 import Link from 'next/link';
 import styles from '../page.module.scss';
 

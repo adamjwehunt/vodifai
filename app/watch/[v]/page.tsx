@@ -1,4 +1,4 @@
-import { getVideoInfo } from 'app/(externalApi)/ytdl';
+import { getVideoInfo } from 'app/externalApi/ytdl';
 import { WatchPageContainer } from './WatchPageContainer';
 import { getTranscriptBackground, getWatchViewBackground } from './util';
 import { CSSProperties } from 'react';
