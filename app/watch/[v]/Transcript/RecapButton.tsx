@@ -7,8 +7,8 @@ import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { WatchModal, WatchModalRef } from '../WatchModal';
 import { TextToSpeech, TextToSpeechRef } from './TextToSpeech';
 import ClipboardIcon from '@/public/clipboard-icon.svg';
-import AudioIcon from '@/public/audio-icon.svg';
-import PauseAudioIcon from '@/public/pause-audio-icon.svg';
+import PlayIcon from '@/public/play-icon.svg';
+import PauseIcon from '@/public/pause-icon.svg';
 import styles from './transcript.module.scss';
 
 interface RecapButtonProps {
@@ -128,7 +128,7 @@ export const RecapButton = ({
 							aria-label={'Play Recap'}
 							onClick={handleToggleTextToSpeech}
 						>
-							{!isTextToSpeechPlaying ? <AudioIcon /> : <PauseAudioIcon />}
+							{!isTextToSpeechPlaying ? <PlayIcon /> : <PauseIcon />}
 						</button>
 					)
 				}
@@ -137,7 +137,7 @@ export const RecapButton = ({
 						<ClipboardButton
 							ariaLabel={'Copy Recap'}
 							toast={'Recap copied to clipboard'}
-							icon={<ClipboardIcon />}
+							icon={<ClipboardIcon style={{ maxHeight: '1.75rem' }} />}
 							text={trimmedRecap}
 						/>
 					)
