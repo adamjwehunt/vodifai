@@ -82,11 +82,6 @@ export const playerReducer: PlayerReducer = (
 				...previousState,
 				played: action.seconds,
 			};
-		case 'toggleToast':
-			return {
-				...previousState,
-				toast: action.message,
-			};
 
 		default:
 			return previousState;
