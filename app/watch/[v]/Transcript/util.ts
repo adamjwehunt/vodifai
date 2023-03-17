@@ -2,7 +2,7 @@ import { captionTrack } from 'ytdl-core';
 import he from 'he';
 import { DOMParser } from '@xmldom/xmldom';
 import { Caption } from 'app/types';
-import { findBestTranscriptUrl, mapYoutubeCaptions } from '../youtubeUtil';
+import { findBestTranscriptUrl, mapYoutubeCaptions } from '../utils/youtubeUtil';
 
 export async function getCaptions(
 	captionTracks: captionTrack[],

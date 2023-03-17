@@ -12,8 +12,8 @@ import {
 	usePlayerStateDispatch,
 	usePlayerState,
 	PlayerRefContext,
-} from './PlayerProvider/playerContext';
-import styles from './watch.module.scss';
+} from '../PlayerProvider/playerContext';
+import styles from '../watch.module.scss';
 
 const reactPlayerConfig: Config = {
 	youtube: {

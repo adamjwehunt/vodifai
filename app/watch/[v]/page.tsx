@@ -1,8 +1,8 @@
 import { getVideoInfo } from 'app/externalApi/ytdl';
-import { WatchPageContainer } from './WatchPageContainer';
-import { getTranscriptBackground, getWatchViewBackground } from './util';
+import { WatchPageContainer } from './components/WatchPageContainer';
+import { getTranscriptBackground, getWatchViewBackground } from './utils';
 import { CSSProperties } from 'react';
-import { Player } from './Player';
+import { Player } from './components/Player';
 import { PlayerProvider } from './PlayerProvider';
 import { Controls } from './Controls';
 import { DownloadButton } from './components/DownloadButton';
