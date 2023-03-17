@@ -83,7 +83,7 @@ export const WatchModal = forwardRef(function WatchModal(
 
 			return () => handleModalClose();
 		}
-	}, [isModalOpen]);
+	}, [isModalOpen, onClose]);
 
 	return (
 		<AnimatePresence>
