@@ -20,6 +20,11 @@ export const Toast = ({ message, onClose }: ToastProps) => {
 		return () => clearTimeout(timeoutId);
 	}, [controls, onClose]);
 
+	const handleToastClick = (e: React.MouseEvent<HTMLDivElement>) => {
+		onClose();
+		controls.start('hidden');
+	};
+
 	return (
 		<motion.div
 			className={styles.toast}
@@ -32,7 +37,7 @@ export const Toast = ({ message, onClose }: ToastProps) => {
 				hidden: { opacity: 0, y: 0 },
 			}}
 			transition={{ duration: 0.2 }}
-			onClick={onClose}
+			onClick={handleToastClick}
 		>
 			<span>{message}</span>
 		</motion.div>
