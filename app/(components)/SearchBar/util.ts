@@ -28,12 +28,12 @@ export const getYoutubeVideoIdFromUrl = (url: string | undefined) => {
 		const paths = parsed.pathname.split('/');
 		id = parsed.host === 'youtu.be' ? paths[1] : paths[2];
 	} else if (parsed.hostname && !validQueryDomains.has(parsed.hostname)) {
-		console.log('Not a YouTube domain');
+		console.warn('Not a YouTube domain');
 		return;
 	}
 
 	if (!id) {
-		console.log(`No video id found: "${url}"`);
+		console.warn(`No video id found: "${url}"`);
 		return;
 	}
 

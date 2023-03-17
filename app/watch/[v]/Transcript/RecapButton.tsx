@@ -5,7 +5,10 @@ import { useCallback, useRef, useState } from 'react';
 import { ClipboardButton } from '../ClipboardButton';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { WatchModal, WatchModalRef } from '../WatchModal';
+import { TextToSpeech, TextToSpeechRef } from './TextToSpeech';
 import ClipboardIcon from '@/public/clipboard-icon.svg';
+import AudioIcon from '@/public/audio-icon.svg';
+import PauseAudioIcon from '@/public/pause-audio-icon.svg';
 import styles from './transcript.module.scss';
 
 interface RecapButtonProps {
@@ -31,14 +34,11 @@ export const RecapButton = ({
 
 	const [generatedRecap, setGeneratedRecap] = useState('');
 	const [isRecapFinished, setIsRecapFinished] = useState(false);
-	console.log(
-		`app/watch/[v]/Transcript/RecapButton.tsx - 34 => isRecapFinished: `,
-		'\n',
-		isRecapFinished
-	);
 	const [isLoading, setLoading] = useState(false);
+	const [isTextToSpeechPlaying, setIsTextToSpeechPlaying] = useState(false);
 
 	const modalRef = useRef<WatchModalRef>(null);
+	const textToSpeechRef = useRef<TextToSpeechRef>(null);
 
 	const handleShowRecap = useCallback(async () => {
 		modalRef.current?.open();
@@ -91,6 +91,11 @@ export const RecapButton = ({
 		}
 	}, [captions, chapters, description, keywords, title, isRecapFinished]);
 
+	const handleToggleTextToSpeech = () =>
+		!isTextToSpeechPlaying
+			? textToSpeechRef.current?.play()
+			: textToSpeechRef.current?.pause();
+
 	const trimmedRecap = trimRecap(generatedRecap);
 
 	return (
@@ -109,18 +114,39 @@ export const RecapButton = ({
 				title={modalTitle}
 				loadingSpinner={loadingSpinner}
 				isLoading={isLoading}
+				buttonLeft={
+					!isRecapFinished ? null : (
+						<button
+							aria-label={'Play Recap'}
+							onClick={handleToggleTextToSpeech}
+						>
+							{!isTextToSpeechPlaying ? <AudioIcon /> : <PauseAudioIcon />}
+						</button>
+					)
+				}
 				buttonRight={
 					!isRecapFinished ? null : (
 						<ClipboardButton
 							ariaLabel={'Copy Recap'}
 							toast={'Recap copied to clipboard'}
-							icon={<ClipboardIcon className={styles.secondaryButtonIcon} />}
+							icon={<ClipboardIcon />}
 							text={trimmedRecap}
 						/>
 					)
 				}
 			>
-				{trimmedRecap}
+				{!isRecapFinished ? (
+					trimmedRecap
+				) : (
+					<TextToSpeech
+						onStart={() => setIsTextToSpeechPlaying(true)}
+						onPause={() => setIsTextToSpeechPlaying(false)}
+						onEnd={() => setIsTextToSpeechPlaying(false)}
+						ref={textToSpeechRef}
+					>
+						{trimmedRecap}
+					</TextToSpeech>
+				)}
 			</WatchModal>
 		</>
 	);
