@@ -25,11 +25,7 @@ export function getBestThumbnail(
 	thumbnails: youtube_v3.Schema$ThumbnailDetails | undefined
 ) {
 	if (!thumbnails) {
-		return {
-			url: '',
-			width: 0,
-			height: 0,
-		};
+		return undefined;
 	}
 
 	const bestThumbnail =
@@ -150,7 +146,7 @@ function getSmallestThumbnail(
 	return smallestThumbnail;
 }
 
-function extractColors(palette: Palette): { [key: string]: number[] } {
+export function extractColors(palette: Palette): { [key: string]: number[] } {
 	const colors: { [key: string]: number[] } = {};
 
 	Object.keys(palette).forEach((key) => {

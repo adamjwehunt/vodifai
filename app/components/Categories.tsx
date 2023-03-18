@@ -1,5 +1,8 @@
 import { getCategories } from '../externalApi/youtube';
 import Link from 'next/link';
+import { getBestThumbnail } from 'app/utils';
+import VodifaiLogo from '@/public/vodifai-logo.svg';
+import Image from 'next/image';
 import styles from '../page.module.scss';
 
 export const DEFAULT_FALLBACK_THUMBNAIL_COLOR = '#FF0000';
@@ -25,16 +28,44 @@ export async function Categories() {
 		<>
 			<h2 className={styles.browseAllHeader}>{'Browse all'}</h2>
 			<div className={styles.categoriesContainer}>
-				{categories.map(({ id, title, backgroundColor }) => (
-					<Link
-						key={id}
-						className={styles.category}
-						style={{ backgroundColor }}
-						href={`/browse/${id}`}
-					>
-						<div className={styles.categoryText}>{title}</div>
-					</Link>
-				))}
+				{categories.map(
+					({
+						id,
+						title,
+						backgroundColor,
+						thumbnails,
+						fallbackThumbnailColor,
+					}) => {
+						const videoThumbnail = getBestThumbnail(thumbnails);
+
+						return (
+							<Link
+								key={id}
+								className={styles.categoryItem}
+								style={{ backgroundColor }}
+								href={`/browse/${id}`}
+							>
+								<div className={styles.categoryText}>{title}</div>
+								{!videoThumbnail ? (
+									<div
+										className={styles.categoryThumbnailFallback}
+										style={{ backgroundColor: fallbackThumbnailColor }}
+									>
+										<VodifaiLogo />
+									</div>
+								) : (
+									<Image
+										className={styles.categoryThumbnail}
+										src={videoThumbnail.url}
+										alt={title}
+										width={videoThumbnail.width}
+										height={videoThumbnail.height}
+									/>
+								)}
+							</Link>
+						);
+					}
+				)}
 			</div>
 		</>
 	);

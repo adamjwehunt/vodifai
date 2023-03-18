@@ -20,12 +20,8 @@ export const SearchItem = ({
 }) => {
 	const Divider = () => <span>{' • '}</span>;
 
-	const { url, width, height } = getBestThumbnail(thumbnails);
-	const {
-		url: channelUrl,
-		width: channelWidth,
-		height: channelHeight,
-	} = getBestThumbnail(channelThumbnails);
+	const videoThumbnail = getBestThumbnail(thumbnails);
+	const channelThumbnail = getBestThumbnail(channelThumbnails);
 
 	return (
 		<Link
@@ -35,24 +31,28 @@ export const SearchItem = ({
 		>
 			<div className={styles.imageContainer}>
 				<div className={styles.imageWrapper}>
-					<Image
-						className={styles.image}
-						src={url}
-						alt={title}
-						width={width}
-						height={height}
-					/>
+					{!videoThumbnail ? null : (
+						<Image
+							className={styles.image}
+							src={videoThumbnail.url}
+							alt={title}
+							width={videoThumbnail.width}
+							height={videoThumbnail.height}
+						/>
+					)}
 				</div>
 				<div className={styles.videoTime}>{videoLength}</div>
 			</div>
 			<div className={styles.searchItemDetails}>
 				<div className={styles.channelIcon}>
-					<Image
-						src={channelUrl}
-						alt={title}
-						width={channelWidth}
-						height={channelHeight}
-					/>
+					{!channelThumbnail ? null : (
+						<Image
+							src={channelThumbnail.url}
+							alt={title}
+							width={channelThumbnail.width}
+							height={channelThumbnail.height}
+						/>
+					)}
 				</div>
 				<div className={styles.videoInfo}>
 					<h3 className={styles.title}>{title}</h3>

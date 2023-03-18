@@ -1,4 +1,4 @@
-import { getBestColor, rgbArrayToString } from 'app/utils';
+import { extractColors, getBestColor, rgbArrayToString } from 'app/utils';
 import { DateTime } from 'luxon';
 import Vibrant from 'node-vibrant';
 import sharp from 'sharp';
@@ -107,10 +107,10 @@ export async function generateComplimentaryColor(
 		const palette: any = await vibrant.getPalette();
 		const colors = extractColors(palette);
 		const newColor = getBestColor(colors, [
-			'darkVibrant',
 			'darkMuted',
-			'muted',
+			'darkVibrant',
 			'vibrant',
+			'muted',
 		]);
 
 		if (!newColor) {
@@ -121,3 +121,4 @@ export async function generateComplimentaryColor(
 		return;
 	}
 }
+
