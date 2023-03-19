@@ -54,7 +54,7 @@ export async function getCategoryTitle(categoryId: string) {
 		const response = await fetch(url);
 
 		if (!response.ok) {
-			throw new Error('Unable to fetch category name from YouTube API.');
+			throw new Error(`Unable to fetch category ${categoryId} name from YouTube API.`);
 		}
 
 		const categoryJson: youtube_v3.Schema$VideoCategoryListResponse =
@@ -62,7 +62,7 @@ export async function getCategoryTitle(categoryId: string) {
 		const categoryTitle = categoryJson.items?.[0]?.snippet?.title;
 
 		if (!categoryTitle) {
-			console.warn('No category name found.');
+			console.warn(`No category ${categoryId} name found.`);
 			return '';
 		}
 
@@ -89,7 +89,7 @@ export async function getVideosByCategory(categoryId: string) {
 
 		if (!response.ok) {
 			throw new Error(
-				'YouTube API: Unable to fetch videos by category, Attempting to fetch videos by search using category title.'
+				`YouTube API: Unable to fetch videos by category  ${categoryId}, Attempting to fetch videos by search using category title.`
 			);
 		}
 
@@ -97,7 +97,7 @@ export async function getVideosByCategory(categoryId: string) {
 			await response.json();
 
 		if (!videoJson.items?.length) {
-			console.warn('No videos found.');
+			console.warn(`No videos by category ${categoryId} found.`);
 			return [];
 		}
 
@@ -133,7 +133,7 @@ export async function searchVideos(query: string) {
 			.join(',');
 
 		if (!videoIds) {
-			console.warn('No videoIds found.');
+			console.warn(`No videoIds from search query: ${query} found.`);
 			return [];
 		}
 
@@ -154,7 +154,7 @@ export async function searchVideos(query: string) {
 			await videoResponse.json();
 
 		if (!videoJson.items?.length) {
-			console.warn('No videos found.');
+			console.warn(`No videos by videoIds found.`);
 			return [];
 		}
 
@@ -323,7 +323,7 @@ async function getCategoryThumbnails(categoryId: string) {
 			await videoResponse.json();
 
 		if (!videoJson.items?.length) {
-			console.warn('No videos found.');
+			console.warn(`No videos found for category ${categoryId} thumbnails.`);
 			return undefined;
 		}
 
@@ -353,7 +353,7 @@ async function getCategoryThumbnails(categoryId: string) {
 			await channelResponse.json();
 
 		if (!channelJson.items?.length) {
-			console.warn('No channels found.');
+			console.warn(`Channel ${channelId} items not found.`);
 			return undefined;
 		}
 
