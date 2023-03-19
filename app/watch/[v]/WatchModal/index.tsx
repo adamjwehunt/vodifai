@@ -1,3 +1,5 @@
+'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { applyAriaHidden, applyTabindex, findFocusableElements } from './util';
@@ -38,8 +40,6 @@ export const WatchModal = forwardRef(function WatchModal(
 
 	useEffect(() => {
 		function handleModalClose() {
-			onClose?.();
-
 			// remove aria-hidden from all focusable elements
 			const focusableElements = document.body.querySelectorAll<HTMLElement>(
 				'[aria-hidden="true"]'
@@ -85,6 +85,11 @@ export const WatchModal = forwardRef(function WatchModal(
 		}
 	}, [isModalOpen, onClose]);
 
+	const handleCloseModal = () => {
+		setIsModalOpen(false);
+		onClose?.();
+	};
+
 	return (
 		<AnimatePresence>
 			{!isModalOpen ? null : (
@@ -94,7 +99,7 @@ export const WatchModal = forwardRef(function WatchModal(
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						onClick={() => setIsModalOpen(false)}
+						onClick={handleCloseModal}
 					/>
 					<motion.div
 						className={styles.modal}
@@ -108,7 +113,7 @@ export const WatchModal = forwardRef(function WatchModal(
 								id={'watch-modal-close-button'}
 								className={styles.closeButtonTop}
 								aria-label={'Close recap'}
-								onClick={() => setIsModalOpen(false)}
+								onClick={handleCloseModal}
 							>
 								<XIcon className={styles.xIcon} />
 							</button>
@@ -124,7 +129,7 @@ export const WatchModal = forwardRef(function WatchModal(
 								id={'watch-modal-close-button'}
 								className={styles.closeButtonBottom}
 								aria-label={'Close recap'}
-								onClick={() => setIsModalOpen(false)}
+								onClick={handleCloseModal}
 							>
 								{'Close'}
 							</button>
