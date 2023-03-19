@@ -125,21 +125,27 @@ export const SearchTranscriptInput = forwardRef(function SearchTranscriptInput(
 	}
 
 	const resetInput = useCallback(() => {
+		function dispatchReset() {
+			transcriptStateDispatch({
+				type: 'highlightTranscriptWord',
+				word: '',
+			});
+
+			transcriptStateDispatch({
+				type: 'centerCaption',
+				captionId: null,
+			});
+		}
+
 		setInputValue('');
 		setSelectedItem('');
 		setCenteredCaptionIndex(0);
-
-		transcriptStateDispatch({
-			type: 'highlightTranscriptWord',
-			word: '',
-		});
-
-		transcriptStateDispatch({
-			type: 'centerCaption',
-			captionId: null,
-		});
-
 		reset();
+
+		// Delay dispatch to speed UI for input reset
+		setTimeout(() => {
+			dispatchReset();
+		}, 0);
 	}, [reset, setInputValue, transcriptStateDispatch]);
 
 	useEffect(() => resetInput(), [resetInput]);
