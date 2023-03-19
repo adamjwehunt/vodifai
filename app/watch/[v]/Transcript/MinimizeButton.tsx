@@ -20,7 +20,11 @@ export const MinimizeButton = ({ ariaLabel, icon }: MinimizeButtonProps) => {
 
 	const handleMinimizeButtonClick = () => {
 		transcriptStateDispatch({ type: 'toggleExpand' });
-		centerActiveCaption();
+
+		// Delay centering the active caption to increase performance
+		setTimeout(() => {
+			centerActiveCaption();
+		}, 0);
 	};
 
 	return (
