@@ -40,6 +40,10 @@
 	align-items: flex-end;
 	flex-direction: column;
 	background-color: transparent;
+
+	.controls {
+		display: none;
+	}
 }
 
 .details {

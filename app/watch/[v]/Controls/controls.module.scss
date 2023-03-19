@@ -98,10 +98,14 @@
 .controlsButtons {
 	display: flex;
 	gap: 2rem;
+	align-items: center;
 }
 
-.skipIcon {
-	fill: hsla(0, 0%, 100%, 1);
+.skipButton {
+	fill: hsl(0, 0%, 100%);
+	height: 2rem;
+	width: 2rem;
+	display: block;
 }
 
 .playPause {

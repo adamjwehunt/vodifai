@@ -38,9 +38,11 @@ export default async function BrowsePage({
 				{!categoryName ? null : (
 					<div className={styles.categoryHeader}>{categoryName}</div>
 				)}
-				{videos.map((video) => (
-					<SearchItem key={video.videoId} video={video} />
-				))}
+				<div className={styles.searchItems}>
+					{videos.map((video) => (
+						<SearchItem key={video.videoId} video={video} />
+					))}
+				</div>
 			</>
 		</VideoResults>
 	);

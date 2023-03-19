@@ -35,7 +35,7 @@
 .browseAllHeader {
 	margin-bottom: 1.25rem;
 	margin-top: 2rem;
-	font-size: 1.25rem;
+	font-size: clamp(0.5rem, 4vw, 1.5rem);
 }
 
 .categoriesContainer {
@@ -101,8 +101,8 @@
 
 .categoryText {
 	padding: 1rem;
-	font-weight: 400;
-	font-size: 1.25rem;
+	font-weight: 600;
+	font-size: clamp(0.5rem, 4vw, 1.5rem);
 	background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), transparent);
 	display: block;
 	height: 100%;
@@ -111,7 +111,8 @@
 }
 
 .categoryHeader {
-	font-size: 2rem;
+	font-size: clamp(1.75rem, 5vw, 2.5rem);
+	font-weight: 600;
 	padding: 5rem 2rem;
 }
 
@@ -128,6 +129,38 @@
 	flex-flow: wrap;
 	opacity: 0;
 	animation: Fade 1s ease-in-out forwards;
+}
+
+.searchItems {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	grid-auto-rows: minmax(0, auto);
+	gap: calc(1rem + 0.75dvw);
+	width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+	.searchItems {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	.searchItems {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media screen and (min-width: 1280px) {
+	.searchItems {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+@media screen and (min-width: 1536px) {
+	.searchItems {
+		grid-template-columns: repeat(5, 1fr);
+	}
 }
 
 .searchItemContainer {
@@ -188,6 +221,7 @@
 	flex-shrink: 0;
 	width: 2.5rem;
 	height: 2.5rem;
+	overflow: hidden;
 
 	img {
 		filter: brightness(90%);

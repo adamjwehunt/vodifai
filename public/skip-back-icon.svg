@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg"
-    height="32"
-    width="32"
+    width="auto"
+    height="auto"
+    preserveAspectRatio="xMidYMid meet"
     viewBox="0 0 24 24"
     class="Svg-ytk21e-0 eqtHWV">
     <path d="M5.286 6H7.25a1 1 0 110 2H2V2.75a1 1 0 112 0v1.694A10.97 10.97 0 0111.994 1c6.075 0 11 4.925 11 11a10.99 10.99 0 01-4.943 9.183 1 1 0 11-1.102-1.668A9 9 0 105.286 6zm-3.917 7.518c1.005 0 1.591-.666 1.591-1.217h1.6v9.74h-1.6v-6.923H1v-1.6h.369z"></path>

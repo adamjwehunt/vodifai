@@ -28,7 +28,7 @@ export const Controls = () => (
 				back
 				skipCount={SKIP_COUNT_SECONDS}
 				ariaLabel={`Skip back ${SKIP_COUNT_SECONDS} seconds`}
-				icon={<SkipBackIcon className={styles.skipIcon} />}
+				icon={<SkipBackIcon />}
 			/>
 			<div className={styles.playPause}>
 				<PlayPauseButton
@@ -42,7 +42,7 @@ export const Controls = () => (
 			<SkipButton
 				skipCount={SKIP_COUNT_SECONDS}
 				ariaLabel={`Skip forward ${SKIP_COUNT_SECONDS} seconds`}
-				icon={<SkipForwardIcon className={styles.skipIcon} />}
+				icon={<SkipForwardIcon />}
 			/>
 		</div>
 	</div>

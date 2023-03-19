@@ -2,6 +2,7 @@
 
 import { usePlayerRef, usePlayerState } from '../PlayerProvider/playerContext';
 import { clamp } from './util';
+import styles from './controls.module.scss';
 
 interface SkipButtonProps {
 	back?: boolean;
@@ -30,7 +31,11 @@ export const SkipButton = ({
 	};
 
 	return (
-		<button aria-label={ariaLabel} onClick={handleSkip}>
+		<button
+			aria-label={ariaLabel}
+			className={styles.skipButton}
+			onClick={handleSkip}
+		>
 			{icon}
 		</button>
 	);

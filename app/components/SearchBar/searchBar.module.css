@@ -13,7 +13,10 @@
 }
 
 .backButton {
-	padding: 0 0.5rem;
+	cursor: pointer;
+	height: 2.25rem;
+	width: 2.25rem;
+	margin-right: 0.5rem;
 }
 
 .arrowIcon {
@@ -58,4 +61,5 @@
 	right: 0.75rem;
 	transform: translateY(-50%);
 	color: #000;
+	height: -webkit-fill-available;
 }

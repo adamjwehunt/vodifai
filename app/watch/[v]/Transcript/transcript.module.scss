@@ -90,12 +90,19 @@ $expanded-border-radius: calc($search-wrapper-size / 2);
 	align-items: center;
 	z-index: 1;
 	gap: 0.2rem;
+}
 
-	button {
-		width: $top-button-size;
-		height: $top-button-size;
-		fill: $button-color;
-	}
+.highlightSelectedItemButton {
+	width: $top-button-size;
+	height: $top-button-size;
+	fill: $button-color;
+}
+
+.clearSearchTranscriptButton {
+	height: 1.125rem;
+	width: 1.125rem;
+	margin-left: 0.25rem;
+	fill: $button-color;
 }
 
 .selectedItemOccurrences {

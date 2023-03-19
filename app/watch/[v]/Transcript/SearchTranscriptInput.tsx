@@ -220,7 +220,7 @@ export const SearchTranscriptInput = forwardRef(function SearchTranscriptInput(
 								}`}
 							</span>
 							<button
-								className={styles.highlightPreviousSelectedItemButton}
+								className={styles.highlightSelectedItemButton}
 								onClick={handleCenterPreviousSelectedItem}
 							>
 								<ChevronDownIcon
@@ -229,7 +229,7 @@ export const SearchTranscriptInput = forwardRef(function SearchTranscriptInput(
 								/>
 							</button>
 							<button
-								className={styles.highlightNextSelectedItemButton}
+								className={styles.highlightSelectedItemButton}
 								onClick={handleCenterNextSelectedItem}
 							>
 								<ChevronDownIcon

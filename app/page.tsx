@@ -3,7 +3,7 @@ import SearchIcon from '@/public/search-icon.svg';
 import { Categories } from './components/Categories';
 import styles from './page.module.scss';
 
-export const SEARCH_BAR_PLACEHOLDER = 'What do you want to watch?';
+export const SEARCH_BAR_PLACEHOLDER = 'Search or paste a YouTube link';
 
 export default function Home() {
 	return (

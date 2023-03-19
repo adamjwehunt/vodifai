@@ -33,13 +33,11 @@
 
 .closeButtonTop {
 	fill: #fff;
-	padding: 1.25rem;
 	position: absolute;
 	right: 0;
-
-	svg {
-		transform: scale(1.5);
-	}
+	height: auto;
+	width: 1.5rem;
+	margin-right: 1rem;
 }
 
 .loadingSpinner {
@@ -82,4 +80,5 @@
 	color: #fff;
 	padding: 1.25rem;
 	font-size: 1rem;
+	z-index: 1;
 }
