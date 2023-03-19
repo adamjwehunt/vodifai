@@ -19,7 +19,11 @@ export const ExpandButton = ({ ariaLabel, icon }: ExpandButtonProps) => {
 
 	const handleExpandButtonClick = () => {
 		transcriptStateDispatch({ type: 'toggleExpand' });
-		centerActiveCaption();
+
+		// Prioritize toggleExpand action over centering the active caption
+		setTimeout(() => {
+			centerActiveCaption();
+		}, 0);
 	};
 
 	return (

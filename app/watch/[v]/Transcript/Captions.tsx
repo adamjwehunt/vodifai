@@ -96,8 +96,13 @@ export const Captions = () => {
 		captionStart: number
 	) => {
 		const seconds = captionStart < 1 ? Math.ceil(captionStart) : captionStart;
-		scrollToCaption(element);
 		seekTo(seconds);
+
+
+		// Prioritize seeking over scrolling
+		setTimeout(() => {
+			scrollToCaption(element);
+		}, 0);
 	};
 
 	return (
