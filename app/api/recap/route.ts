@@ -1,10 +1,10 @@
-import { Caption, OpenAIStreamPayload } from "app/types";
-import { Chapter } from "ytdl-core";
-import { OpenAIStream } from "./OpenAIStream";
-import { createRecapPrompt } from "./recapPrompt";
+import { Caption, OpenAIStreamPayload } from 'app/types';
+import { Chapter } from 'ytdl-core';
+import { OpenAIStream } from './OpenAIStream';
+import { createRecapPrompt } from './recapPrompt';
 
 const AI_MODEL = 'text-davinci-003';
-const MAX_REQUEST = 4000;
+const MAX_REQUEST = 4097;
 const RECAP_LENGTH = 280;
 
 if (!process.env.OPENAI_API_KEY) {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 		return new Response('No prompt in the request', { status: 400 });
 	}
 
-  const payload: OpenAIStreamPayload = {
+	const payload: OpenAIStreamPayload = {
 		model: AI_MODEL,
 		prompt,
 		temperature: 0.7,
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 		n: 1,
 	};
 
-  const stream = await OpenAIStream(payload);
+	const stream = await OpenAIStream(payload);
 
-  return new Response(stream);
+	return new Response(stream);
 }
