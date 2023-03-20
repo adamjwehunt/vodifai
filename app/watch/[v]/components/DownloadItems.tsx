@@ -42,7 +42,6 @@ interface DownloadItemProps {
 const DownloadItem = ({ format, url }: DownloadItemProps) => (
 	<a href={url} target="_blank" download key={format.itag}>
 		<div>{format.container}</div>
-		<div>{'-'}</div>
 		<div>{format.contentLength}</div>
 	</a>
 );

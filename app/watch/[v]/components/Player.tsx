@@ -78,7 +78,11 @@ export const Player = () => {
 				muted
 				controls
 				config={reactPlayerConfig}
-				style={{ position: 'sticky', top: '8dvh' }}
+				style={{
+					position: 'sticky',
+					top: '8dvh',
+					maxHeight: '-webkit-fill-available',
+				}}
 				width={'100%'}
 				height={'56.25dvw'}
 				onSeek={handleSeek}

@@ -3,13 +3,20 @@
 	top: 0;
 	left: 0;
 	right: 0;
+	height: 6.5dvh;
 	display: flex;
-	padding: 1rem;
+	padding: 0 4.5dvw;
 	justify-content: center;
 	align-items: center;
 	z-index: 1;
 	background-color: rgba(0, 0, 0, 0.5);
 	backdrop-filter: blur(0.125rem);
+}
+
+@media screen and (min-width: 768px) {
+	.searchBar {
+		height: 2.75rem;
+	}
 }
 
 .backButton {
@@ -51,7 +58,7 @@
 
 .input {
 	border-radius: 0.25rem;
-	padding: 0.6rem 2.35rem;
+	padding: 0.5rem 2.35rem;
 	width: 100%;
 	font-size: 1rem;
 }

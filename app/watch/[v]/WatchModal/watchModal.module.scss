@@ -22,6 +22,12 @@
 	z-index: 3;
 }
 
+@media screen and (min-width: 768px) {
+	.modal {
+		padding: 5rem 25rem;
+	}
+}
+	
 .modalTop {
 	display: flex;
 	justify-content: center;
@@ -29,6 +35,12 @@
 	position: relative;
 	height: 4rem;
 	font-size: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+	.modalTop {
+		height: 8rem;
+	}
 }
 
 .closeButtonTop {

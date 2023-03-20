@@ -22,26 +22,36 @@
 
 .player {
 	position: absolute;
-	top: 8dvh;
-	bottom: 32dvh;
+	top: 6.5dvh;
 	left: 0;
 	right: 0;
 	display: flex;
 	align-items: center;
+	max-height: calc(100dvh - 19rem);
+	height: -webkit-fill-available;
+}
+
+@media screen and (min-width: 768px) {
+	.player {
+		max-height: calc(100dvh - 7.75rem);
+		top: 2.75rem;
+	}
 }
 
 .playerTray {
 	position: absolute;
 	left: 4.5dvw;
 	right: 4.5dvw;
-	bottom: 3rem;
+	bottom: 4rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;
 	flex-direction: column;
 	background-color: transparent;
+}
 
-	.controls {
+@media screen and (min-width: 768px) {
+	.playerTray {
 		display: none;
 	}
 }
@@ -82,8 +92,20 @@
 	justify-content: space-between;
 	display: flex;
 	margin-top: -0.5rem;
-	width: 100%;
+	width: auto;
 	height: 1.5rem;
+	position: absolute;
+	left: 4.5dvw;
+	right: 4.5dvw;
+	bottom: 3rem;
+	background-color: transparent;
+}
+
+@media screen and (min-width: 768px) {
+	.secondaryControls {
+		left: 20dvw;
+		right: 20dvw;
+	}
 }
 
 .downloadsContainer {

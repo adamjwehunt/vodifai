@@ -6,9 +6,10 @@ import {
 	useTranscriptStateDispatch,
 } from '../TranscriptProvider/transcriptContext';
 import { motion } from 'framer-motion';
+import { useMediaQuery } from 'react-responsive';
 import styles from './transcript.module.scss';
 
-const animateBottom = {
+const expanded = {
 	top: '8dvh',
 	bottom: 0,
 	left: 0,
@@ -28,13 +29,25 @@ export const Bottom = ({ children }: BottomProps) => {
 		transcriptStateDispatch({ type: 'animateStart' });
 	const onAnimationComplete = () =>
 		transcriptStateDispatch({ type: 'animateEnd' });
+	const isDesktop = useMediaQuery({
+		query: '(min-width: 768px)',
+	});
 
 	return (
 		<motion.div
 			className={styles.bottom}
 			onAnimationStart={handleOnAnimationStart}
 			onAnimationComplete={onAnimationComplete}
-			animate={isExpanded ? animateBottom : {}}
+			animate={
+				isExpanded
+					? {
+							...expanded,
+							...(isDesktop
+								? { paddingLeft: '20dvw', paddingRight: '20dvw' }
+								: {}),
+					  }
+					: {}
+			}
 		>
 			{children}
 		</motion.div>

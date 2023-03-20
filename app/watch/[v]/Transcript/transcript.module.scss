@@ -9,6 +9,7 @@ $button-color: #fff;
 	right: 0;
 	z-index: 3;
 	background-color: $transcript-color;
+	height: 8dvh;
 }
 
 .topContainer {
@@ -228,15 +229,13 @@ $menu-item-height: 2.5rem;
 .transcriptHeader {
 	position: absolute;
 	top: 0;
-	left: 0;
-	right: 0;
 	display: flex;
 	justify-content: space-between;
-	align-items: flex-start;
 	padding: 0.7rem;
 	font-size: 1.1rem;
 	font-weight: 600;
 	height: 3rem;
+	width: 100%;
 }
 
 .transcriptControls {
@@ -307,5 +306,23 @@ $menu-item-height: 2.5rem;
 
 	&:first-letter {
 		text-transform: capitalize;
+	}
+}
+
+@media screen and (min-width: 768px) {
+	.topContainer,
+	.transcriptControls {
+		padding-left: 20dvw;
+		padding-right: 20dvw;
+	}
+
+	.bottom {
+		left: 20dvw;
+		right: 20dvw;
+	}
+
+	.searchTranscriptWrapper {
+		left: 19.5dvw;
+		right: 22.5dvw;
 	}
 }

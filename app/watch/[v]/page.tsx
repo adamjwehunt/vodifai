@@ -74,18 +74,18 @@ export default async function WatchPage({
 						</div>
 					</div>
 					<Controls />
-					<div className={styles.secondaryControls}>
-						<DownloadButton
-							ariaLabel={'Open downloads menu'}
-							icon={<FileDownloadIcon className={styles.secondaryButtonIcon} />}
-							modalTitle={'Downloads'}
-						/>
-						<CopyURLButton
-							ariaLabel={'Copy Video Link'}
-							toast={'Link copied to clipboard'}
-							icon={<ShareIcon className={styles.secondaryButtonIcon} />}
-						/>
-					</div>
+				</div>
+				<div className={styles.secondaryControls}>
+					<DownloadButton
+						ariaLabel={'Open downloads menu'}
+						icon={<FileDownloadIcon className={styles.secondaryButtonIcon} />}
+						modalTitle={'Downloads'}
+					/>
+					<CopyURLButton
+						ariaLabel={'Copy Video Link'}
+						toast={'Link copied to clipboard'}
+						icon={<ShareIcon className={styles.secondaryButtonIcon} />}
+					/>
 				</div>
 				{/* @ts-expect-error Server Component */}
 				<Transcript captionTracks={captionTracks} videoDetails={videoDetails}>
