@@ -1,0 +1,33 @@
+.menuBar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #121212;
+	height: 7dvh;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+
+	.menuBarItem {
+		font-size: 0.675rem;
+		display: flex;
+		flex-direction: column;
+		color: #b3b3b3;
+		align-items: center;
+		gap: 0.25rem;
+		padding: 0.5rem;
+
+		svg {
+			fill: #b3b3b3;
+		}
+	}
+
+	.active {
+		color: #fff;
+
+		svg {
+			fill: #fff;
+		}
+	}
+}

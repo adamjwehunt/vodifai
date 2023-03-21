@@ -4,7 +4,7 @@ import { trimRecap } from 'app/api/recap/recapPrompt';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ClipboardButton } from '../ClipboardButton';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
-import { WatchModal, WatchModalRef } from '../WatchModal';
+import { Modal, ModalRef } from '../../../components/Modal';
 import { TextToSpeech, TextToSpeechRef } from './TextToSpeech';
 import ClipboardIcon from '@/public/clipboard-icon.svg';
 import PlayIcon from '@/public/play-icon.svg';
@@ -37,7 +37,7 @@ export const RecapButton = ({
 	const [isLoading, setLoading] = useState(false);
 	const [isTextToSpeechPlaying, setIsTextToSpeechPlaying] = useState(false);
 
-	const modalRef = useRef<WatchModalRef>(null);
+	const modalRef = useRef<ModalRef>(null);
 	const textToSpeechRef = useRef<TextToSpeechRef>(null);
 
 	useEffect(() => {
@@ -117,7 +117,7 @@ export const RecapButton = ({
 				{icon}
 				{text}
 			</button>
-			<WatchModal
+			<Modal
 				ref={modalRef}
 				title={modalTitle}
 				loadingSpinner={loadingSpinner}
@@ -156,7 +156,7 @@ export const RecapButton = ({
 						{trimmedRecap}
 					</TextToSpeech>
 				)}
-			</WatchModal>
+			</Modal>
 		</>
 	);
 };

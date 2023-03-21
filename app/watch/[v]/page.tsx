@@ -26,6 +26,7 @@ import { Captions } from './Transcript/Captions';
 import { CopyTranscriptButton } from './Transcript/CopyTranscriptButton';
 import ClipboardIcon from '@/public/clipboard-icon.svg';
 import classNames from 'classnames';
+import { AboutButton } from 'app/components/AboutButton';
 import styles from './watch.module.scss';
 import transcriptStyles from './Transcript/transcript.module.scss';
 
@@ -81,11 +82,14 @@ export default async function WatchPage({
 						icon={<FileDownloadIcon className={styles.secondaryButtonIcon} />}
 						modalTitle={'Downloads'}
 					/>
-					<CopyURLButton
-						ariaLabel={'Copy Video Link'}
-						toast={'Link copied to clipboard'}
-						icon={<ShareIcon className={styles.secondaryButtonIcon} />}
-					/>
+					<div className={styles.secondaryControlsButtonWrapper}>
+						<AboutButton />
+						<CopyURLButton
+							ariaLabel={'Copy Video Link'}
+							toast={'Link copied to clipboard'}
+							icon={<ShareIcon className={styles.secondaryButtonIcon} />}
+						/>
+					</div>
 				</div>
 				{/* @ts-expect-error Server Component */}
 				<Transcript captionTracks={captionTracks} videoDetails={videoDetails}>

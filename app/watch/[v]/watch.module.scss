@@ -101,6 +101,11 @@
 	background-color: transparent;
 }
 
+.secondaryControlsButtonWrapper {
+	display: flex;
+	width: 5rem;
+}
+
 @media screen and (min-width: 768px) {
 	.secondaryControls {
 		left: 20dvw;

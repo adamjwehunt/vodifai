@@ -1,4 +1,5 @@
 import { Cabin } from 'next/font/google';
+import { MenuBar } from './components/MenuBar';
 import './globals.css';
 
 const cabin = Cabin({
@@ -17,7 +18,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
 			<head />
-			<body>{children}</body>
+			<body>
+				{children}
+				<MenuBar />
+			</body>
 		</html>
 	);
 }

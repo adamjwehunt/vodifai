@@ -4,9 +4,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { applyAriaHidden, applyTabindex, findFocusableElements } from './util';
 import XIcon from '@/public/x-icon.svg';
-import styles from './watchModal.module.scss';
+import styles from './modal.module.scss';
 
-interface WatchModalProps {
+interface ModalProps {
 	title: string;
 	children: React.ReactNode;
 	isLoading?: boolean;
@@ -16,11 +16,11 @@ interface WatchModalProps {
 	onClose?: () => void;
 }
 
-export interface WatchModalRef {
+export interface ModalRef {
 	open: () => void;
 }
 
-export const WatchModal = forwardRef(function WatchModal(
+export const Modal = forwardRef(function Modal(
 	{
 		title,
 		children,
@@ -29,7 +29,7 @@ export const WatchModal = forwardRef(function WatchModal(
 		buttonLeft,
 		buttonRight,
 		onClose,
-	}: WatchModalProps,
+	}: ModalProps,
 	ref
 ) {
 	const [isModalOpen, setIsModalOpen] = useState(false);

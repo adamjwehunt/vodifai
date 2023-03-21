@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { usePlayerState } from '../PlayerProvider/playerContext';
-import { WatchModal, WatchModalRef } from '../WatchModal';
+import { Modal, ModalRef } from '../../../components/Modal';
 import { DownloadItems } from './DownloadItems';
 import { cleanAudioQualityString, formatBytes, getUniqueFormats } from './util';
 import { Download } from 'app/types';
@@ -23,7 +23,7 @@ export const DownloadButton = ({
 		videoInfo: { formats },
 	} = usePlayerState();
 
-	const modalRef = useRef<WatchModalRef>(null);
+	const modalRef = useRef<ModalRef>(null);
 	const handleShowDownloads = () => {
 		modalRef.current?.open();
 	};
@@ -65,7 +65,7 @@ export const DownloadButton = ({
 				{icon}
 			</button>
 			{!uniqueVideoFormats.length && !uniqueAudioFormats.length ? null : (
-				<WatchModal ref={modalRef} title={modalTitle}>
+				<Modal ref={modalRef} title={modalTitle}>
 					<div className={styles.downloadsContainer}>
 						{!uniqueVideoFormats.length ? null : (
 							<DownloadItems header={'Video'} formats={uniqueVideoFormats} />
@@ -74,7 +74,7 @@ export const DownloadButton = ({
 							<DownloadItems header={'Audio'} formats={uniqueAudioFormats} />
 						)}
 					</div>
-				</WatchModal>
+				</Modal>
 			)}
 		</>
 	);
