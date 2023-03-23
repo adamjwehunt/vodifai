@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import styles from './searchBar.module.css';
+import styles from './searchBar.module.scss';
 
 interface BackButtonProps {
 	ariaLabel: string;

@@ -1,5 +1,6 @@
 'use client';
 
+import { ReactElement } from 'react';
 import {
 	useCaptionsRef,
 	useTranscriptState,
@@ -9,10 +10,10 @@ import styles from './transcript.module.scss';
 
 interface ExpandButtonProps {
 	ariaLabel: string;
-	icon: React.ReactNode;
+	children: ReactElement;
 }
 
-export const ExpandButton = ({ ariaLabel, icon }: ExpandButtonProps) => {
+export const ExpandButton = ({ ariaLabel, children }: ExpandButtonProps) => {
 	const transcriptStateDispatch = useTranscriptStateDispatch();
 	const { centerActiveCaption } = useCaptionsRef();
 	const { isExpanded } = useTranscriptState();
@@ -33,7 +34,7 @@ export const ExpandButton = ({ ariaLabel, icon }: ExpandButtonProps) => {
 			tabIndex={isExpanded ? -1 : 0}
 			onClick={handleExpandButtonClick}
 		>
-			{icon}
+			{children}
 		</button>
 	);
 };

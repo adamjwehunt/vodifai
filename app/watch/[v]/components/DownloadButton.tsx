@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { ReactElement, useRef } from 'react';
 import { usePlayerState } from '../PlayerProvider/playerContext';
 import { Modal, ModalRef } from '../../../components/Modal';
 import { DownloadItems } from './DownloadItems';
@@ -10,13 +10,13 @@ import styles from '../watch.module.scss';
 
 export interface DownloadButtonProps {
 	ariaLabel: string;
-	icon: React.ReactNode;
+	children: ReactElement;
 	modalTitle: string;
 }
 
 export const DownloadButton = ({
 	ariaLabel,
-	icon,
+	children,
 	modalTitle,
 }: DownloadButtonProps) => {
 	const {
@@ -62,7 +62,7 @@ export const DownloadButton = ({
 	return (
 		<>
 			<button aria-label={ariaLabel} onClick={handleShowDownloads}>
-				{icon}
+				{children}
 			</button>
 			{!uniqueVideoFormats.length && !uniqueAudioFormats.length ? null : (
 				<Modal ref={modalRef} title={modalTitle}>

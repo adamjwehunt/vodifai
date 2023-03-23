@@ -1,6 +1,5 @@
-import { Caption, ChapterWithCaptions } from 'app/types';
+import { Caption, Chapter, ChapterWithCaptions } from 'app/types';
 import { stemmer } from 'stemmer';
-import { Chapter } from 'ytdl-core';
 
 export function createRecapPrompt(
 	title: string,
@@ -49,13 +48,6 @@ const fallbackPrompt = (title: string, keyWords: string, description = '') =>
 		? ` description:${removeSpaces(reduceText(description))}`
 		: '';
 
-export function trimRecap(str: string): string {
-	const firstUppercaseIndex = Array.from(str).findIndex((char) =>
-		/[A-Z]/.test(char)
-	);
-	return firstUppercaseIndex === -1 ? '' : str.slice(firstUppercaseIndex);
-}
-
 function reduceTranscript(
 	{ chapters, key }: { chapters: string[]; key: string },
 	maxLength: number
@@ -69,7 +61,6 @@ function reduceTranscript(
 	let targetLengths: number[] = [];
 	let newChapters = [...chapters];
 	let newKey = key;
-
 
 	// Removes center word from each chapter until the total length is less than maxLength
 	// Maintains the ratio of the lengths of each chapter

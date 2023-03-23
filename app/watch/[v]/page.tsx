@@ -1,4 +1,5 @@
 import { getVideoInfo } from 'app/externalApi/ytdl';
+import Image from 'next/image';
 import { WatchPageContainer } from './components/WatchPageContainer';
 import { getTranscriptBackground, getWatchViewBackground } from './utils';
 import { CSSProperties } from 'react';
@@ -6,9 +7,9 @@ import { Player } from './components/Player';
 import { PlayerProvider } from './PlayerProvider';
 import { Controls } from './Controls';
 import { DownloadButton } from './components/DownloadButton';
-import FileDownloadIcon from '@/public/file-download-icon.svg';
+import fileDownloadIconUrl from '@/public/file-download-icon.svg?url';
 import { CopyURLButton } from './components/CopyURLButton';
-import ShareIcon from '@/public/share-icon.svg';
+import shareIconUrl from '@/public/share-icon.svg?url';
 import { TranscriptControls } from './Transcript/TranscriptControls';
 import { Top } from './Transcript/Top';
 import SearchIcon from '@/public/search-icon.svg';
@@ -18,15 +19,14 @@ import { SearchTranscriptButton } from './Transcript/SearchTranscriptButton';
 import { Transcript } from './Transcript';
 import { Bottom } from './Transcript/Bottom';
 import { RecapButton } from './Transcript/RecapButton';
-import RecapIcon from '@/public/ai-icon.svg';
+import recapIconUrl from '@/public/ai-icon.svg?url';
 import LoadingSpinner from '@/public/loading-spinner.svg';
 import { ExpandButton } from './Transcript/ExpandButton';
-import ExpandIcon from '@/public/expand-icon.svg';
+import expandIconUrl from '@/public/expand-icon.svg?url';
 import { Captions } from './Transcript/Captions';
 import { CopyTranscriptButton } from './Transcript/CopyTranscriptButton';
 import ClipboardIcon from '@/public/clipboard-icon.svg';
 import classNames from 'classnames';
-import { AboutButton } from 'app/components/AboutButton';
 import styles from './watch.module.scss';
 import transcriptStyles from './Transcript/transcript.module.scss';
 
@@ -79,16 +79,17 @@ export default async function WatchPage({
 				<div className={styles.secondaryControls}>
 					<DownloadButton
 						ariaLabel={'Open downloads menu'}
-						icon={<FileDownloadIcon className={styles.secondaryButtonIcon} />}
 						modalTitle={'Downloads'}
-					/>
+					>
+						<Image alt={''} src={fileDownloadIconUrl} />
+					</DownloadButton>
 					<div className={styles.secondaryControlsButtonWrapper}>
-						<AboutButton />
 						<CopyURLButton
 							ariaLabel={'Copy Video Link'}
 							toast={'Link copied to clipboard'}
-							icon={<ShareIcon className={styles.secondaryButtonIcon} />}
-						/>
+						>
+							<Image alt={''} src={shareIconUrl} />
+						</CopyURLButton>
 					</div>
 				</div>
 				{/* @ts-expect-error Server Component */}
@@ -118,14 +119,15 @@ export default async function WatchPage({
 								<RecapButton
 									text={'Recap'}
 									ariaLabel={'Show AI recap'}
-									icon={<RecapIcon className={transcriptStyles.recapIcon} />}
 									modalTitle={'AI-generated Recap'}
 									loadingSpinner={<LoadingSpinner />}
-								/>
-								<ExpandButton
-									ariaLabel={'Expand transcript'}
-									icon={<ExpandIcon className={transcriptStyles.expandIcon} />}
-								/>
+								>
+									<Image alt={''} src={recapIconUrl} />
+									{'Recap'}
+								</RecapButton>
+								<ExpandButton ariaLabel={'Expand transcript'}>
+									<Image alt={''} src={expandIconUrl} />
+								</ExpandButton>
 							</div>
 						</div>
 						<div className={transcriptStyles.captionsWrapper}>

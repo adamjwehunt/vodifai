@@ -1,7 +1,6 @@
 'use client';
 
-import { trimRecap } from 'app/api/recap/recapPrompt';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {  ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { ClipboardButton } from '../ClipboardButton';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { Modal, ModalRef } from '../../../components/Modal';
@@ -10,19 +9,18 @@ import ClipboardIcon from '@/public/clipboard-icon.svg';
 import PlayIcon from '@/public/play-icon.svg';
 import PauseIcon from '@/public/pause-icon.svg';
 import styles from './transcript.module.scss';
+import { trimRecap } from './util';
 
 interface RecapButtonProps {
-	text: string;
 	ariaLabel: string;
-	icon: React.ReactNode;
+	children: ReactNode;
 	modalTitle: string;
-	loadingSpinner: React.ReactNode;
+	loadingSpinner: ReactNode;
 }
 
 export const RecapButton = ({
-	text,
 	ariaLabel,
-	icon,
+	children,
 	modalTitle,
 	loadingSpinner,
 }: RecapButtonProps) => {
@@ -114,8 +112,7 @@ export const RecapButton = ({
 				tabIndex={isExpanded ? -1 : 0}
 				onClick={handleShowRecap}
 			>
-				{icon}
-				{text}
+				{children}
 			</button>
 			<Modal
 				ref={modalRef}

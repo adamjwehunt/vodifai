@@ -323,7 +323,7 @@ async function getCategoryThumbnails(categoryId: string) {
 			await videoResponse.json();
 
 		if (!videoJson.items?.length) {
-			console.warn(`No videos found for category ${categoryId} thumbnails.`);
+			console.warn(`No videos found for category ${categoryId} thumbnails. Using default thumbnail instead.`);
 			return undefined;
 		}
 

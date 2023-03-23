@@ -5,6 +5,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { applyAriaHidden, applyTabindex, findFocusableElements } from './util';
 import XIcon from '@/public/x-icon.svg';
 import styles from './modal.module.scss';
+import { createPortal } from 'react-dom';
 
 interface ModalProps {
 	title: string;
@@ -38,61 +39,14 @@ export const Modal = forwardRef(function Modal(
 		open: () => setIsModalOpen(true),
 	}));
 
-	useEffect(() => {
-		function handleModalClose() {
-			// remove aria-hidden from all focusable elements
-			const focusableElements = document.body.querySelectorAll<HTMLElement>(
-				'[aria-hidden="true"]'
-			);
-			applyAriaHidden(focusableElements, 'false');
-			applyTabindex(focusableElements, '0');
-
-			// remove aria-hidden for body and main content
-			document.body.removeAttribute('aria-hidden');
-			document.body.classList.remove('modal-open');
-
-			// reset tabindex of previously hidden elements
-			const previouslyHiddenElements =
-				document.body.querySelectorAll<HTMLElement>(
-					'[data-previously-hidden="true"]'
-				);
-			applyTabindex(previouslyHiddenElements, '0');
-
-			// remove event listener
-			document.removeEventListener('keydown', handleKeyDown);
-		}
-
-		function handleKeyDown(event: KeyboardEvent) {
-			if (event.key === 'Escape') {
-				setIsModalOpen(false);
-			}
-		}
-
-		if (isModalOpen) {
-			// add aria-hidden to all focusable elements
-			const focusableElements = findFocusableElements(document.body);
-			applyAriaHidden(focusableElements, 'true');
-			applyTabindex(focusableElements, '-1');
-
-			// set aria-hidden for body and main content
-			document.body.setAttribute('aria-hidden', 'true');
-			document.body.classList.add('modal-open');
-
-			// add event listener for Esc key
-			document.addEventListener('keydown', handleKeyDown);
-
-			return () => handleModalClose();
-		}
-	}, [isModalOpen, onClose]);
-
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
 		onClose?.();
 	};
 
-	return (
+	return createPortal(
 		<AnimatePresence>
-			{!isModalOpen ? null : (
+			{!isModalOpen || !document ? null : (
 				<>
 					<motion.div
 						className={styles.modalBackdrop}
@@ -138,6 +92,7 @@ export const Modal = forwardRef(function Modal(
 					</motion.div>
 				</>
 			)}
-		</AnimatePresence>
+		</AnimatePresence>,
+		document.body
 	);
 });

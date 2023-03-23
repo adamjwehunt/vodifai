@@ -28,14 +28,19 @@
 
 	svg {
 		fill: #fff;
+		max-height: 100%;
+		width: auto;
 	}
 }
 
-.bmcLink {
+.bmcLinkWrapper {
 	display: flex;
 	width: 100%;
 	justify-content: center;
-	padding: 2.5rem 0;
+}
+
+.bmcLink {
+	margin: 2.5rem 0;
 
 	svg {
 		height: 3rem;

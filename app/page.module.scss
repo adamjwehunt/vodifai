@@ -2,11 +2,29 @@
 	padding: 1rem;
 }
 
+.searchHeaderContainer {
+	display: flex;
+	justify-content: space-between;
+}
+
+$search-header-margin-bottom: 1rem;
+
 .searchHeader {
 	margin-top: 1.5rem;
 	margin-bottom: 1rem;
 	font-size: 2rem;
 	font-weight: 700;
+}
+
+.aboutButton {
+	align-self: end;
+	margin-bottom: $search-header-margin-bottom;
+}
+
+@media screen and (max-width: $desktop-breakpoint) {
+	.aboutButton {
+		display: none;
+	}
 }
 
 .searchButton {
@@ -42,7 +60,7 @@
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	grid-auto-rows: minmax(0, auto);
-	gap: calc(1rem + 0.75dvw);
+	gap: calc(1rem + 0.5dvw);
 	width: 100%;
 }
 
@@ -58,7 +76,7 @@
 	}
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: $desktop-breakpoint) {
 	.categoriesContainer {
 		grid-template-columns: repeat(5, 1fr);
 	}
@@ -114,6 +132,7 @@
 	font-size: clamp(1.75rem, 5vw, 2.5rem);
 	font-weight: 600;
 	padding: 5rem 2rem;
+	z-index: 1;
 }
 
 .searchResults {
@@ -135,7 +154,7 @@
 	display: grid;
 	grid-template-columns: repeat(1, 1fr);
 	grid-auto-rows: minmax(0, auto);
-	gap: calc(1rem + 0.75dvw);
+	gap: calc(1rem + 0.5dvw);
 	width: 100%;
 }
 
@@ -151,7 +170,7 @@
 	}
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: $desktop-breakpoint) {
 	.searchItems {
 		grid-template-columns: repeat(4, 1fr);
 	}

@@ -18,7 +18,7 @@ export const TranscriptControls = ({ children }: TranscriptControlsProps) => {
 				<motion.div
 					className={styles.transcriptControls}
 					initial={{ y: 0, opacity: 0 }}
-					animate={{ y: '-18dvh', opacity: 1 }}
+					animate={{ y: '-9rem', opacity: 1 }}
 					exit={{ y: 0, opacity: 0 }}
 				>
 					{children}

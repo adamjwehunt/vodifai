@@ -4,13 +4,30 @@ const nextConfig = {
 		appDir: true,
 	},
 	webpack(config) {
-		config.module.rules.push({
-			test: /\.svg$/i,
-			issuer: /\.[jt]sx?$/,
-			use: ['@svgr/webpack'],
-		});
+		const fileLoaderRule = config.module.rules.find((rule) =>
+			rule.test?.test?.('.svg')
+		);
+
+		config.module.rules.push(
+			{
+				...fileLoaderRule,
+				test: /\.svg$/i,
+				resourceQuery: /url/, // *.svg?url
+			},
+			// Convert all other *.svg imports to React components
+			{
+				test: /\.svg$/i,
+				issuer: /\.[jt]sx?$/,
+				resourceQuery: { not: /url/ }, // exclude if *.svg?url
+				use: ['@svgr/webpack'],
+			}
+		);
 
 		return config;
+	},
+	sassOptions: {
+		includePaths: ['./app'],
+		prependData: `@import "variables.scss";`,
 	},
 	images: {
 		remotePatterns: [

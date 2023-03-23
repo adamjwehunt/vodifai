@@ -3,20 +3,34 @@
 	top: 0;
 	left: 0;
 	right: 0;
-	height: 6.5dvh;
+	height: $base-search-bar-height;
 	display: flex;
-	padding: 0 4.5dvw;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
+	@include blurred-foreground;
 	z-index: 1;
-	background-color: rgba(0, 0, 0, 0.5);
-	backdrop-filter: blur(0.125rem);
 }
 
-@media screen and (min-width: 768px) {
+$button-width: 4rem;
+
+.inputContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	padding: 0 $base-padding;
+}
+
+@media screen and (min-width: $desktop-breakpoint) {
 	.searchBar {
-		height: 2.75rem;
-		padding: 0 20dvw;
+		height: $desktop-search-bar-height;
+	}
+
+	.inputContainer {
+		display: flex;
+		width: calc(100dvw - calc($desktop-padding * 2 + $button-width * 2));
+		justify-content: center;
+		align-items: center;
 	}
 }
 
@@ -71,4 +85,22 @@
 	transform: translateY(-50%);
 	color: #000;
 	height: -webkit-fill-available;
+}
+
+.home,
+.about {
+	width: $button-width;
+	display: flex;
+	justify-content: center;
+}
+
+.logo {
+	padding: 1rem;
+}
+
+@media screen and (max-width: $desktop-breakpoint) {
+	.home,
+	.about {
+		display: none;
+	}
 }

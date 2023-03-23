@@ -1,5 +1,5 @@
 import { youtube_v3 } from 'googleapis';
-import { Chapter, videoFormat } from 'ytdl-core';
+import { videoFormat } from 'ytdl-core';
 
 export interface SearchResult {
 	videoId: string;
@@ -68,9 +68,12 @@ export interface Caption {
 	text: string;
 }
 
-export interface ChapterWithCaptions {
+export interface Chapter {
 	title: string;
 	start_time: number;
+}
+
+export interface ChapterWithCaptions extends Chapter {
 	captions: Caption[];
 }
 

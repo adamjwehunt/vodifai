@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import XIcon from '@/public/x-icon.svg';
 import { getYoutubeVideoIdFromUrl } from './util';
-import styles from './searchBar.module.css';
+import styles from './searchBar.module.scss';
 
 interface SearchInputProps {
 	icon: React.ReactNode;

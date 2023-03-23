@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { ClipboardButton } from '../ClipboardButton';
 
 interface CopyURLButtonProps {
 	toast: string;
 	ariaLabel: string;
-	icon: React.ReactNode;
+	children: ReactElement;
 }
 
 export const CopyURLButton = (props: CopyURLButtonProps) => {

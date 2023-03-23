@@ -1,6 +1,6 @@
 import { Cabin } from 'next/font/google';
 import { MenuBar } from './components/MenuBar';
-import './globals.css';
+import './globals.scss';
 
 const cabin = Cabin({
 	subsets: ['latin'],

@@ -74,8 +74,6 @@ export const Player = () => {
 				playerRef={playerRef}
 				playing={isPlaying}
 				url={url}
-				// temporary for development
-				muted
 				controls
 				config={reactPlayerConfig}
 				style={{

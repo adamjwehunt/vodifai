@@ -1,0 +1,15 @@
+$base-background-color: #121212;
+
+$base-search-bar-height: 3.5rem;
+$base-padding: 4.5dvw;
+$base-menu-bar-height: 4rem;
+$base-transcript-header-height: 5rem;
+
+$desktop-breakpoint: 1224px;
+$desktop-search-bar-height: 2.75rem;
+$desktop-padding: 20dvw;
+
+@mixin blurred-foreground {
+	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(0.125rem);
+}

@@ -1,6 +1,5 @@
 'use client';
 
-import { useMediaQuery } from 'react-responsive';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import HomeIcon from '@/public/home-icon.svg';
@@ -13,11 +12,8 @@ import styles from './menuBar.module.scss';
 
 export const MenuBar = () => {
 	const pathname = usePathname();
-	const isDesktop = useMediaQuery({
-		query: '(min-width: 768px)',
-	});
 
-	return pathname.includes('/watch') || isDesktop ? null : (
+	return pathname.includes('/watch') ? null : (
 		<div className={styles.menuBar}>
 			<Link href="/" className={styles.menuBarItem}>
 				<button
@@ -47,7 +43,7 @@ export const MenuBar = () => {
 					{'Search'}
 				</button>
 			</Link>
-			<AboutButton buttonClassName={styles.menuBarItem} />
+			<AboutButton buttonClassName={styles.menuBarItem} label />
 		</div>
 	);
 };

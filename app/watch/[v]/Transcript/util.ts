@@ -2,7 +2,10 @@ import { captionTrack } from 'ytdl-core';
 import he from 'he';
 import { DOMParser } from '@xmldom/xmldom';
 import { Caption } from 'app/types';
-import { findBestTranscriptUrl, mapYoutubeCaptions } from '../utils/youtubeUtil';
+import {
+	findBestTranscriptUrl,
+	mapYoutubeCaptions,
+} from '../utils/youtubeUtil';
 
 export async function getCaptions(
 	captionTracks: captionTrack[],
@@ -83,15 +86,25 @@ export function getCaptionsWithSelectedItem(
 	});
 }
 
-export const stripTranscriptText = (text: string) =>
-	text
-		// remove bracketed text (e.g. [Music])
-		.replace(/\[.*?\]/g, '')
-		// remove new lines
-		.replace(/[\r\n]+/g, ' ')
-		// remove extra spaces
-		.replace(/\s+/g, ' ')
-		// remove punctuation from end of words
-		.replace(/(\w+['’]?\w*)[^\w\s]*\s*/g, '$1 ')
-		.toLowerCase()
-		.trim();
+export function stripTranscriptText(text: string) {
+	return (
+		text
+			// remove bracketed text (e.g. [Music])
+			.replace(/\[.*?\]/g, '')
+			// remove new lines
+			.replace(/[\r\n]+/g, ' ')
+			// remove extra spaces
+			.replace(/\s+/g, ' ')
+			// remove punctuation from end of words
+			.replace(/(\w+['’]?\w*)[^\w\s]*\s*/g, '$1 ')
+			.toLowerCase()
+			.trim()
+	);
+}
+
+export function trimRecap(str: string): string {
+	const firstUppercaseIndex = Array.from(str).findIndex((char) =>
+		/[A-Z]/.test(char)
+	);
+	return firstUppercaseIndex === -1 ? '' : str.slice(firstUppercaseIndex);
+}

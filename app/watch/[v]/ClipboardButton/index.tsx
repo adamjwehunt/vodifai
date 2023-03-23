@@ -1,20 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { copyTextToClipboard } from './util';
 import { createPortal } from 'react-dom';
 import { Toast } from './Toast';
 
 interface ClipboardButtonProps {
 	ariaLabel: string;
-	icon: React.ReactNode;
+	children: ReactElement;
 	text: string;
 	toast: string;
 }
 
 export const ClipboardButton = ({
 	ariaLabel,
-	icon,
+	children,
 	text,
 	toast,
 }: ClipboardButtonProps) => {
@@ -36,14 +36,10 @@ export const ClipboardButton = ({
 
 	return (
 		<>
-			<button
-				style={{ padding: '0.125rem' }}
-				aria-label={ariaLabel}
-				onClick={handleClipboardButtonClick}
-			>
-				{icon}
+			<button aria-label={ariaLabel} onClick={handleClipboardButtonClick}>
+				{children}
 			</button>
-			{!showToast
+			{!showToast || !document
 				? null
 				: createPortal(
 						<Toast message={toast} onClose={handleToastClose} />,

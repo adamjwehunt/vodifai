@@ -3,8 +3,8 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	background-color: #121212;
-	height: 7dvh;
+	background-color: $base-background-color;
+	height: $base-menu-bar-height;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
@@ -29,5 +29,11 @@
 		svg {
 			fill: #fff;
 		}
+	}
+}
+
+@media screen and (min-width: $desktop-breakpoint) {
+	.menuBar {
+		display: none;
 	}
 }
