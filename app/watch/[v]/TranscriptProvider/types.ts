@@ -18,7 +18,7 @@ export type TranscriptReducerAction =
 			type: 'animateStart';
 	  }
 	| {
-			type: 'animateEnd';
+			type: 'animateComplete';
 	  }
 	| {
 			type: 'highlightTranscriptWord';

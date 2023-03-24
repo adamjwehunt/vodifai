@@ -1,51 +1,89 @@
 'use client';
 
-import { ReactElement, useRef } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import {
 	useTranscriptState,
 	useTranscriptStateDispatch,
 } from '../TranscriptProvider/transcriptContext';
+import { useMediaQuery } from 'react-responsive';
+import { EXPAND_DURATION } from '../PlayerProvider';
+import { TRANSCRIPT_CONTROLS_HEIGHT } from './TranscriptControls';
 import { motion } from 'framer-motion';
 import styles from './transcript.module.scss';
 
-const expanded = {
-	top: '5rem',
-	bottom: 0,
-	left: 0,
-	right: 0,
-	paddingTop: 0,
-	paddingBottom: '9rem',
-};
+const COLLAPSED_TOP = 'calc(100dvh - 2.5rem)';
+const COLLAPSED_BOTTOM = '-20rem';
+const COLLAPSED_BORDER_RADIUS = '0.3rem';
+const EXPANDED_TOP = '5rem';
+const DESKTOP_PADDING = '20dvw';
+const BASE_PADDING = '4.5dvw';
 
 interface BottomProps {
-	children: ReactElement[];
+	children: ReactNode;
 }
 
 export const Bottom = ({ children }: BottomProps) => {
-	const { isExpanded } = useTranscriptState();
-	const bottomRef = useRef<HTMLDivElement>(null);
 	const transcriptStateDispatch = useTranscriptStateDispatch();
-	const handleOnAnimationStart = () =>
+	const { isExpanded } = useTranscriptState();
+	const isDesktop = useMediaQuery({ minWidth: 1224 });
+
+	const handleAnimationStart = () =>
 		transcriptStateDispatch({ type: 'animateStart' });
-	const onAnimationComplete = () => {
-		transcriptStateDispatch({ type: 'animateEnd' });
-		if (!isExpanded) {
-			setTimeout(() => {
-				bottomRef.current?.style.removeProperty('inset');
-			}, 0);
-		}
+	const handleAnimationComplete = () =>
+		transcriptStateDispatch({ type: 'animateComplete' });
+	const handleAnimationUpdate = () => {
+		handleAnimationStart();
+		setTimeout(() => {
+			handleAnimationComplete();
+		}, EXPAND_DURATION + 0.2);
+	};
+
+	const horizontalPadding = isDesktop ? DESKTOP_PADDING : BASE_PADDING;
+	const expandedContainerStyles: CSSProperties = {
+		inset: `${EXPANDED_TOP} 0 0 0`,
+		borderRadius: 0,
+	};
+	const collapsedContainerStyles: CSSProperties = {
+		inset: `${COLLAPSED_TOP} ${horizontalPadding} ${COLLAPSED_BOTTOM}`,
+		borderRadius: COLLAPSED_BORDER_RADIUS,
+	};
+	const expandedWrapperStyles: CSSProperties = {
+		top: EXPANDED_TOP,
+		bottom: TRANSCRIPT_CONTROLS_HEIGHT,
+		left: horizontalPadding,
+		right: horizontalPadding,
+	};
+	const collapsedWrapperStyles: CSSProperties = {
+		top: COLLAPSED_TOP,
+		bottom: COLLAPSED_BOTTOM,
+		left: horizontalPadding,
+		right: horizontalPadding,
+	};
+	const expandedChildrenStyles: CSSProperties = {
+		paddingTop: 0,
 	};
 
 	return (
-		<motion.div
-			layoutScroll
-			ref={bottomRef}
-			className={styles.bottom}
-			onAnimationStart={handleOnAnimationStart}
-			onAnimationComplete={onAnimationComplete}
-			animate={!isExpanded ? {} : expanded}
-		>
-			{children}
-		</motion.div>
+		<>
+			<motion.div
+				className={styles.container}
+				style={isExpanded ? expandedContainerStyles : collapsedContainerStyles}
+				layout
+				onUpdate={handleAnimationUpdate}
+			/>
+			<motion.div
+				className={styles.childrenWrapper}
+				style={isExpanded ? expandedWrapperStyles : collapsedWrapperStyles}
+				layout
+			>
+				<motion.div
+					className={styles.children}
+					style={isExpanded ? expandedChildrenStyles : {}}
+					layout="position"
+				>
+					{children}
+				</motion.div>
+			</motion.div>
+		</>
 	);
 };

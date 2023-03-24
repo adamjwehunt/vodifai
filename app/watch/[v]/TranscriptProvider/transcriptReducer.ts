@@ -29,7 +29,7 @@ export const transcriptReducer: TranscriptReducer = (
 				...previousState,
 				isAnimating: true,
 			};
-		case 'animateEnd':
+		case 'animateComplete':
 			return {
 				...previousState,
 				isAnimating: false,

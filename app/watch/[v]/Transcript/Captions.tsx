@@ -1,6 +1,7 @@
 'use client';
 
 import React, {
+	ReactNode,
 	useCallback,
 	useContext,
 	useEffect,
@@ -15,7 +16,7 @@ import {
 	CaptionsRefContext,
 	useTranscriptState,
 } from '../TranscriptProvider/transcriptContext';
-import { expandDuration } from '../PlayerProvider';
+import { EXPAND_DURATION } from '../PlayerProvider';
 import styles from './transcript.module.scss';
 import { stripTranscriptText } from './util';
 
@@ -40,7 +41,7 @@ export const Captions = () => {
 				if (activeCaptionRef.current) {
 					scrollToCaption(activeCaptionRef.current);
 				}
-			}, expandDuration * 1000);
+			}, EXPAND_DURATION * 1000);
 		},
 	}));
 
@@ -98,7 +99,6 @@ export const Captions = () => {
 		const seconds = captionStart < 1 ? Math.ceil(captionStart) : captionStart;
 		seekTo(seconds);
 
-
 		// Prioritize seeking over scrolling
 		setTimeout(() => {
 			scrollToCaption(element);
@@ -106,52 +106,54 @@ export const Captions = () => {
 	};
 
 	return (
-		<div className={styles.captions} ref={containerRef}>
-			{captions.map(({ start, text, id }: Caption, index: number) => {
-				const words = highlightedWord
-					? text
-							// remove new lines
-							.replace(/[\r\n]+/g, ' ')
-							.trim()
-							.split(' ')
-							.map((word, index) =>
-								stripTranscriptText(word) === highlightedWord ? (
-									<span key={index}>
-										<span
-											style={{
-												backgroundColor:
-													centeredCaptionId === id ? 'orange' : 'yellow',
-												color: 'initial',
-											}}
-										>
-											{word}
-										</span>{' '}
-									</span>
-								) : (
-									<span key={index}>{word} </span>
+		<div className={styles.captionsWrapper}>
+			<div className={styles.captions} ref={containerRef}>
+				{captions.map(({ start, text, id }: Caption, index: number) => {
+					const words = highlightedWord
+						? text
+								// remove new lines
+								.replace(/[\r\n]+/g, ' ')
+								.trim()
+								.split(' ')
+								.map((word, index) =>
+									stripTranscriptText(word) === highlightedWord ? (
+										<span key={index}>
+											<span
+												style={{
+													backgroundColor:
+														centeredCaptionId === id ? 'orange' : 'yellow',
+													color: 'initial',
+												}}
+											>
+												{word}
+											</span>{' '}
+										</span>
+									) : (
+										<span key={index}>{word} </span>
+									)
 								)
-							)
-					: text;
+						: text;
 
-				return (
-					<div
-						key={index}
-						id={`caption-${id}`}
-						ref={id === activeCaptionId ? handleActiveCaptionChange : null}
-						className={styles.captionText}
-						style={
-							activeCaptionId !== undefined && id <= activeCaptionId
-								? { color: '#fff' }
-								: {}
-						}
-						onClick={({ target }) => {
-							handleCaptionClick(target as HTMLDivElement, start);
-						}}
-					>
-						{words}
-					</div>
-				);
-			})}
+					return (
+						<div
+							key={index}
+							id={`caption-${id}`}
+							ref={id === activeCaptionId ? handleActiveCaptionChange : null}
+							className={styles.captionText}
+							style={
+								activeCaptionId !== undefined && id <= activeCaptionId
+									? { color: '#fff' }
+									: {}
+							}
+							onClick={({ target }) => {
+								handleCaptionClick(target as HTMLDivElement, start);
+							}}
+						>
+							{words}
+						</div>
+					);
+				})}
+			</div>
 		</div>
 	);
 };

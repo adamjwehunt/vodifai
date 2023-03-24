@@ -117,7 +117,6 @@ export default async function WatchPage({
 							<div>{'Transcript'}</div>
 							<div className={transcriptStyles.bottomButtons}>
 								<RecapButton
-									text={'Recap'}
 									ariaLabel={'Show AI recap'}
 									modalTitle={'AI-generated Recap'}
 									loadingSpinner={<LoadingSpinner />}
@@ -130,9 +129,7 @@ export default async function WatchPage({
 								</ExpandButton>
 							</div>
 						</div>
-						<div className={transcriptStyles.captionsWrapper}>
-							<Captions />
-						</div>
+						<Captions />
 					</Bottom>
 					<TranscriptControls>
 						<Controls />

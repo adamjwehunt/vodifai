@@ -12,7 +12,7 @@ import {
 import { playerReducer, DEFAULT_PLAYER_REDUCER_STATE } from './playerReducer';
 import { PlayerReducerState, PlayerReducerAction } from './types';
 
-export const expandDuration = 0.25;
+export const EXPAND_DURATION = .28;
 
 interface PlayerProviderProps {
 	children: ReactElement[];
@@ -36,7 +36,7 @@ export const PlayerProvider = ({
 			<PlayerStateDispatchContext.Provider value={playerStateDispatch}>
 				<PlayerRefContext.Provider value={playerRef}>
 					<MotionConfig
-						transition={{ type: 'ease-in-out', duration: expandDuration }}
+						transition={{ type: 'ease-in-out', duration: EXPAND_DURATION }}
 					>
 						{children}
 					</MotionConfig>
