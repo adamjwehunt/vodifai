@@ -8,7 +8,8 @@ export interface PlayerReducerState {
 	isBuffering: boolean;
 	duration: number;
 	played: number;
-	videoInfo: VideoInfo;
+	// TODO type this
+	videoInfo: any;
 }
 
 export type PlayerReducerAction =

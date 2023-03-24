@@ -86,9 +86,14 @@ export default async function WatchPage({
 					<CopyURLButton
 						ariaLabel={'Copy Video Link'}
 						toast={'Link copied to clipboard'}
-					>
-						<Image className={styles.copyUrlIcon} alt={''} src={shareIconUrl} />
-					</CopyURLButton>
+						icon={
+							<Image
+								className={styles.copyUrlIcon}
+								alt={''}
+								src={shareIconUrl}
+							/>
+						}
+					/>
 				</div>
 				{/* @ts-expect-error Server Component */}
 				<Transcript captionTracks={captionTracks} videoDetails={videoDetails}>

@@ -1,8 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
-import { applyAriaHidden, applyTabindex, findFocusableElements } from './util';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 import XIcon from '@/public/x-icon.svg';
 import styles from './modal.module.scss';
 import { createPortal } from 'react-dom';
@@ -44,55 +43,57 @@ export const Modal = forwardRef(function Modal(
 		onClose?.();
 	};
 
-	return createPortal(
-		<AnimatePresence>
-			{!isModalOpen || !document ? null : (
-				<>
-					<motion.div
-						className={styles.modalBackdrop}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						onClick={handleCloseModal}
-					/>
-					<motion.div
-						className={styles.modal}
-						initial={{ top: '100dvh' }}
-						animate={{ top: '5rem' }}
-						exit={{ top: '100dvh' }}
-					>
-						<div className={styles.modalTop}>
-							<div className={styles.modalTitle}>{title}</div>
-							<button
-								id={'watch-modal-close-button'}
-								className={styles.closeButtonTop}
-								aria-label={'Close recap'}
+	return !document
+		? null
+		: createPortal(
+				<AnimatePresence>
+					{!isModalOpen ? null : (
+						<>
+							<motion.div
+								className={styles.modalBackdrop}
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
 								onClick={handleCloseModal}
+							/>
+							<motion.div
+								className={styles.modal}
+								initial={{ top: '100dvh' }}
+								animate={{ top: '5rem' }}
+								exit={{ top: '100dvh' }}
 							>
-								<XIcon className={styles.xIcon} />
-							</button>
-						</div>
-						{isLoading ? (
-							<div className={styles.loadingSpinner}>{loadingSpinner}</div>
-						) : (
-							<div className={styles.modalContent}>{children}</div>
-						)}
-						<div className={styles.modalBottom}>
-							<div className={styles.buttonLeft}>{buttonLeft}</div>
-							<button
-								id={'watch-modal-close-button'}
-								className={styles.closeButtonBottom}
-								aria-label={'Close recap'}
-								onClick={handleCloseModal}
-							>
-								{'Close'}
-							</button>
-							<div className={styles.buttonRight}>{buttonRight}</div>
-						</div>
-					</motion.div>
-				</>
-			)}
-		</AnimatePresence>,
-		document.body
-	);
+								<div className={styles.modalTop}>
+									<div className={styles.modalTitle}>{title}</div>
+									<button
+										id={'watch-modal-close-button'}
+										className={styles.closeButtonTop}
+										aria-label={'Close recap'}
+										onClick={handleCloseModal}
+									>
+										<XIcon className={styles.xIcon} />
+									</button>
+								</div>
+								{isLoading ? (
+									<div className={styles.loadingSpinner}>{loadingSpinner}</div>
+								) : (
+									<div className={styles.modalContent}>{children}</div>
+								)}
+								<div className={styles.modalBottom}>
+									<div className={styles.buttonLeft}>{buttonLeft}</div>
+									<button
+										id={'watch-modal-close-button'}
+										className={styles.closeButtonBottom}
+										aria-label={'Close recap'}
+										onClick={handleCloseModal}
+									>
+										{'Close'}
+									</button>
+									<div className={styles.buttonRight}>{buttonRight}</div>
+								</div>
+							</motion.div>
+						</>
+					)}
+				</AnimatePresence>,
+				document.body
+		  );
 });

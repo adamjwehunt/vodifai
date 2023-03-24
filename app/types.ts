@@ -77,7 +77,7 @@ export interface ChapterWithCaptions extends Chapter {
 	captions: Caption[];
 }
 
-interface VideoFormat {
+export interface VideoFormat {
 	itag: number;
 	container: string;
 	qualityLabel: string;

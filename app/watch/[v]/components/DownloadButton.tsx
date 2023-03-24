@@ -6,6 +6,7 @@ import { Modal, ModalRef } from '../../../components/Modal';
 import { DownloadItems } from './DownloadItems';
 import { cleanAudioQualityString, formatBytes, getUniqueFormats } from './util';
 import { Download } from 'app/types';
+import { videoFormat } from 'ytdl-core';
 import styles from '../watch.module.scss';
 
 export interface DownloadButtonProps {
@@ -32,7 +33,10 @@ export const DownloadButton = ({
 		videoFormats,
 		audioFormats,
 	}: { videoFormats: Download[]; audioFormats: Download[] } = formats.reduce(
-		(acc, format) => {
+		(
+			acc: { videoFormats: Download[]; audioFormats: Download[] },
+			format: videoFormat
+		) => {
 			const { hasVideo, hasAudio } = format;
 			const type = hasVideo ? 'videoFormats' : hasAudio ? 'audioFormats' : '';
 			if (!type) return acc;

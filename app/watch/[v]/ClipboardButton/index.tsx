@@ -1,20 +1,20 @@
 'use client';
 
-import { ReactElement, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { copyTextToClipboard } from './util';
 import { createPortal } from 'react-dom';
 import { Toast } from './Toast';
 
 interface ClipboardButtonProps {
 	ariaLabel: string;
-	children: ReactElement;
+	icon: ReactNode;
 	text: string;
 	toast: string;
 }
 
 export const ClipboardButton = ({
 	ariaLabel,
-	children,
+	icon,
 	text,
 	toast,
 }: ClipboardButtonProps) => {
@@ -37,7 +37,7 @@ export const ClipboardButton = ({
 	return (
 		<>
 			<button aria-label={ariaLabel} onClick={handleClipboardButtonClick}>
-				{children}
+				{icon}
 			</button>
 			{!showToast || !document
 				? null

@@ -63,7 +63,7 @@ export const Captions = () => {
 
 	useEffect(() => {
 		if (centeredCaptionId !== null && highlightedWord) {
-			const centeredCaption = document.getElementById(
+			const centeredCaption = document?.getElementById(
 				`caption-${centeredCaptionId}`
 			);
 
