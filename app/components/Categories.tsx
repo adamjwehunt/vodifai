@@ -1,7 +1,7 @@
 import { getCategories } from '../externalApi/youtube';
 import Link from 'next/link';
 import { getBestThumbnail } from 'app/utils';
-import VodifaiLogo from '@/public/vodifai-logo.svg';
+import vodifaiLogoUrl from '@/public/vodifai-logo.svg?url';
 import Image from 'next/image';
 import styles from '../page.module.scss';
 
@@ -51,7 +51,7 @@ export async function Categories() {
 										className={styles.categoryThumbnailFallback}
 										style={{ backgroundColor: fallbackThumbnailColor }}
 									>
-										<VodifaiLogo />
+										<Image alt={''} src={vodifaiLogoUrl} />
 									</div>
 								) : (
 									<Image

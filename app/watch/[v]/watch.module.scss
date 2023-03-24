@@ -100,13 +100,10 @@
 	background-color: transparent;
 }
 
-.secondaryControlsButtonWrapper {
-	display: flex;
-
-	img {
-		height: 100%;
-		width: auto;
-	}
+.copyUrlIcon {
+	height: 100%;
+	width: auto;
+	padding: 0.15rem;
 }
 
 @media screen and (min-width: $desktop-breakpoint) {

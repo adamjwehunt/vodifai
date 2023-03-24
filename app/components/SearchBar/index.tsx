@@ -1,6 +1,7 @@
 import { BackButton } from './BackButton';
+import Image from 'next/image';
 import Link from 'next/link';
-import VodifaiLogo from '@/public/vodifai-logo.svg';
+import vodifaiLogoUrl from '@/public/vodifai-logo.svg?url';
 import ArrowIcon from '@/public/arrow-icon.svg';
 import SearchIcon from '@/public/search-icon.svg';
 import { SearchInput } from './SearchInput';
@@ -17,7 +18,7 @@ export const SearchBar = ({ query, button }: SearchBarProps) => {
 	return (
 		<div className={styles.searchBar}>
 			<Link className={styles.home} href={'/'}>
-				<VodifaiLogo className={styles.logo} />
+				<Image className={styles.logo} alt={''} src={vodifaiLogoUrl} />
 			</Link>
 			<div className={styles.inputContainer}>
 				<BackButton

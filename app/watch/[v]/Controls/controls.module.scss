@@ -115,8 +115,12 @@
 	display: flex;
 }
 
-.playPauseButton svg {
+.playPauseButton {
 	height: 100%;
 	width: auto;
-	fill: #fff;
+
+	> img {
+		height: 100%;
+		width: auto;
+	}
 }

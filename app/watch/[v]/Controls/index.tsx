@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Slider } from './Slider';
 import { PlayedLabel } from './PlayedLabel';
 import { TimeLeftLabel } from './TimeLeftLabel';
@@ -5,8 +6,8 @@ import { SkipButton } from './SkipButton';
 import SkipForwardIcon from '@/public/skip-forward-icon.svg';
 import SkipBackIcon from '@/public/skip-back-icon.svg';
 import { PlayPauseButton } from './PlayPauseButton';
-import PlayIcon from '@/public/play-icon.svg';
-import PauseIcon from '@/public/pause-icon.svg';
+import playIconUrl from '@/public/play-icon.svg?url';
+import pauseIconUrl from '@/public/pause-icon.svg?url';
 import { BufferSpinner } from './BufferSpinner';
 import styles from './controls.module.scss';
 
@@ -34,8 +35,8 @@ export const Controls = () => (
 				<PlayPauseButton
 					playAriaLabel={'Play'}
 					pauseAriaLabel={'Pause'}
-					playIcon={<PlayIcon />}
-					pauseIcon={<PauseIcon />}
+					playIcon={<Image alt={''} src={playIconUrl} />}
+					pauseIcon={<Image alt={''} src={pauseIconUrl} />}
 				/>
 				<BufferSpinner />
 			</div>

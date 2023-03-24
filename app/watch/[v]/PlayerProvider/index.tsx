@@ -12,7 +12,7 @@ import {
 import { playerReducer, DEFAULT_PLAYER_REDUCER_STATE } from './playerReducer';
 import { PlayerReducerState, PlayerReducerAction } from './types';
 
-export const EXPAND_DURATION = .28;
+export const EXPAND_DURATION = 0.28;
 
 interface PlayerProviderProps {
 	children: ReactElement[];
