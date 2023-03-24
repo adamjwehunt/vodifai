@@ -1,5 +1,6 @@
-import { Download } from 'app/types';
 import styles from '../watch.module.scss';
+import { Download } from 'app/types';
+import Link from 'next/link';
 
 interface DownloadItemsProps {
 	formats: Download[];
@@ -40,7 +41,7 @@ interface DownloadItemProps {
 }
 
 const DownloadItem = ({ format, url }: DownloadItemProps) => (
-	<a href={url} target="_blank" download key={format.itag}>
+	<Link href={url} target="_blank" download key={format.itag}>
 		<div>{format.container}</div>
 		<div>{format.contentLength}</div>
 	</a>

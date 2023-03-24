@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import InfoIcon from '@/public/info-icon.svg';
+import Link from 'next/link';
 import MailIcon from '@/public/mail-icon.svg';
 import LinkedInIcon from '@/public/linked-in-icon.svg';
 import GithubIcon from '@/public/github-icon.svg';
@@ -56,28 +57,28 @@ export const AboutButton = ({
 					<div className={styles.name}>
 						{'- Adam'}
 						<div className={styles.socialIcons}>
-							<a href="mailto:adamjwehunt@gmail.com">
+							<Link href="mailto:adamjwehunt@gmail.com">
 								<MailIcon />
-							</a>
-							<a href="https://linkedin.com/in/ajwehunt" target="_blank">
+							</Link>
+							<Link href="https://linkedin.com/in/ajwehunt" target="_blank">
 								<LinkedInIcon />
-							</a>
-							<a href="https://github.com/adamjwehunt" target="_blank">
+							</Link>
+							<Link href="https://github.com/adamjwehunt" target="_blank">
 								<GithubIcon />
-							</a>
-							<a href="https://twitter.com/home" target="_blank">
+							</Link>
+							<Link href="https://twitter.com/home" target="_blank">
 								<TwitterIcon />
-							</a>
+							</Link>
 						</div>
 					</div>
 				</div>
 				<div className={styles.bmcLinkWrapper}>
-					<a
+					<Link
 						className={styles.bmcLink}
 						href="https://www.buymeacoffee.com/adamwehunt"
 					>
 						<BmcButton />
-					</a>
+					</Link>
 				</div>
 			</Modal>
 		</>
