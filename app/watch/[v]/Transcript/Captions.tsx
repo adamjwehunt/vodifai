@@ -133,17 +133,20 @@ export const Captions = () => {
 								)
 						: text;
 
+					const captionStyles =
+						activeCaptionId !== undefined && id === activeCaptionId
+							? { color: '#fff' }
+							: activeCaptionId !== undefined && id <= activeCaptionId
+							? { color: 'rgb(255, 255, 255, 0.65)' }
+							: {};
+
 					return (
 						<div
 							key={index}
 							id={`caption-${id}`}
 							ref={id === activeCaptionId ? handleActiveCaptionChange : null}
 							className={styles.captionText}
-							style={
-								activeCaptionId !== undefined && id <= activeCaptionId
-									? { color: '#fff' }
-									: {}
-							}
+							style={captionStyles}
 							onClick={({ target }) => {
 								handleCaptionClick(target as HTMLDivElement, start);
 							}}
