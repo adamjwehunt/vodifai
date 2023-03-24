@@ -1,5 +1,5 @@
 import { Cabin } from 'next/font/google';
-import { MenuBar } from './components/MenuBar';
+import { MenuBar } from './(components)/MenuBar';
 import './globals.scss';
 
 const cabin = Cabin({

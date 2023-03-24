@@ -1,4 +1,4 @@
-import { extractColors, getBestColor, rgbArrayToString } from 'app/utils';
+import { extractColors, getBestColor, rgbArrayToString } from 'app/(utils)';
 import { DateTime } from 'luxon';
 import Vibrant from 'node-vibrant';
 import sharp from 'sharp';

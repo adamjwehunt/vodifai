@@ -1,4 +1,4 @@
-import { SearchBar } from 'app/components/SearchBar';
+import { SearchBar } from 'app/(components)/SearchBar';
 import styles from './watch.module.scss';
 
 interface WatchLayoutProps {

@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import XIcon from '@/public/x-icon.svg';
 import styles from './modal.module.scss';
 import { createPortal } from 'react-dom';
@@ -33,6 +33,11 @@ export const Modal = forwardRef(function Modal(
 	ref
 ) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isClient, setIsClient] = useState(false);
+
+	useEffect(() => {
+		setIsClient(true);
+	}, []);
 
 	useImperativeHandle(ref, () => ({
 		open: () => setIsModalOpen(true),
@@ -43,7 +48,7 @@ export const Modal = forwardRef(function Modal(
 		onClose?.();
 	};
 
-	return !document
+	return !isClient
 		? null
 		: createPortal(
 				<AnimatePresence>

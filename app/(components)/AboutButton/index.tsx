@@ -8,7 +8,7 @@ import LinkedInIcon from '@/public/linked-in-icon.svg';
 import GithubIcon from '@/public/github-icon.svg';
 import TwitterIcon from '@/public/twitter-icon.svg';
 import BmcButton from '@/public/bmc-button.svg';
-import { Modal, ModalRef } from 'app/components/Modal';
+import { Modal, ModalRef } from 'app/(components)/Modal';
 import styles from './aboutButton.module.scss';
 
 interface AboutButtonProps {
