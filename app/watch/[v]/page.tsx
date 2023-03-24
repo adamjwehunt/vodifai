@@ -1,4 +1,4 @@
-import { getVideoInfo } from 'app/(externalApi)/ytdl';
+import { getVideoInfo } from 'app/externalApi/ytdl';
 import Image from 'next/image';
 import { WatchPageContainer } from './components/WatchPageContainer';
 import { getTranscriptBackground, getWatchViewBackground } from './utils';

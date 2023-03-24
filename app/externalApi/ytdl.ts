@@ -4,7 +4,7 @@ import {
 	getVideoColors,
 	getWatchViewColors,
 	mapThumbnailDetails,
-} from '../(utils)';
+} from '../utils';
 
 export async function getVideoInfo(
 	videoId: string

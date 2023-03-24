@@ -2,7 +2,7 @@
 
 import { ReactElement, useRef } from 'react';
 import { usePlayerState } from '../PlayerProvider/playerContext';
-import { Modal, ModalRef } from '../../../(components)/Modal';
+import { Modal, ModalRef } from '../../../components/Modal';
 import { DownloadItems } from './DownloadItems';
 import { cleanAudioQualityString, formatBytes, getUniqueFormats } from './util';
 import { Download } from 'app/types';

@@ -3,7 +3,7 @@
 import {  ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { ClipboardButton } from '../ClipboardButton';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
-import { Modal, ModalRef } from '../../../(components)/Modal';
+import { Modal, ModalRef } from '../../../components/Modal';
 import { TextToSpeech, TextToSpeechRef } from './TextToSpeech';
 import ClipboardIcon from '@/public/clipboard-icon.svg';
 import PlayIcon from '@/public/play-icon.svg';

@@ -1,6 +1,6 @@
-import { getCategories } from '../(externalApi)/youtube';
+import { getCategories } from '../externalApi/youtube';
 import Link from 'next/link';
-import { getBestThumbnail } from 'app/(utils)';
+import { getBestThumbnail } from 'app/utils';
 import vodifaiLogoUrl from '@/public/vodifai-logo.svg?url';
 import Image from 'next/image';
 import styles from '../page.module.scss';
