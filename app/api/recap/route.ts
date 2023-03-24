@@ -10,7 +10,7 @@ const RECAP_LENGTH = 280;
 if (!process.env.OPENAI_API_KEY) {
 	throw new Error('Missing env var from OpenAI');
 }
-export const runtime = 'experimental-edge';
+export const runtime = 'edge';
 
 interface RecapRequestBody {
 	title?: string;
