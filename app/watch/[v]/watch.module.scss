@@ -34,7 +34,7 @@
 @media screen and (min-width: $desktop-breakpoint) {
 	.player {
 		max-height: calc(100dvh - 7.75rem);
-		top: 2.75rem;
+		top: $desktop-search-bar-height;
 	}
 }
 
@@ -98,6 +98,11 @@
 	right: $base-padding;
 	bottom: 3rem;
 	background-color: transparent;
+
+	> button {
+		height: 1.5rem;
+		width: 1.5rem;
+	}
 }
 
 .copyUrlIcon {
