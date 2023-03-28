@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import SearchIcon from '@/public/search-icon.svg';
-import { Categories } from './components/Categories';
-import { AboutButton } from './components/AboutButton';
+import { Categories } from 'components/Categories';
+import { AboutButton } from 'components/AboutButton';
 import styles from './page.module.scss';
 
 export const SEARCH_BAR_PLACEHOLDER = 'Search or paste a YouTube link';

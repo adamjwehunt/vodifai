@@ -1,7 +1,7 @@
-import { searchVideos } from 'app/externalApi/youtube';
-import { SearchItem } from 'app/components/SearchItem';
-import { VideoResults } from 'app/components/VideoResults';
-import { getSearchResultsBackgroundImage } from 'app/utils';
+import { searchVideos } from 'lib/youtube';
+import { SearchItem } from 'components/SearchItem';
+import { VideoResults } from 'components/VideoResults';
+import { getSearchResultsBackgroundImage } from 'utils';
 import styles from 'app/page.module.scss';
 
 interface SearchProps {

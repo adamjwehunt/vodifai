@@ -1,7 +1,7 @@
 import { Caption, OpenAIStreamPayload } from 'app/types';
 import { Chapter } from 'ytdl-core';
-import { OpenAIStream } from './OpenAIStream';
-import { createRecapPrompt } from './recapPrompt';
+import { OpenAIStream } from '../../../lib/OpenAIStream';
+import { createRecapPrompt } from '../../../lib/recapPrompt';
 
 const AI_MODEL = 'text-davinci-003';
 const MAX_REQUEST = 4097;

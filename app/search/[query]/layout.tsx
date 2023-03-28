@@ -1,4 +1,4 @@
-import { SearchBar } from 'app/components/SearchBar';
+import { SearchBar } from 'components/SearchBar';
 
 interface SearchLayoutProps {
 	children: React.ReactNode;

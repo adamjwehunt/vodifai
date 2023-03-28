@@ -1,0 +1,17 @@
+.player {
+	position: absolute;
+	top: $base-search-bar-height;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	max-height: calc(100dvh - 19rem);
+	height: -webkit-fill-available;
+}
+
+@media screen and (min-width: $desktop-breakpoint) {
+	.player {
+		max-height: calc(100dvh - 7.75rem);
+		top: $desktop-search-bar-height;
+	}
+}

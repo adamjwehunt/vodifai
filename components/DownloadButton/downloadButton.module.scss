@@ -1,0 +1,24 @@
+.downloadsContainer {
+	display: flex;
+	flex-direction: column;
+	letter-spacing: 0.02rem;
+}
+
+.qualityLabel {
+	font-size: 1rem;
+	opacity: 0.6;
+	text-transform: capitalize;
+	width: -webkit-fill-available;
+}
+
+.formatLinks {
+	display: flex;
+	flex-direction: column;
+	width: 15rem;
+
+	a {
+		margin-bottom: 0.5rem;
+		display: flex;
+		justify-content: space-between;
+	}
+}

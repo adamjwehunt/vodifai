@@ -1,11 +1,7 @@
-import {
-	getCategoryTitle,
-	getVideosByCategory,
-	searchVideos,
-} from 'app/externalApi/youtube';
-import { getSearchResultsBackgroundImage } from 'app/utils';
-import { VideoResults } from 'app/components/VideoResults';
-import { SearchItem } from 'app/components/SearchItem';
+import { SearchItem } from 'components/SearchItem';
+import { VideoResults } from 'components/VideoResults';
+import { getVideosByCategory, getCategoryTitle, searchVideos } from 'lib/youtube';
+import { getSearchResultsBackgroundImage } from 'utils';
 import styles from 'app/page.module.scss';
 
 interface BrowseProps {
