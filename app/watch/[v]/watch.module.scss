@@ -1,3 +1,9 @@
+.watchView {
+	height: -webkit-fill-available;
+	width: -webkit-fill-available;
+	position: absolute;
+}
+
 .loadingSpinnerWrapper {
 	height: -webkit-fill-available;
 	width: -webkit-fill-available;
@@ -13,7 +19,6 @@
 	align-items: center;
 	justify-content: center;
 }
-
 
 .playerTray {
 	position: absolute;
@@ -106,7 +111,6 @@
 	justify-content: space-between;
 	margin-top: 0.75rem;
 }
-
 
 .secondaryButtonIcon {
 	display: flex;
