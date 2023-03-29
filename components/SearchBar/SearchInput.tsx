@@ -88,6 +88,7 @@ export const SearchInput = ({
 				onChange={(event) => setValue(event.target.value)}
 				onKeyDown={handleKeyDown}
 				onPaste={handlePaste}
+				onBlur={handleSearch}
 			/>
 			{!value ? null : (
 				<button className={styles.clearTextButton} onClick={handleClearInput}>
