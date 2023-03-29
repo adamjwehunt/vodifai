@@ -8,7 +8,13 @@ import {
 import { useMediaQuery } from 'react-responsive';
 import { EXPAND_DURATION } from '../PlayerProvider';
 import { TRANSCRIPT_CONTROLS_HEIGHT } from './TranscriptControls';
-import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+const MotionDiv = dynamic(
+	() => import('framer-motion').then((mod) => mod.motion.div),
+	{
+		ssr: false,
+	}
+);
 import styles from './transcript.module.scss';
 
 const COLLAPSED_TOP = 'calc(100dvh - 2.5rem)';
@@ -65,25 +71,25 @@ export const Bottom = ({ children }: BottomProps) => {
 
 	return (
 		<>
-			<motion.div
+			<MotionDiv
 				className={styles.container}
 				style={isExpanded ? expandedContainerStyles : collapsedContainerStyles}
 				layout
 				onUpdate={handleAnimationUpdate}
 			/>
-			<motion.div
+			<MotionDiv
 				className={styles.childrenWrapper}
 				style={isExpanded ? expandedWrapperStyles : collapsedWrapperStyles}
 				layout
 			>
-				<motion.div
+				<MotionDiv
 					className={styles.children}
 					style={isExpanded ? expandedChildrenStyles : {}}
 					layout="position"
 				>
 					{children}
-				</motion.div>
-			</motion.div>
+				</MotionDiv>
+			</MotionDiv>
 		</>
 	);
 };
