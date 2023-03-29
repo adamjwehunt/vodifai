@@ -56,10 +56,16 @@
 	height: -webkit-fill-available;
 	font-size: 1.25rem;
 	line-height: 1.5;
-	padding: 0 clamp(2rem, $desktop-padding, 20rem);
+	padding: 0 $base-padding;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	padding-bottom: 30dvh;
+}
+
+@media screen and (min-width: $desktop-breakpoint) {
+	.modalContent {
+		padding: 0 $desktop-padding;
+	}
 }
 
 .modalBottom {
@@ -69,6 +75,12 @@
 	height: 4rem;
 	padding: 0 1.5rem;
 	z-index: 2;
+}
+
+@media screen and (min-width: $desktop-breakpoint) {
+	.modalBottom {
+		padding: 0 $desktop-padding;
+	}
 }
 
 .buttonLeft,

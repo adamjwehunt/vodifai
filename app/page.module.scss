@@ -63,6 +63,7 @@ $search-header-margin-bottom: 1rem;
 	grid-auto-rows: minmax(0, auto);
 	gap: calc(1rem + 0.5dvw);
 	width: 100%;
+	padding-bottom: $base-menu-bar-height;
 }
 
 @media screen and (min-width: 768px) {

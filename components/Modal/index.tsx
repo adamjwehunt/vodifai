@@ -3,8 +3,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import XIcon from '@/public/x-icon.svg';
-import styles from './modal.module.scss';
 import { createPortal } from 'react-dom';
+import styles from './modal.module.scss';
 
 interface ModalProps {
 	title: string;
