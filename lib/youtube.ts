@@ -12,6 +12,8 @@ import {
 } from './util';
 
 const BASE_YOUTUBE_URL = 'https://youtube.googleapis.com/youtube/v3';
+// Youtube is not very good at categorizing videos, so we have to do it ourselves.
+const CUSTOM_VIDEO_CATEGORIES = ['Pbs Eons'];
 
 export async function getCategories(): Promise<Category[]> {
 	const params = new URLSearchParams({
@@ -54,7 +56,9 @@ export async function getCategoryTitle(categoryId: string) {
 		const response = await fetch(url);
 
 		if (!response.ok) {
-			throw new Error(`Unable to fetch category ${categoryId} name from YouTube API.`);
+			throw new Error(
+				`Unable to fetch category ${categoryId} name from YouTube API.`
+			);
 		}
 
 		const categoryJson: youtube_v3.Schema$VideoCategoryListResponse =
@@ -109,6 +113,7 @@ export async function getVideosByCategory(categoryId: string) {
 }
 
 export async function searchVideos(query: string) {
+	console.log(`lib/youtube.ts - 114 => query: `, '\n', query);
 	const searchParams = new URLSearchParams({
 		part: 'snippet',
 		q: query,
@@ -244,6 +249,13 @@ async function mapCategoryDataToCategories(
 	videoCategories: youtube_v3.Schema$VideoCategory[]
 ) {
 	let categories: Category[] = [];
+	videoCategories = [
+		...CUSTOM_VIDEO_CATEGORIES.map((category) => ({
+			id: category,
+			snippet: { title: category },
+		})),
+		...videoCategories,
+	];
 
 	categories = videoCategories
 		.map((category) => {
@@ -323,7 +335,9 @@ async function getCategoryThumbnails(categoryId: string) {
 			await videoResponse.json();
 
 		if (!videoJson.items?.length) {
-			console.warn(`No videos found for category ${categoryId} thumbnails. Using default thumbnail instead.`);
+			console.warn(
+				`No videos found for category ${categoryId} thumbnails. Using default thumbnail instead.`
+			);
 			return undefined;
 		}
 
