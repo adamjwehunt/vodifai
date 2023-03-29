@@ -81,7 +81,9 @@ export const Modal = forwardRef(function Modal(
 								{isLoading ? (
 									<div className={styles.loadingSpinner}>{loadingSpinner}</div>
 								) : (
-									<div className={styles.modalContent}>{children}</div>
+									<div className={styles.modalContentWrapper}>
+										<div className={styles.modalContent}>{children}</div>
+									</div>
 								)}
 								<div className={styles.modalBottom}>
 									<div className={styles.buttonLeft}>{buttonLeft}</div>

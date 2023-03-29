@@ -2,6 +2,7 @@
 	display: flex;
 	flex-direction: column;
 	letter-spacing: 0.02rem;
+	align-items: center;
 }
 
 .qualityLabel {
@@ -15,6 +16,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 15rem;
+	margin-bottom: 1rem;
 
 	a {
 		margin-bottom: 0.5rem;

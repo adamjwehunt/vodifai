@@ -52,19 +52,27 @@
 	align-items: center;
 }
 
-.modalContent {
-	font-size: 1.25rem;
-	line-height: 1.5;
+.modalContentWrapper {
 	padding: 0 $base-padding;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	padding-bottom: 30dvh;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	overflow-y: auto;
 }
 
 @media screen and (min-width: $desktop-breakpoint) {
 	.modalContent {
 		padding: 0 $desktop-padding;
 	}
+}
+
+.modalContent {
+	font-size: 1.25rem;
+	line-height: 1.5;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-bottom: 30dvh;
 }
 
 .modalBottom {
