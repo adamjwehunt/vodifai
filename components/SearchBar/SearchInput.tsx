@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import XIcon from '@/public/x-icon.svg';
 import { getYoutubeVideoIdFromUrl } from './util';
 import styles from './searchBar.module.scss';
@@ -24,9 +24,14 @@ export const SearchInput = ({
 	readOnly = false,
 }: SearchInputProps) => {
 	const router = useRouter();
-
 	const [value, setValue] = useState(query);
 	const inputRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		if (inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, []);
 
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter') {
