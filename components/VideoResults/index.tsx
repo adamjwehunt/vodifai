@@ -1,11 +1,7 @@
 'use client';
 
 import { ReactElement } from 'react';
-import {
-	DEFAULT_FOREGROUND_DELAY,
-	DEFAULT_FOREGROUND_DURATION,
-	Fade,
-} from '../Fade';
+import { Fade } from '../Fade';
 import styles from './videoResults.module.scss';
 
 interface VideoResultsProps {
@@ -19,11 +15,7 @@ export const VideoResults = ({
 }: VideoResultsProps) => (
 	<>
 		<Fade className={styles.searchResults} style={{ backgroundImage }} />
-		<Fade
-			className={styles.searchResults}
-			duration={DEFAULT_FOREGROUND_DURATION}
-			delay={DEFAULT_FOREGROUND_DELAY}
-		>
+		<Fade className={styles.searchResults} foreground>
 			{children}
 		</Fade>
 	</>

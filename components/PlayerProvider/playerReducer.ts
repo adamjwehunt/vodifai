@@ -14,7 +14,6 @@ export const DEFAULT_PLAYER_REDUCER_STATE: PlayerReducerState = Object.freeze({
 	videoInfo: {
 		id: '',
 		url: '',
-		captions: [],
 		formats: [],
 		videoDetails: {
 			title: '',
@@ -24,6 +23,12 @@ export const DEFAULT_PLAYER_REDUCER_STATE: PlayerReducerState = Object.freeze({
 				id: '',
 			},
 			duration: 0,
+			keywords: [],
+			chapters: [],
+		},
+		videoColors: {
+			primaryBackground: null,
+			secondaryBackground: null,
 		},
 	},
 });

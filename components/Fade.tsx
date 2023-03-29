@@ -12,6 +12,7 @@ interface FadeProps {
 	className?: string;
 	style?: React.CSSProperties;
 	children?: ReactElement | ReactElement[];
+	foreground?: boolean;
 }
 
 export const Fade = ({
@@ -20,17 +21,25 @@ export const Fade = ({
 	className,
 	style,
 	children,
-}: FadeProps) => (
-	<AnimatePresence>
-		<motion.div
-			className={className}
-			style={style}
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 }}
-			transition={{ duration, delay }}
-		>
-			{children}
-		</motion.div>
-	</AnimatePresence>
-);
+	foreground = false,
+}: FadeProps) => {
+	if (foreground) {
+		duration = DEFAULT_FOREGROUND_DURATION;
+		delay = DEFAULT_FOREGROUND_DELAY;
+	}
+
+	return (
+		<AnimatePresence>
+			<motion.div
+				className={className}
+				style={style}
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+				transition={{ duration, delay }}
+			>
+				{children}
+			</motion.div>
+		</AnimatePresence>
+	);
+};

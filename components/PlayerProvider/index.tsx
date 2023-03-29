@@ -1,6 +1,7 @@
 'use client';
 
 import { VideoInfo } from 'app/types';
+import { Fade } from 'components/Fade';
 import { MotionConfig } from 'framer-motion';
 import { ReactElement, useReducer, useRef } from 'react';
 import ReactPlayer from 'react-player';
@@ -11,17 +12,20 @@ import {
 } from './playerContext';
 import { playerReducer, DEFAULT_PLAYER_REDUCER_STATE } from './playerReducer';
 import { PlayerReducerState, PlayerReducerAction } from './types';
+import styles from './playerProvider.module.css';
 
 export const EXPAND_DURATION = 0.28;
 
 interface PlayerProviderProps {
 	children: ReactElement[];
 	videoInfo: VideoInfo;
+	backgroundColor: string;
 }
 
 export const PlayerProvider = ({
 	children,
 	videoInfo,
+	backgroundColor,
 }: PlayerProviderProps) => {
 	const [playerState, playerStateDispatch] = useReducer(
 		(previousState: PlayerReducerState, action: PlayerReducerAction) =>
@@ -38,7 +42,10 @@ export const PlayerProvider = ({
 					<MotionConfig
 						transition={{ type: 'ease-in-out', duration: EXPAND_DURATION }}
 					>
-						{children}
+						<Fade className={styles.watchView} style={{ backgroundColor }} />
+						<Fade className={styles.watchView} foreground>
+							{children}
+						</Fade>
 					</MotionConfig>
 				</PlayerRefContext.Provider>
 			</PlayerStateDispatchContext.Provider>

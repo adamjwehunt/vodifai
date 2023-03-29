@@ -1,7 +1,6 @@
 import { CSSProperties } from 'react';
 import Image from 'next/image';
 import classNames from 'classnames';
-import { WatchPageContainer } from 'components/WatchPageContainer';
 import { Player } from 'components/Player';
 import fileDownloadIconUrl from '@/public/file-download-icon.svg?url';
 import shareIconUrl from '@/public/share-icon.svg?url';
@@ -57,15 +56,17 @@ export default async function WatchPage({
 	} = videoDetails;
 
 	return (
-		<WatchPageContainer
-			background={getWatchViewBackground(primaryBackground)}
+		<div
 			style={
 				{
 					'--transcript-color': getTranscriptBackground(secondaryBackground),
 				} as CSSProperties
 			}
 		>
-			<PlayerProvider videoInfo={videoInfo}>
+			<PlayerProvider
+				videoInfo={videoInfo}
+				backgroundColor={getWatchViewBackground(primaryBackground)}
+			>
 				<Player />
 				<div className={styles.playerTray}>
 					<div className={styles.details}>
@@ -151,6 +152,6 @@ export default async function WatchPage({
 					</TranscriptControls>
 				</Transcript>
 			</PlayerProvider>
-		</WatchPageContainer>
+		</div>
 	);
 }
