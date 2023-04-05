@@ -156,9 +156,9 @@ function codifyTranscript(chapters: string[]) {
 		'abcdefghijklmnopqrstuvwxyz' +
 		'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
 		'0123456789' +
-		'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ' +
-		'αβγδεζηθικλμνξοπρστυφχψω' +
-		'$€£¥元₽฿₺₹₴₩₱﷼';
+		'!@$%^&*' +
+		'αβμτ' +
+		'$€£';
 
 	// Combine all chapters into a single string
 	const combinedText = chapters.join(' ');
