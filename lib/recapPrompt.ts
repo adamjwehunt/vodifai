@@ -41,11 +41,11 @@ const transcriptPrompt = (
 
 const fallbackPrompt = (title: string, keyWords: string, description = '') =>
 	'Summarize video in a paragraph using ' +
-	`title:${removeSpaces(reduceText(title))}` +
+	`title:${reduceText(title)}` +
 	keyWords.length
-		? ` keywords:${removeSpaces(reduceKeyWords(keyWords))}`
+		? ` keywords:${reduceKeyWords(keyWords)}`
 		: '' + description.length
-		? ` description:${removeSpaces(reduceText(description))}`
+		? ` description:${reduceText(description)}`
 		: '';
 
 function reduceTranscript(
@@ -71,10 +71,7 @@ function reduceTranscript(
 		targetLengths = chapterRatios.map((ratio) =>
 			Math.floor(
 				ratio *
-					(maxLength -
-						newKey.length +
-						countSpaces(newChapters.join(' ').trim()) +
-						countSpaces(newKey))
+					(maxLength - newChapters.join(' ').trim().length + newKey.length)
 			)
 		);
 		const deviations = newChapters.map(
@@ -98,17 +95,9 @@ function reduceTranscript(
 	}
 
 	return {
-		codifiedTranscript: removeSpaces(newChapters.join(' ').trim()),
-		key: removeSpaces(newKey),
+		codifiedTranscript: newChapters.join(' ').trim(),
+		key: newKey,
 	};
-}
-
-function countSpaces(text: string): number {
-	const spacePattern = /\s/g;
-	const matches = text.match(spacePattern);
-	const count = matches ? matches.length : 0;
-
-	return count;
 }
 
 export function removeSpaces(text: string): string {
