@@ -1,8 +1,8 @@
-import { Cabin } from 'next/font/google';
+import { Open_Sans } from 'next/font/google';
 import { MenuBar } from 'components/MenuBar';
 import './globals.scss';
 
-const cabin = Cabin({
+const openSans = Open_Sans({
 	subsets: ['latin'],
 });
 
@@ -12,7 +12,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
 	return (
-		<html lang="en" className={cabin.className}>
+		<html lang="en" className={openSans.className}>
 			{/*
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
