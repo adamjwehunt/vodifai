@@ -100,12 +100,6 @@ function reduceTranscript(
 	};
 }
 
-export function removeSpaces(text: string): string {
-	const spacePattern = /\s+/g;
-	const result = text.replace(spacePattern, '');
-
-	return result;
-}
 
 function removeCenterWord(
 	{ chapters, key }: { chapters: string[]; key: string },
