@@ -32,7 +32,7 @@
 		"stemmer": "^2.0.1",
 		"tts-react": "^1.2.0",
 		"typescript": "4.9.5",
-		"ytdl-core": "^4.11.2"
+		"ytdl-core": "4.9.1"
 	},
 	"devDependencies": {
 		"@svgr/webpack": "^7.0.0",
