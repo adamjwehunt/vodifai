@@ -20,6 +20,7 @@
 		"eventsource-parser": "^0.1.0",
 		"framer-motion": "^10.2.3",
 		"googleapis": "^112.0.0",
+		"gptoken": "^0.1.0",
 		"he": "^1.2.0",
 		"luxon": "^3.3.0",
 		"next": "^13.2.5-canary.20",
