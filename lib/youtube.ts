@@ -1,9 +1,9 @@
-import { Category, SearchResult } from 'app/types';
+import { Category, SearchResult } from '@/app/types';
 import { youtube_v3 } from 'googleapis';
 import {
 	categoryColors,
 	DEFAULT_FALLBACK_THUMBNAIL_COLOR,
-} from '../components/Categories';
+} from '@/components/Categories';
 import {
 	formatViewCount,
 	formatDuration,

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getCategories } from 'lib/youtube';
+import { getCategories } from '@/lib/youtube';
 import { getBestThumbnail } from 'utils';
 import vodifaiLogoUrl from '@/public/vodifai-logo.svg?url';
 import Image from 'next/image';

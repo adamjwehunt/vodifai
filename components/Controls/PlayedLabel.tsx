@@ -1,6 +1,6 @@
 'use client';
 
-import { usePlayerState } from 'components/PlayerProvider/playerContext';
+import { usePlayerState } from '@/components/PlayerProvider/playerContext';
 import { Children, cloneElement, ReactElement } from 'react';
 import { formatPlayerTime } from './util';
 

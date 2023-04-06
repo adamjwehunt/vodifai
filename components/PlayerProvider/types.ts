@@ -1,4 +1,4 @@
-import { VideoInfo } from 'app/types';
+import { VideoInfo } from '@/app/types';
 import { Reducer } from 'react';
 
 export interface PlayerReducerState {

@@ -1,8 +1,8 @@
-import { searchVideos } from 'lib/youtube';
-import { SearchItem } from 'components/SearchItem';
-import { VideoResults } from 'components/VideoResults';
+import { searchVideos } from '@/lib/youtube';
+import { SearchItem } from '@/components/SearchItem';
+import { VideoResults } from '@/components/VideoResults';
 import { getSearchResultsBackgroundImage } from 'utils';
-import styles from 'app/page.module.scss';
+import styles from '@/app/page.module.scss';
 
 interface SearchProps {
 	params: { query: string };

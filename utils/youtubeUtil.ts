@@ -1,4 +1,4 @@
-import { Caption } from 'app/types';
+import { Caption } from '@/app/types';
 import { captionTrack } from 'ytdl-core';
 
 export const findBestTranscriptUrl = (

@@ -1,12 +1,12 @@
-import { SearchItem } from 'components/SearchItem';
-import { VideoResults } from 'components/VideoResults';
+import { SearchItem } from '@/components/SearchItem';
+import { VideoResults } from '@/components/VideoResults';
 import {
 	getVideosByCategory,
 	getCategoryTitle,
 	searchVideos,
-} from 'lib/youtube';
+} from '@/lib/youtube';
 import { getSearchResultsBackgroundImage } from 'utils';
-import styles from 'app/page.module.scss';
+import styles from '@/app/page.module.scss';
 
 interface BrowseProps {
 	params: { videoCategoryId: string };

@@ -21,7 +21,10 @@
 		],
 		"baseUrl": ".",
 		"paths": {
-			"@/public/*": ["./public/*"]
+			"@/public/*": ["./public/*"],
+			"@/components/*": ["./components/*"],
+			"@/app/*": ["./app/*"],
+			"@/lib/*": ["./lib/*"],
 		},
 		"types": ["react/next"]
 	},

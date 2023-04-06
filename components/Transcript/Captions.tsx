@@ -8,7 +8,7 @@ import React, {
 	useRef,
 } from 'react';
 import { usePlayerRef, usePlayerState } from '../PlayerProvider/playerContext';
-import { Caption } from 'app/types';
+import { Caption } from '@/app/types';
 import { useIsScrolling } from './hooks/useIsScrolling';
 import { useActiveCaptionId } from './hooks/useActiveCaptionId';
 import {

@@ -1,6 +1,6 @@
 'use client';
 
-import { Caption, VideoDetails } from 'app/types';
+import { Caption, VideoDetails } from '@/app/types';
 import { useReducer, useRef, ReactElement } from 'react';
 import { CaptionsHandle } from '../Transcript/Captions';
 import {

@@ -1,6 +1,6 @@
 'use client';
 
-import { usePlayerState } from 'components/PlayerProvider/playerContext';
+import { usePlayerState } from '@/components/PlayerProvider/playerContext';
 import { AnimatePresence, motion } from 'framer-motion';
 import { DelayRender } from './DelayRender';
 import styles from './controls.module.scss';

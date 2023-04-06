@@ -1,4 +1,4 @@
-import { OpenAIStreamPayload } from 'app/types';
+import { OpenAIStreamPayload } from '@/app/types';
 import {
 	createParser,
 	ParsedEvent,

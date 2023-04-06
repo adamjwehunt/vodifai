@@ -8,7 +8,7 @@ import ClipboardIcon from '@/public/clipboard-icon.svg';
 import PlayIcon from '@/public/play-icon.svg';
 import PauseIcon from '@/public/pause-icon.svg';
 import { trimRecap } from './util';
-import { Modal, ModalRef } from 'components/Modal';
+import { Modal, ModalRef } from '@/components/Modal';
 import styles from './transcript.module.scss';
 
 interface RecapButtonProps {

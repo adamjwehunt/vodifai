@@ -1,10 +1,10 @@
 'use client';
 
 import { ReactElement, useRef } from 'react';
-import { Download } from 'app/types';
+import { Download } from '@/app/types';
 import { videoFormat } from 'ytdl-core';
-import { ModalRef, Modal } from 'components/Modal';
-import { usePlayerState } from 'components/PlayerProvider/playerContext';
+import { ModalRef, Modal } from '@/components/Modal';
+import { usePlayerState } from '@/components/PlayerProvider/playerContext';
 import { cleanAudioQualityString, formatBytes, getUniqueFormats } from './util';
 import { DownloadItems } from './DownloadItems';
 import styles from './downloadButton.module.scss';

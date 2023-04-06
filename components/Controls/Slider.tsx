@@ -4,7 +4,7 @@ import {
 	usePlayerRef,
 	usePlayerState,
 	usePlayerStateDispatch,
-} from 'components/PlayerProvider/playerContext';
+} from '@/components/PlayerProvider/playerContext';
 import { Root, Track, Range, Thumb } from '@radix-ui/react-slider';
 import styles from './controls.module.scss';
 

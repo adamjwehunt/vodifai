@@ -1,5 +1,5 @@
 import { Open_Sans } from 'next/font/google';
-import { MenuBar } from 'components/MenuBar';
+import { MenuBar } from '@/components/MenuBar';
 import './globals.scss';
 
 const openSans = Open_Sans({

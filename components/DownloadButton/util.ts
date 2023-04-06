@@ -1,4 +1,4 @@
-import { Download } from 'app/types';
+import { Download } from '@/app/types';
 
 export function getUniqueFormats(formats: Download[]) {
 	const uniqueFormats = new Set<string>();

@@ -1,4 +1,4 @@
-import { Palette, WatchViewColors } from 'app/types';
+import { Palette, WatchViewColors } from '@/app/types';
 import { youtube_v3 } from 'googleapis';
 import Vibrant from 'node-vibrant';
 import { thumbnail } from 'ytdl-core';

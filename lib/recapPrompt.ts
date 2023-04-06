@@ -1,4 +1,4 @@
-import { Caption, Chapter, ChapterWithCaptions } from 'app/types';
+import { Caption, Chapter, ChapterWithCaptions } from '@/app/types';
 import { stemmer } from 'stemmer';
 import gptoken from 'gptoken';
 

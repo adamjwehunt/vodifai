@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Download } from 'app/types';
+import { Download } from '@/app/types';
 import styles from './downloadButton.module.scss';
 
 interface DownloadItemsProps {

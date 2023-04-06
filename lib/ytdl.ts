@@ -1,4 +1,4 @@
-import { VideoInfo } from 'app/types';
+import { VideoInfo } from '@/app/types';
 import ytdl, { captionTrack } from 'ytdl-core';
 import {
 	getVideoColors,

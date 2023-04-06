@@ -1,7 +1,7 @@
 import { captionTrack } from 'ytdl-core';
 import he from 'he';
 import { DOMParser } from '@xmldom/xmldom';
-import { Caption } from 'app/types';
+import { Caption } from '@/app/types';
 import { findBestTranscriptUrl, mapYoutubeCaptions } from 'utils/youtubeUtil';
 
 

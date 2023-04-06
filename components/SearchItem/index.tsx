@@ -1,4 +1,4 @@
-import { SearchResult } from 'app/types';
+import { SearchResult } from '@/app/types';
 import { getBestThumbnail } from 'utils';
 import Link from 'next/link';
 import Image from 'next/image';
