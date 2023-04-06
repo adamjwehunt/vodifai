@@ -113,7 +113,6 @@ export async function getVideosByCategory(categoryId: string) {
 }
 
 export async function searchVideos(query: string) {
-	console.log(`lib/youtube.ts - 114 => query: `, '\n', query);
 	const searchParams = new URLSearchParams({
 		part: 'snippet',
 		q: query,
