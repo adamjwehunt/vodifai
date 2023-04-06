@@ -16,8 +16,11 @@ export function createRecapPrompt(
 
 	const transcriptChapters =
 		chapters.length > 0
-			? groupCaptionsByChapter(captions, chapters).map(({ title, captions }) =>
-					reduceText(`${title} ${captions.map(({ text }) => text).join(' ')}`)
+			? groupCaptionsByChapter(captions, chapters).map(
+					({ title: chapterTitle, captions }) =>
+						reduceText(
+							`${chapterTitle} ${captions.map(({ text }) => text).join(' ')}`
+						)
 			  )
 			: [reduceText(captions.map(({ text }) => text).join(' '))];
 
@@ -149,7 +152,7 @@ function removeCenterWord(
 	return { chapters: newChapters, key: newKey };
 }
 
-function codifyTranscript(chapters: string[]) {
+export function codifyTranscript(chapters: string[]) {
 	const replacementChars =
 		'abcdefghijklmnopqrstuvwxyz' +
 		'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
@@ -198,7 +201,7 @@ function codifyTranscript(chapters: string[]) {
 	return { chapters: codifiedChapters, key };
 }
 
-function groupCaptionsByChapter(
+export function groupCaptionsByChapter(
 	captions: Caption[],
 	chapters: Chapter[]
 ): ChapterWithCaptions[] {
@@ -237,30 +240,22 @@ function reduceText(transcript: string) {
 		return '';
 	}
 
-	let text = transcript
-		// remove urls
-		.replace(/(https?:\/\/[^\s]+)/g, '')
-		// remove emails
-		.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, '')
-		// remove phone numbers
-		.replace(
-			/\b(?:\d{3}[-.\s]??\d{3}[-.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}|\d{10})\b/g,
-			''
-		)
-		// remove crypto addresses
-		.replace(/(0x)?[A-Fa-f0-9]{40}/g, '')
-		// remove bracketed text (e.g. [Music])
-		.replace(/\[.*?\]/g, '')
-		// remove punctuation
-		.replace(/[^\w\s]/gi, '')
-		// remove new lines
-		.replace(/[\r\n]+/g, ' ')
-		// remove extra spaces
-		.replace(/\s+/g, ' ')
-		.toLowerCase();
-	text = removeRedundantWords(text);
-	text = removePhrases(text, [...buzzPhrases, ...qualifierPhrases]);
-	text = removeWords(text, [...buzzWords, ...stopWords, ...fillerWords]);
+	let text = transcript.toLowerCase();
+	text = removeUrls(text);
+	text = removeEmails(text);
+	text = removePhoneNumbers(text);
+	text = removeCryptoAddresses(text);
+	text = removeBracketedText(text);
+	text = removePunctuation(text);
+	text = removeNewLines(text);
+	text = removeExtraSpaces(text);
+	text = removePhrasesAndWords(text, [
+		...buzzPhrases,
+		...qualifierPhrases,
+		...buzzWords,
+		...stopWords,
+		...fillerWords,
+	]);
 	text = stemmer(text);
 
 	return text.trim();
@@ -277,33 +272,62 @@ function reduceKeyWords(keyWords: string) {
 	return text;
 }
 
-function removeRedundantWords(text: string) {
-	const words = text.split(' ');
-	let result = '';
-	let previousWord = '';
-	words.forEach((word) => {
-		if (word !== previousWord) {
-			result += `${word} `;
-			previousWord = word;
-		}
-	});
-	return result.trim();
+export function removeUrls(text: string): string {
+	return text.replace(/(https?:\/\/[^\s]+)/g, '');
 }
 
-function removePhrases(text: string, phrases: string[]) {
-	const regex = new RegExp('\\b(' + phrases.join('|') + ')\\b', 'gi');
-	return text.replace(regex, '').replace(/\s+/g, ' ').trim();
+export function removeEmails(text: string): string {
+	return text.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, '');
 }
 
-function removeWords(text: string, words: string[]) {
-	words.forEach((word) => {
-		const regex = new RegExp(`\\b${word}\\b`, 'gi');
-		text = text.replace(regex, '');
-	});
+export function removePhoneNumbers(text: string): string {
+	return text.replace(
+		/\b(?:\d{3}[-.\s]??\d{3}[-.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}|\d{10})\b/g,
+		''
+	);
+}
+
+export function removeCryptoAddresses(text: string): string {
+	return text.replace(
+		/(0x)?[A-Fa-f0-9]{40}|(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}|(L|M|t)[a-km-zA-HJ-NP-Z1-9]{26,33}/g,
+		''
+	);
+}
+
+export function removeBracketedText(text: string): string {
+	return text.replace(/\[[^\]]*\]\s*/g, '');
+}
+
+export function removePunctuation(text: string): string {
+	return text.replace(/[^\w\s]/gi, '');
+}
+
+export function removeNewLines(text: string): string {
+	return text.replace(/[\r\n]+/g, ' ');
+}
+
+export function removeExtraSpaces(text: string): string {
 	return text.replace(/\s+/g, ' ');
 }
 
-function removeDuplicateWords(text: string) {
+export function removePhrasesAndWords(text: string, wordsAndPhrases: string[]) {
+	const phraseRegex = new RegExp(
+		`\\s*(${wordsAndPhrases.filter((w) => /\s/.test(w)).join('|')})\\s*`,
+		'gi'
+	);
+	const wordRegex = new RegExp(
+		`\\b(${wordsAndPhrases.filter((w) => !/\s/.test(w)).join('|')})\\b`,
+		'gi'
+	);
+
+	return text
+		.replace(phraseRegex, '')
+		.replace(wordRegex, '')
+		.replace(/\s+/g, ' ')
+		.trim();
+}
+
+export function removeDuplicateWords(text: string) {
 	const words = text.split(' ');
 	const uniqueWords = Array.from(new Set(words));
 	const filteredText = uniqueWords.join(' ');
