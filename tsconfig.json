@@ -21,12 +21,12 @@
 		],
 		"baseUrl": ".",
 		"paths": {
-			"@/public/*": ["./public/*"],
-			"@/components/*": ["./components/*"],
-			"@/app/*": ["./app/*"],
-			"@/lib/*": ["./lib/*"],
+			"@/public/*": ["public/*"],
+			"@/components/*": ["components/*"],
+			"@/app/*": ["app/*"],
+			"@/lib/*": ["lib/*"],
 		},
-		"types": ["react/next"]
+		"types": ["react/next", "jest"]
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
