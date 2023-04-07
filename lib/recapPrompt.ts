@@ -70,7 +70,7 @@ export function reduceTranscript(
 
 	// Removes center word from each chapter until the total length is less than maxLength
 	// Maintains the ratio of the lengths of each chapter
-	while ((newChapters.join(' ') + newKey).length > maxLength) {
+	while (newChapters.join(' ').length + newKey.length > maxLength) {
 		const remainingLength = maxLength - newKey.length;
 		targetLengths = chapterRatios.map((ratio) =>
 			Math.floor(ratio * remainingLength)
