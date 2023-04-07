@@ -40,17 +40,19 @@ const transcriptPrompt = (
 ) =>
 	`Decode text with key:${key} text:${codifiedTranscript} ` +
 	'Summarize video highlighting key points in a paragraph using complete sentences. ' +
-	'If impossible to make an informative summary ' +
+	'If impossible to make an informative summary then' +
 	`${fallbackPrompt(title, keyWords)}`;
 
 const fallbackPrompt = (title: string, keyWords: string, description = '') =>
 	'Summarize video in a paragraph using ' +
 	`title:${reduceText(title)}` +
-	keyWords.length
-		? ` keywords:${reduceKeyWords(keyWords)}`
-		: '' + description.length
-		? ` description:${reduceText(description)}`
-		: '';
+	`${
+		keyWords.length
+			? ` keywords:${reduceKeyWords(keyWords)}`
+			: '' + description.length
+			? ` description:${reduceText(description)}`
+			: ''
+	}`;
 
 function reduceTranscript(
 	{ chapters, key }: { chapters: string[]; key: string },
