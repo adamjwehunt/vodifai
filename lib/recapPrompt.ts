@@ -114,16 +114,19 @@ export function removeCenterWord(
 	{ chapters, key }: { chapters: string[]; key: string },
 	index: number
 ) {
-	let newKey = key;
 	const string = chapters[index];
-
-	const words: string[] = string.split(' ');
+	const words = string.split(' ');
 	const centerIndex = Math.floor(words.length / 2);
 	const centerWord = words[centerIndex];
 	words.splice(centerIndex, 1);
 
-	// Check if the center word matches a key-value pair
+	const newChapters = [...chapters];
+	newChapters[index] = words.join(' ');
+
+	let newKey = key;
 	const keyValuePairs = newKey.split(' ');
+
+	// Check if the center word matches a key-value pair
 	keyValuePairs.forEach((keyValuePair) => {
 		const [key, value] = keyValuePair.split('=');
 		if (key === centerWord && words.indexOf(value) === -1) {
@@ -131,7 +134,7 @@ export function removeCenterWord(
 			const keyExists = chapters.some(
 				(str, i) =>
 					i !== index &&
-					(str.split(' ').indexOf(key) !== -1 || str.includes(`${key}=`))
+					(str.split(' ').includes(key) || str.includes(`${key}=`))
 			);
 			if (!keyExists) {
 				// Check if the key exists in the same string after centerWord is removed
@@ -145,9 +148,6 @@ export function removeCenterWord(
 			}
 		}
 	});
-
-	const newChapters = [...chapters];
-	newChapters[index] = words.join(' ');
 
 	newKey = newKey.split(' ').filter(Boolean).join(' '); // remove empty strings
 
