@@ -83,7 +83,9 @@ function reduceTranscript(
 		);
 
 		if (
-			newChapters[maxDeviationIndex].length <= targetLengths[maxDeviationIndex]
+			newChapters[maxDeviationIndex].length <=
+				targetLengths[maxDeviationIndex] ||
+			newChapters[maxDeviationIndex].split(' ').length === 1
 		) {
 			break;
 		}
