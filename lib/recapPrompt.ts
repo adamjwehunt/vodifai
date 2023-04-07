@@ -1,6 +1,5 @@
 import { Caption, Chapter, ChapterWithCaptions } from '@/app/types';
 import { stemmer } from 'stemmer';
-import gptoken from 'gptoken';
 
 export function createRecapPrompt(
 	title: string,
@@ -26,7 +25,7 @@ export function createRecapPrompt(
 
 	const { codifiedTranscript, key } = reduceTranscript(
 		codifyTranscript(transcriptChapters),
-		maxLength - countGptTokens(transcriptPrompt(title, keyWords))
+		maxLength - transcriptPrompt(title, keyWords).length
 	);
 
 	return transcriptPrompt(title, keyWords, codifiedTranscript, key);
@@ -70,15 +69,10 @@ function reduceTranscript(
 
 	// Removes center word from each chapter until the total length is less than maxLength
 	// Maintains the ratio of the lengths of each chapter
-	while (
-		countGptTokens(newChapters.join(' ').trim() + ` ${newKey}`) > maxLength
-	) {
+	while ((newChapters.join(' ') + newKey).length > maxLength) {
+		const remainingLength = maxLength - newKey.length;
 		targetLengths = chapterRatios.map((ratio) =>
-			Math.floor(
-				ratio *
-					(maxLength -
-						countGptTokens(newChapters.join(' ').trim() + ` ${newKey}`))
-			)
+			Math.floor(ratio * remainingLength)
 		);
 		const deviations = newChapters.map(
 			(str, i) => str.length - targetLengths[i]
@@ -104,10 +98,6 @@ function reduceTranscript(
 		codifiedTranscript: newChapters.join(' ').trim(),
 		key: newKey,
 	};
-}
-
-function countGptTokens(str: string) {
-	return gptoken.countTokens(str);
 }
 
 export function removeCenterWord(
