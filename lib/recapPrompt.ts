@@ -73,7 +73,7 @@ export function reduceTranscript(
 	while (newChapters.join(' ').length + newKey.length > maxLength) {
 		const remainingLength = maxLength - newKey.length;
 		targetLengths = chapterRatios.map((ratio) =>
-			Math.floor(ratio * remainingLength)
+			Math.round(ratio * remainingLength)
 		);
 		const deviations = newChapters.map(
 			(str, i) => str.length - targetLengths[i]
