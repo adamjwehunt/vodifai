@@ -53,7 +53,7 @@ const fallbackPrompt = (title: string, keyWords: string, description = '') =>
 			: ''
 	}`;
 
-function reduceTranscript(
+export function reduceTranscript(
 	{ chapters, key }: { chapters: string[]; key: string },
 	maxLength: number
 ) {

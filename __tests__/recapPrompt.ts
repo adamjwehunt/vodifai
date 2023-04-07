@@ -17,12 +17,89 @@ import {
 	removePhrasesAndWords,
 	removeDuplicateWords,
 	removeCenterWord,
+	reduceTranscript,
 } from '@/lib/recapPrompt';
 
 // Stemmer is having issues with Jest, so we mock it
 jest.mock('stemmer', () => ({
 	stemmer: jest.fn().mockReturnValue('mocked result'),
 }));
+
+describe('reduceTranscript', () => {
+	it('reduces transcript length to less than max length', () => {
+		const chapters = [
+			'small tiny ants love digging the farm had pink pigs fish swim in blue ponds many black cats hide well', // 20 words
+			'the old house creaks loudly green leaves rustle in wind', // 10 words
+			'big waves crash on beach', // 5 words
+			'kite', //1 word
+		];
+		const key = '';
+		const maxLength = chapters.join(' ').length / 2;
+
+		const result = reduceTranscript({ chapters, key }, maxLength);
+
+		expect(result.codifiedTranscript.length).toBeLessThan(maxLength);
+		expect(key).toEqual('');
+	});
+
+	it('maintains chapter ratio while reducing transcript length', () => {
+		const chapters = [
+			'small tiny ants love digging the farm had pink pigs fish swim in blue ponds many black cats hide well', // 20 words
+			'the old house creaks loudly green leaves rustle in wind', // 10 words
+			'big waves crash on beach', // 5 words
+			'kite', // 1 word
+		];
+		const key = '';
+		const maxLength = chapters.join(' ').length / 2;
+
+		const result = reduceTranscript({ chapters, key }, maxLength);
+
+		expect(result.codifiedTranscript).toEqual(
+			'small tiny ants love digging black cats hide well ' + // 9 words
+				'the old house rustle in wind ' + // 6 words
+				'big beach ' + // 2 words
+				'kite' // 1 word
+		);
+		expect(result.key).toEqual('');
+	});
+
+	it('with codified text, reduces transcript length to less than max length', () => {
+		const chapters = [
+			'a tiny ants love digging the farm had pink c fish swim in b ponds many black cats hide well', // 20 words
+			'a old house creaks loudly b leaves rustle in wind', // 10 words
+			'big waves c on beach', // 5 words
+			'kite', //1 word
+		];
+		const key = 'a=small b=green c=pigs';
+		const maxLength = chapters.join(' ').length / 2;
+
+		const result = reduceTranscript({ chapters, key }, maxLength);
+
+		expect(result.codifiedTranscript.length).toBeLessThan(maxLength);
+		expect(result.key).toEqual('a=small c=pigs');
+	});
+
+	it('with codified text, maintains chapter ratio while reducing transcript length', () => {
+		const chapters = [
+			'a tiny ants love digging the farm had pink c fish swim in b ponds many black cats hide well', // 20 words
+			'a old house creaks loudly b leaves rustle in wind', // 10 words
+			'big waves c on beach', // 5 words
+			'kite', //1 word
+		];
+		const key = 'a=small b=green c=pigs';
+		const maxLength = 1 + chapters.join(' ').length / 2;
+
+		const result = reduceTranscript({ chapters, key }, maxLength);
+
+		expect(result.codifiedTranscript).toEqual(
+			'a tiny ants love black cats hide well ' + // 8 words
+				'a old house in wind ' + // 6 words
+				'big beach ' + // 2 words
+				'kite' // 1 word
+		);
+		expect(result.key).toEqual('a=small c=pigs');
+	});
+});
 
 describe('removeCenterWord', () => {
 	it('removes center word from a chapter and removes corresponding key-value pair from key', () => {
