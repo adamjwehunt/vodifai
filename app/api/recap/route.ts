@@ -23,8 +23,9 @@ interface RecapRequestBody {
 export async function POST(request: Request) {
 	const { title, keywords, description, captions, chapters } =
 		(await request.json()) as RecapRequestBody;
+	const startTime = Date.now();
 
-	const prompt = createRecapPrompt(
+	let prompt = createRecapPrompt(
 		title || '',
 		keywords?.join(' ') || '',
 		description || '',
@@ -32,7 +33,24 @@ export async function POST(request: Request) {
 		chapters || [],
 		MAX_REQUEST - RECAP_LENGTH
 	);
+	const endTime = Date.now();
+	const elapsedTime = endTime - startTime;
+	console.log(`Elapsed time: ${elapsedTime}ms`);
 
+	console.log(
+		`app/api/recap/route.ts - 35 => MAX_REQUEST - RECAP_LENGTH: `,
+		'\n',
+		MAX_REQUEST - RECAP_LENGTH
+	);
+
+	console.log(`app/api/recap/route.ts - 36 => prompt: `, '\n', prompt);
+	console.log(
+		`app/api/recap/route.ts - 37 => prompt.length: `,
+		'\n',
+		prompt.length
+	);
+
+	prompt = '';
 	if (!prompt) {
 		return new Response('No prompt in the request', { status: 400 });
 	}

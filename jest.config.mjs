@@ -1,4 +1,7 @@
 import nextJest from 'next/jest.js';
+import { TextEncoder, TextDecoder } from 'util';
+
+Object.assign(global, { TextDecoder, TextEncoder });
 
 const createJestConfig = nextJest({
 	// Provide the path to your Next.js app to load next.config.js and .env files in your test environment
@@ -12,7 +15,7 @@ const config = {
 	// setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 
 	testEnvironment: 'jest-environment-jsdom',
-  type: 'module',
+	type: 'module',
 	moduleNameMapper: {
 		'^@/public/(.*)$': '<rootDir>/public/$1',
 		'^@/components/(.*)$': '<rootDir>/components/$1',

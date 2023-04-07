@@ -1,5 +1,6 @@
 import { Caption, Chapter, ChapterWithCaptions } from '@/app/types';
 import { stemmer } from 'stemmer';
+import { encode } from '@nem035/gpt-3-encoder';
 
 export function createRecapPrompt(
 	title: string,
@@ -25,7 +26,7 @@ export function createRecapPrompt(
 
 	const { codifiedTranscript, key } = reduceTranscript(
 		codifyTranscript(transcriptChapters),
-		maxLength - transcriptPrompt(title, keyWords).length
+		maxLength - getGpt3TokenLength(transcriptPrompt(title, keyWords))
 	);
 
 	return transcriptPrompt(title, keyWords, codifiedTranscript, key);
@@ -53,30 +54,36 @@ const fallbackPrompt = (title: string, keyWords: string, description = '') =>
 			: ''
 	}`;
 
+export function getGpt3TokenLength(text: string) {
+	return encode(text).length;
+}
+
 export function reduceTranscript(
 	{ chapters, key }: { chapters: string[]; key: string },
 	maxLength: number
 ) {
-	const chapterLengths = chapters.map((str) => str.length);
-	const totalLength = chapterLengths.reduce(
+	const chapterTokenLengths = chapters.map((str) => getGpt3TokenLength(str));
+	const totalTokenLength = chapterTokenLengths.reduce(
 		(total, length) => total + length,
 		0
 	);
-	const chapterRatios = chapterLengths.map((length) => length / totalLength);
+	const chapterRatios = chapterTokenLengths.map(
+		(length) => length / totalTokenLength
+	);
 
-	let targetLengths: number[] = [];
+	let targetTokenLengths: number[] = [];
 	let newChapters = [...chapters];
 	let newKey = key;
 
 	// Removes center word from each chapter until the total length is less than maxLength
 	// Maintains the ratio of the lengths of each chapter
-	while (newChapters.join(' ').length + newKey.length > maxLength) {
-		const remainingLength = maxLength - newKey.length;
-		targetLengths = chapterRatios.map((ratio) =>
-			Math.round(ratio * remainingLength)
+	while (getGpt3TokenLength(newChapters.join(' ') + newKey) > maxLength) {
+		const remainingTokenLength = maxLength - getGpt3TokenLength(newKey);
+		targetTokenLengths = chapterRatios.map((ratio) =>
+			Math.round(ratio * remainingTokenLength)
 		);
 		const deviations = newChapters.map(
-			(str, i) => str.length - targetLengths[i]
+			(str, i) => getGpt3TokenLength(str) - targetTokenLengths[i]
 		);
 		const maxDeviationIndex = deviations.reduce(
 			(iMax, deviation, i) => (deviation > deviations[iMax] ? i : iMax),
@@ -84,8 +91,8 @@ export function reduceTranscript(
 		);
 
 		if (
-			newChapters[maxDeviationIndex].length <=
-				targetLengths[maxDeviationIndex] ||
+			getGpt3TokenLength(newChapters[maxDeviationIndex]) <=
+				targetTokenLengths[maxDeviationIndex] ||
 			newChapters[maxDeviationIndex].split(' ').length === 1
 		) {
 			break;

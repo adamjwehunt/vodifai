@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { Caption, Chapter, ChapterWithCaptions } from '@/app/types';
 import {
 	codifyTranscript,
@@ -18,6 +22,7 @@ import {
 	removeDuplicateWords,
 	removeCenterWord,
 	reduceTranscript,
+	getGpt3TokenLength,
 } from '@/lib/recapPrompt';
 
 // Stemmer is having issues with Jest, so we mock it
@@ -34,11 +39,13 @@ describe('reduceTranscript', () => {
 			'kite', //1 word
 		];
 		const key = '';
-		const maxLength = chapters.join(' ').length / 2;
+		const maxLength = Math.round(getGpt3TokenLength(chapters.join(' ')) / 2);
 
 		const result = reduceTranscript({ chapters, key }, maxLength);
 
-		expect(result.codifiedTranscript.length).toBeLessThan(maxLength);
+		expect(getGpt3TokenLength(result.codifiedTranscript)).toBeLessThanOrEqual(
+			maxLength
+		);
 		expect(key).toEqual('');
 	});
 
@@ -50,14 +57,14 @@ describe('reduceTranscript', () => {
 			'kite', // 1 word
 		];
 		const key = '';
-		const maxLength = chapters.join(' ').length / 2;
+		const maxLength = Math.round(getGpt3TokenLength(chapters.join(' ')) / 2);
 
 		const result = reduceTranscript({ chapters, key }, maxLength);
 
 		expect(result.codifiedTranscript).toEqual(
-			'small tiny ants love digging black cats hide well ' + // 9 words
-				'the old house rustle in wind ' + // 6 words
-				'big beach ' + // 2 words
+			'small tiny ants love digging many black cats hide well ' + // 10 words
+				'the old house in wind ' + // 5 words
+				'big waves beach ' + // 3 words
 				'kite' // 1 word
 		);
 		expect(result.key).toEqual('');
@@ -71,11 +78,13 @@ describe('reduceTranscript', () => {
 			'kite', //1 word
 		];
 		const key = 'a=small b=green c=pigs';
-		const maxLength = chapters.join(' ').length / 2;
+		const maxLength = Math.round(getGpt3TokenLength(chapters.join(' ')) / 2);
 
 		const result = reduceTranscript({ chapters, key }, maxLength);
 
-		expect(result.codifiedTranscript.length).toBeLessThan(maxLength);
+		expect(getGpt3TokenLength(result.codifiedTranscript)).toBeLessThanOrEqual(
+			maxLength
+		);
 		expect(result.key).toEqual('a=small c=pigs');
 	});
 
@@ -87,13 +96,13 @@ describe('reduceTranscript', () => {
 			'kite', //1 word
 		];
 		const key = 'a=small b=green c=pigs';
-		const maxLength = 1 + chapters.join(' ').length / 2;
+		const maxLength = Math.round(getGpt3TokenLength(chapters.join(' ')) / 2);
 
 		const result = reduceTranscript({ chapters, key }, maxLength);
 
 		expect(result.codifiedTranscript).toEqual(
-			'a tiny ants love black cats hide well ' + // 8 words
-				'a old house in wind ' + // 6 words
+			'a tiny ants love cats hide well ' + // 7 words
+				'a old in wind ' + // 4 words
 				'big beach ' + // 2 words
 				'kite' // 1 word
 		);
