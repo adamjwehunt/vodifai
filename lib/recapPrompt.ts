@@ -58,10 +58,11 @@ export function reduceTranscript(
 	maxLength: number
 ) {
 	const chapterLengths = chapters.map((str) => str.length);
-	const chapterRatios = chapterLengths.map(
-		(length) =>
-			length / chapterLengths.reduce((total, length) => total + length, 0)
+	const totalLength = chapterLengths.reduce(
+		(total, length) => total + length,
+		0
 	);
+	const chapterRatios = chapterLengths.map((length) => length / totalLength);
 
 	let targetLengths: number[] = [];
 	let newChapters = [...chapters];
