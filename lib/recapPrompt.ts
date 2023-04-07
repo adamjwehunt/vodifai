@@ -110,7 +110,7 @@ function countGptTokens(str: string) {
 	return gptoken.countTokens(str);
 }
 
-function removeCenterWord(
+export function removeCenterWord(
 	{ chapters, key }: { chapters: string[]; key: string },
 	index: number
 ) {
@@ -155,6 +155,7 @@ function removeCenterWord(
 }
 
 export function codifyTranscript(chapters: string[]) {
+	// Single characters that count as one token, see https://platform.openai.com/tokenizer
 	const replacementChars =
 		'abcdefghijklmnopqrstuvwxyz' +
 		'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
@@ -163,31 +164,17 @@ export function codifyTranscript(chapters: string[]) {
 		'αβμτ' +
 		'$€£';
 
-	// Combine all chapters into a single string
 	const combinedText = chapters.join(' ');
+	const wordFrequency = getWordFrequency(combinedText);
 
-	// Split the text into individual words and count their frequency
-	const wordFrequency: Record<string, number> = combinedText
-		.split(' ')
-		.reduce((freq: Record<string, number>, word: string) => {
-			freq[word] = (freq[word] || 0) + 1;
-			return freq;
-		}, {});
+	// Filter out words that occur once or are too short
+	const filteredWords = filterShortWords(wordFrequency);
 
 	// Sort words by their frequency * length
-	const sortedWords = Object.keys(wordFrequency).sort((a, b) => {
-		return wordFrequency[b] * b.length - wordFrequency[a] * a.length;
-	});
+	const sortedWords = sortWordsByWeight(filteredWords);
 
 	// Generate the key string and the mapping from words to replacement characters
-	let key = '';
-	const wordMap: { [word: string]: string } = {};
-	for (let i = 0; i < sortedWords.length && i < replacementChars.length; i++) {
-		const word = sortedWords[i];
-		const replacementChar = replacementChars[i];
-		wordMap[word] = replacementChar;
-		key += `${replacementChar}=${word} `;
-	}
+	let { wordMap, key } = generateWordMap(sortedWords, replacementChars);
 
 	// Replace words in chapters with their corresponding replacement characters
 	const codifiedChapters = chapters.map((chapter) => {
@@ -201,6 +188,52 @@ export function codifyTranscript(chapters: string[]) {
 	});
 
 	return { chapters: codifiedChapters, key };
+}
+
+export function getWordFrequency(text: string): Record<string, number> {
+	return text
+		.split(' ')
+		.reduce((freq: Record<string, number>, word: string) => {
+			freq[word] = (freq[word] || 0) + 1;
+			return freq;
+		}, {});
+}
+
+export function filterShortWords(wordFrequency: Record<string, number>) {
+	const filteredWords: Record<string, number> = {};
+	for (const [word, frequency] of Object.entries(wordFrequency)) {
+		const wordWeight = frequency * word.length;
+		const keyValueTemplate = `x=${word} `;
+
+		if (frequency > 1 && wordWeight > keyValueTemplate.length) {
+			filteredWords[word] = frequency;
+		}
+	}
+	return filteredWords;
+}
+
+export function sortWordsByWeight(
+	wordFrequency: Record<string, number>
+): string[] {
+	return Object.keys(wordFrequency).sort((a, b) => {
+		return wordFrequency[b] * b.length - wordFrequency[a] * a.length;
+	});
+}
+
+export function generateWordMap(
+	sortedWords: string[],
+	replacementChars: string
+) {
+	let key = '';
+	const wordMap: { [word: string]: string } = {};
+	for (let i = 0; i < sortedWords.length && i < replacementChars.length; i++) {
+		const word = sortedWords[i];
+		const replacementChar = replacementChars[i];
+		wordMap[word] = replacementChar;
+		key += `${replacementChar}=${word} `;
+	}
+
+	return { wordMap, key: key.trim() };
 }
 
 export function groupCaptionsByChapter(
