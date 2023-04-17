@@ -42,7 +42,7 @@ export const PlayerProvider = ({
 					<MotionConfig
 						transition={{ type: 'ease-in-out', duration: EXPAND_DURATION }}
 					>
-						<Fade className={styles.watchView} style={{ backgroundColor }} />
+						<Fade className={styles.watchView} style={{ background: backgroundColor }} />
 						<Fade className={styles.watchView} foreground>
 							{children}
 						</Fade>
