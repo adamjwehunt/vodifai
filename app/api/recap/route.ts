@@ -4,8 +4,10 @@ import { OpenAIStream } from '../../../lib/OpenAIStream';
 import { createRecapPrompt } from '../../../lib/recapPrompt';
 
 const AI_MODEL = 'text-davinci-003';
-const MAX_REQUEST = 4097;
-const RECAP_LENGTH = 280;
+// Max prompt size in character length (TODO: convert to GPT tokens)
+const MAX_PROMPT_LENGTH = 4000;
+// Max recap size in GPT tokens, see: https://platform.openai.com/tokenizer
+const MAX_RECAP_LENGTH = 300;
 
 if (!process.env.OPENAI_API_KEY) {
 	throw new Error('Missing env var from OpenAI');
@@ -30,7 +32,7 @@ export async function POST(request: Request) {
 		description || '',
 		captions || [],
 		chapters || [],
-		MAX_REQUEST - RECAP_LENGTH
+		MAX_PROMPT_LENGTH
 	);
 
 	if (!prompt) {
@@ -44,7 +46,7 @@ export async function POST(request: Request) {
 		top_p: 1,
 		frequency_penalty: 0,
 		presence_penalty: 0,
-		max_tokens: RECAP_LENGTH,
+		max_tokens: MAX_RECAP_LENGTH,
 		stream: true,
 		n: 1,
 	};
