@@ -5,6 +5,7 @@ import './globals.scss';
 
 const openSans = Open_Sans({
 	subsets: ['latin'],
+	variable: '--open-sans-font',
 });
 
 interface RootLayoutProps {
@@ -13,13 +14,13 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
 	return (
-		<html lang="en" className={openSans.className}>
+		<html lang="en">
 			{/*
         <head /> will contain the components returned by the nearest parent
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
 			<head />
-			<body>
+			<body className={openSans.className}>
 				{children}
 				<MenuBar />
 				<Analytics />
