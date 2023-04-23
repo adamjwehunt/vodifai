@@ -1,5 +1,6 @@
 import { Open_Sans } from 'next/font/google';
 import { MenuBar } from '@/components/MenuBar';
+import { Analytics } from '@vercel/analytics/react';
 import './globals.scss';
 
 const openSans = Open_Sans({
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 			<body>
 				{children}
 				<MenuBar />
+				<Analytics />
 			</body>
 		</html>
 	);
