@@ -14,6 +14,8 @@
 		"@types/node": "18.14.6",
 		"@types/react": "18.0.28",
 		"@types/react-dom": "18.0.11",
+		"@upstash/ratelimit": "^0.4.2",
+		"@upstash/redis": "^1.20.4",
 		"@xmldom/xmldom": "^0.8.6",
 		"classnames": "^2.3.2",
 		"downshift": "^7.3.0",

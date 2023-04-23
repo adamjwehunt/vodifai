@@ -24,7 +24,7 @@
 			"@/public/*": ["public/*"],
 			"@/components/*": ["components/*"],
 			"@/app/*": ["app/*"],
-			"@/lib/*": ["lib/*"],
+			"@/lib/*": ["lib/*"]
 		},
 		"types": ["react/next", "jest"]
 	},
