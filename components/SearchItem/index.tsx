@@ -38,6 +38,7 @@ export const SearchItem = ({
 							alt={title}
 							width={videoThumbnail.width}
 							height={videoThumbnail.height}
+							unoptimized
 						/>
 					)}
 				</div>
@@ -51,6 +52,7 @@ export const SearchItem = ({
 							alt={title}
 							width={channelThumbnail.width}
 							height={channelThumbnail.height}
+							unoptimized
 						/>
 					)}
 				</div>

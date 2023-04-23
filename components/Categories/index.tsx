@@ -60,6 +60,7 @@ export async function Categories() {
 										alt={title}
 										width={videoThumbnail.width}
 										height={videoThumbnail.height}
+										unoptimized
 									/>
 								)}
 							</Link>
