@@ -74,18 +74,15 @@ export const Bottom = ({ children }: BottomProps) => {
 			<MotionDiv
 				className={styles.container}
 				style={isExpanded ? expandedContainerStyles : collapsedContainerStyles}
-				layout
 				onUpdate={handleAnimationUpdate}
 			/>
 			<MotionDiv
 				className={styles.childrenWrapper}
 				style={isExpanded ? expandedWrapperStyles : collapsedWrapperStyles}
-				layout
 			>
 				<MotionDiv
 					className={styles.children}
 					style={isExpanded ? expandedChildrenStyles : {}}
-					layout="position"
 				>
 					{children}
 				</MotionDiv>
