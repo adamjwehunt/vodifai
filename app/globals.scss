@@ -16,6 +16,11 @@ body {
 	font-family: var(--open-sans-font);
 }
 
+body::-webkit-scrollbar,
+div::-webkit-scrollbar {
+	display: none;
+}
+
 .modal-open {
 	position: fixed;
 	overflow: hidden;
