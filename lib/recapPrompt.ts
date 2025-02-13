@@ -50,7 +50,7 @@ export function createRecapPrompt(
 		);
 	}
 
-	// If it's not too large, handle normal logic
+	// Otherwise normal approach
 	return createStandardRecapPrompt(
 		title,
 		keyWords,
@@ -60,10 +60,10 @@ export function createRecapPrompt(
 	);
 }
 
-/** 
- * Standard approach for mid-range transcripts: 
+/**
+ * Standard approach for mid-range transcripts:
  * - If short, use shortTranscriptPrompt
- * - Otherwise codify + reduce 
+ * - Otherwise codify + reduce
  */
 function createStandardRecapPrompt(
 	title: string,
@@ -105,7 +105,7 @@ function createChunkedSummary(
 		chunks.push(transcriptWords.slice(i, i + maxChunkSize).join(' '));
 	}
 
-	// 2. For each chunk, we do a partial summarization (codify & reduce)
+	// 2. For each chunk, do a partial summarization (codify & reduce)
 	const partialSummaries: string[] = [];
 	for (const chunk of chunks) {
 		const reduced = createStandardRecapPrompt(
@@ -121,8 +121,7 @@ function createChunkedSummary(
 	// 3. Combine partial summaries into a single final summary
 	const partialCombination = partialSummaries.join(' ');
 
-	// 4. Summarize the partialSummaries themselves
-	//    This ensures we keep it within maxLength overall
+	// 4. Summarize the partialSummaries themselves, ensuring we keep it within maxLength
 	const combinedChapters = [reduceText(partialCombination)];
 	const { codifiedTranscript, key } = reduceTranscript(
 		codifyTranscript(combinedChapters),
@@ -152,7 +151,7 @@ function transcriptPrompt(
 	);
 }
 
-/** 
+/**
  * Fallback prompt used when no transcripts exist or we can’t meaningfully parse them.
  */
 function fallbackPrompt(title: string, keyWords: string, description = '') {
@@ -167,10 +166,16 @@ function fallbackPrompt(title: string, keyWords: string, description = '') {
 /**
  * Special short transcript prompt, relying more on title/desc/keywords.
  */
-function shortTranscriptPrompt(title: string, keyWords: string, description: string) {
+function shortTranscriptPrompt(
+	title: string,
+	keyWords: string,
+	description: string
+) {
 	return (
 		`The provided transcript is very short. Using the transcript (if any), along with ` +
-		`title:${reduceText(title)}, and keywords:${reduceKeyWords(keyWords)}, and ` +
+		`title:${reduceText(title)}, and keywords:${reduceKeyWords(
+			keyWords
+		)}, and ` +
 		(description?.length ? `description:${reduceText(description)}, ` : '') +
 		`summarize the overall content. Focus on clarity, main ideas, and any relevant context.`
 	);
@@ -281,7 +286,10 @@ export function codifyTranscript(chapters: string[]) {
 
 	const codifiedChapters = chapters.map((chapter) => {
 		for (const [word, replacementChar] of Object.entries(wordMap)) {
-			chapter = chapter.replace(new RegExp(`\\b${word}\\b`, 'g'), replacementChar);
+			chapter = chapter.replace(
+				new RegExp(`\\b${word}\\b`, 'g'),
+				replacementChar
+			);
 		}
 		return chapter;
 	});
@@ -290,10 +298,12 @@ export function codifyTranscript(chapters: string[]) {
 }
 
 export function getWordFrequency(text: string): Record<string, number> {
-	return text.split(' ').reduce((freq: Record<string, number>, word: string) => {
-		freq[word] = (freq[word] || 0) + 1;
-		return freq;
-	}, {});
+	return text
+		.split(' ')
+		.reduce((freq: Record<string, number>, word: string) => {
+			freq[word] = (freq[word] || 0) + 1;
+			return freq;
+		}, {});
 }
 
 export function filterShortWords(wordFrequency: Record<string, number>) {
@@ -308,7 +318,9 @@ export function filterShortWords(wordFrequency: Record<string, number>) {
 	return filteredWords;
 }
 
-export function sortWordsByWeight(wordFrequency: Record<string, number>): string[] {
+export function sortWordsByWeight(
+	wordFrequency: Record<string, number>
+): string[] {
 	return Object.keys(wordFrequency).sort(
 		(a, b) => wordFrequency[b] * b.length - wordFrequency[a] * a.length
 	);
@@ -377,8 +389,8 @@ function combinedRemove(text: string): string {
 		/\b(?:\d{3}[-.\s]??\d{3}[-.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}|\d{10})\b/g, // phone
 		/(0x)?[A-Fa-f0-9]{40}|(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}|(L|M|t)[a-km-zA-HJ-NP-Z1-9]{26,33}/g, // crypto
 		/\[[^\]]*\]\s*/g, // bracketed text
-		/[^\w\s]/gi,       // punctuation
-		/[\r\n]+/g,        // newlines
+		/[^\w\s]/gi, // punctuation
+		/[\r\n]+/g, // newlines
 	];
 
 	let cleaned = text.toLowerCase();
@@ -397,23 +409,41 @@ function removeWords(text: string, removalList: string[]): string {
 	const singleWords = removalList.filter((w) => !w.includes(' '));
 
 	// Remove multi-word phrases first
-	const multiWordRegex = new RegExp(`\\b(?:${multiWordPhrases.join('|')})\\b`, 'gi');
+	const multiWordRegex = new RegExp(
+		`\\b(?:${multiWordPhrases.join('|')})\\b`,
+		'gi'
+	);
 	let updated = text.replace(multiWordRegex, '');
 
 	// Then remove single words
-	const singleWordRegex = new RegExp(`\\b(?:${singleWords.join('|')})\\b`, 'gi');
+	const singleWordRegex = new RegExp(
+		`\\b(?:${singleWords.join('|')})\\b`,
+		'gi'
+	);
 	updated = updated.replace(singleWordRegex, '');
 
 	return updated.replace(/\s+/g, ' ').trim();
 }
 
 /**
- * Main text reduction: runs combinedRemove, removeWords, then stems
+ * Main text reduction pipeline:
+ *  1) Combined removes (URLs, punctuation, etc.)
+ *  2) Remove disclaimers & repeated lines
+ *  3) Remove known filler/buzz/stop/qualifier words
+ *  4) Stem final text
  */
 function reduceText(transcript: string) {
 	if (!transcript) return '';
 
 	let text = combinedRemove(transcript);
+
+	// 1) Remove disclaimers if present (multi-word phrases, part of disclaimers array)
+	text = removeWords(text, disclaimers);
+
+	// 2) Remove repeated lines
+	text = removeRepetitiveLines(text);
+
+	// 3) Remove buzz/filler/stop words
 	text = removeWords(text, [
 		...buzzPhrases,
 		...qualifierPhrases,
@@ -421,13 +451,41 @@ function reduceText(transcript: string) {
 		...stopWords,
 		...fillerWords,
 	]);
+
+	// 4) Stem
 	text = stemmer(text);
 
 	return text.trim();
 }
 
 /**
- * For keywords, we do the same cleaning, plus remove duplicates at the end.
+ * Remove near-exact repeated lines from the text.
+ * Splits by newline or period, reassembles if unique.
+ */
+function removeRepetitiveLines(text: string): string {
+	// Replace multiple periods/newlines with single newline for simpler splitting
+	let normalized = text.replace(/[.]+/g, '.\n').replace(/\r?\n+/g, '\n');
+	const lines = normalized
+		.split('\n')
+		.map((l) => l.trim())
+		.filter(Boolean);
+
+	const seen = new Set<string>();
+	const uniqueLines: string[] = [];
+
+	for (const line of lines) {
+		if (!seen.has(line)) {
+			seen.add(line);
+			uniqueLines.push(line);
+		}
+	}
+
+	// Rejoin with space or period
+	return uniqueLines.join('. ');
+}
+
+/**
+ * For keywords, do the same cleaning, plus remove duplicates at the end.
  */
 function reduceKeyWords(keyWords: string) {
 	if (!keyWords) return '';
@@ -439,7 +497,7 @@ function reduceKeyWords(keyWords: string) {
 }
 
 // -----------------------------------------------------------------------------------
-// Legacy removal helpers (optional), can be deleted if not used
+// Legacy removal helpers (optional). Safe to delete if not used anywhere else.
 // -----------------------------------------------------------------------------------
 export function removeUrls(text: string): string {
 	return text.replace(/(https?:\/\/[^\s]+)/g, '');
@@ -493,7 +551,17 @@ export function removeDuplicateWords(text: string) {
 	return uniqueWords.join(' ');
 }
 
+// -----------------------------------------------------------------------------------
 // Extended data sets
+// -----------------------------------------------------------------------------------
+const disclaimers = [
+	'this is not financial advice',
+	'for informational purposes only',
+	'please consult a professional',
+	'we are not responsible for any decisions',
+	'viewer discretion advised',
+];
+
 const buzzWords = [
 	'youtube',
 	'facebook',
