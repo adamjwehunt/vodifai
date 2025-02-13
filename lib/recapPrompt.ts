@@ -10,9 +10,11 @@ export function createRecapPrompt(
 	maxLength: number
 ) {
 	if (!captions.length) {
+		// No captions at all, just fallback right away
 		return fallbackPrompt(title, keyWords, description);
 	}
 
+	// Group/clean transcripts by chapter
 	const transcriptChapters =
 		chapters.length > 0
 			? groupCaptionsByChapter(captions, chapters).map(
@@ -23,6 +25,14 @@ export function createRecapPrompt(
 			  )
 			: [reduceText(captions.map(({ text }) => text).join(' '))];
 
+	// If the entire transcript is too short, fallback to shortTranscriptPrompt
+	const totalWords = transcriptChapters.join(' ').trim().split(/\s+/).length;
+	if (totalWords < 30) {
+		// Summaries for very short transcripts often need more context from title/description
+		return shortTranscriptPrompt(title, keyWords, description);
+	}
+
+	// Attempt codification & length reduction
 	const { codifiedTranscript, key } = reduceTranscript(
 		codifyTranscript(transcriptChapters),
 		maxLength - transcriptPrompt(title, keyWords).length
@@ -31,6 +41,9 @@ export function createRecapPrompt(
 	return transcriptPrompt(title, keyWords, codifiedTranscript, key);
 }
 
+/**
+ * Default transcript prompt for normal-length transcripts.
+ */
 const transcriptPrompt = (
 	title: string,
 	keyWords: string,
@@ -38,121 +51,138 @@ const transcriptPrompt = (
 	key = ''
 ) =>
 	`Decode text with key:${key} text:${codifiedTranscript} ` +
-	'Summarize video highlighting key points in a paragraph using complete sentences. ' +
-	'If impossible to make an informative summary then' +
-	`${fallbackPrompt(title, keyWords)}`;
+	'Summarize the video highlighting important points in a concise paragraph with complete sentences. ' +
+	'Focus on clarity and coherence. If the transcript appears incomplete or unhelpful, ' +
+	`please also consider the title and keywords. If still insufficient then ${fallbackPrompt(
+		title,
+		keyWords
+	)}`;
 
+/**
+ * Fallback prompt used when no transcripts exist or we can’t meaningfully parse them.
+ */
 const fallbackPrompt = (title: string, keyWords: string, description = '') =>
-	'Summarize video in a paragraph using ' +
-	`title:${reduceText(title)}` +
-	`${
-		keyWords.length
-			? ` keywords:${reduceKeyWords(keyWords)}`
-			: '' + description.length
-			? ` description:${reduceText(description)}`
-			: ''
-	}`;
+	'Summarize video in a concise paragraph using ' +
+	`title:${reduceText(title)}. ` +
+	(keyWords?.length ? `keywords:${reduceKeyWords(keyWords)}. ` : '') +
+	(description?.length ? `description:${reduceText(description)}. ` : '');
 
-	export function reduceTranscript(
-		{ chapters, key }: { chapters: string[]; key: string },
-		maxLength: number
-	) {
-		// Convert each chapter string into an array of words
-		let chapterArrays = chapters.map((chapter) => chapter.split(' '));
-		let newKey = key;
-	
-		// Precompute total word length across all arrays plus key length
-		while (totalStringLength(chapterArrays) + newKey.length > maxLength) {
-			// Compute total length and ratio for each chapter array
-			const lengths = chapterArrays.map((arr) => arr.join(' ').length);
-			const totalLength = lengths.reduce((acc, val) => acc + val, 0);
-	
-			// If total length is 0 or everything is single-word, break
-			if (!totalLength || chapterArrays.every((arr) => arr.length <= 1)) {
-				break;
-			}
-	
-			const ratios = lengths.map((len) => len / totalLength);
-			const remainingLength = maxLength - newKey.length;
-			const targetLengths = ratios.map((r) => Math.round(r * remainingLength));
-	
-			// Deviation: current length - target length
-			const deviations = lengths.map((length, i) => length - targetLengths[i]);
-	
-			// Highest deviation chapter
-			const maxDeviationIndex = deviations.reduce(
-				(iMax, dev, i) => (dev > deviations[iMax] ? i : iMax),
-				0
-			);
-	
-			// If that chapter is already at or below target length, or it is a single-word array, break
-			if (
-				chapterArrays[maxDeviationIndex].join(' ').length <=
-					targetLengths[maxDeviationIndex] ||
-				chapterArrays[maxDeviationIndex].length <= 1
-			) {
-				break;
-			}
-	
-			// Remove center word from that array
-			({ chapterArrays, key: newKey } = removeCenterWordByArray(
-				{ chapterArrays, key: newKey },
-				maxDeviationIndex
-			));
+/**
+ * Special short transcript prompt, relying more on title/description.
+ */
+const shortTranscriptPrompt = (
+	title: string,
+	keyWords: string,
+	description: string
+) =>
+	`The provided transcript is very short. Using the transcript (if any), along with ` +
+	`title:${reduceText(title)}, and keywords:${reduceKeyWords(keyWords)}, and ` +
+	(description?.length ? `description:${reduceText(description)}, ` : '') +
+	`summarize the overall content. Focus on clarity, main ideas, and any relevant context.`;
+
+/**
+ * reduceTranscript with array-based approach for repeated center-word removal
+ */
+export function reduceTranscript(
+	{ chapters, key }: { chapters: string[]; key: string },
+	maxLength: number
+) {
+	// Convert each chapter string into an array of words
+	let chapterArrays = chapters.map((chapter) => chapter.split(' '));
+	let newKey = key;
+
+	// Keep removing center words if length > maxLength
+	while (totalStringLength(chapterArrays) + newKey.length > maxLength) {
+		// lengths of each joined array
+		const lengths = chapterArrays.map((arr) => arr.join(' ').length);
+		const totalLength = lengths.reduce((acc, val) => acc + val, 0);
+
+		// If no content or all single-word arrays, no further trimming possible
+		if (!totalLength || chapterArrays.every((arr) => arr.length <= 1)) {
+			break;
 		}
-	
-		// Finally rejoin arrays
-		const newChapters = chapterArrays.map((arr) => arr.join(' ').trim());
-		return {
-			codifiedTranscript: newChapters.join(' ').trim(),
-			key: newKey,
-		};
-	}
-	
-	/**
-	 * Removes the center word from the specified chapter array,
-	 * and also adjusts the key if it references the removed word.
-	 */
-	function removeCenterWordByArray(
-		{ chapterArrays, key }: { chapterArrays: string[][]; key: string },
-		index: number
-	) {
-		const words = chapterArrays[index];
-		const centerIndex = Math.floor(words.length / 2);
-		const centerWord = words[centerIndex];
-	
-		// Remove the center word from the array
-		words.splice(centerIndex, 1);
-	
-		let newKey = key;
-		const keyValuePairs = newKey.split(' ');
-	
-		// If the removed center word matches a key-value pair in the form X=someWord
-		keyValuePairs.forEach((kv) => {
-			const [maybeKey, value] = kv.split('=');
-			if (maybeKey === centerWord && !words.includes(value)) {
-				// Check if maybeKey is used in ANY other chapter arrays
-				const keyStillUsed = chapterArrays.some((arr, i) => {
-					if (i === index) return false; // we already removed the word from this array
-					return arr.includes(maybeKey) || arr.join(' ').includes(`${maybeKey}=`);
-				});
-				// If the key isn't used anywhere else, remove it
-				if (!keyStillUsed) {
-					newKey = newKey.replace(kv, '');
-				}
-			}
-		});
-	
-		newKey = newKey.split(' ').filter(Boolean).join(' ');
-		return { chapterArrays, key: newKey };
-	}
-	
-	/** Utility to measure total joined length of all arrays */
-	function totalStringLength(chapterArrays: string[][]) {
-		return chapterArrays.reduce((acc, arr) => acc + arr.join(' ').length, 0);
-	}
-	
 
+		const ratios = lengths.map((len) => len / totalLength);
+		const remainingLength = maxLength - newKey.length;
+		const targetLengths = ratios.map((r) => Math.round(r * remainingLength));
+
+		// Deviation: current length - target length
+		const deviations = lengths.map((length, i) => length - targetLengths[i]);
+
+		// Pick the chapter with the greatest deviation
+		const maxDeviationIndex = deviations.reduce(
+			(iMax, dev, i) => (dev > deviations[iMax] ? i : iMax),
+			0
+		);
+
+		// If that chapter is already at/below target or single-word, break
+		if (
+			chapterArrays[maxDeviationIndex].join(' ').length <=
+				targetLengths[maxDeviationIndex] ||
+			chapterArrays[maxDeviationIndex].length <= 1
+		) {
+			break;
+		}
+
+		// Remove center word from that array
+		({ chapterArrays, key: newKey } = removeCenterWordByArray(
+			{ chapterArrays, key: newKey },
+			maxDeviationIndex
+		));
+	}
+
+	// Re-join arrays
+	const newChapters = chapterArrays.map((arr) => arr.join(' ').trim());
+	return {
+		codifiedTranscript: newChapters.join(' ').trim(),
+		key: newKey,
+	};
+}
+
+/**
+ * Removes the center word from the specified chapter array,
+ * and adjusts the key if it references the removed word.
+ */
+function removeCenterWordByArray(
+	{ chapterArrays, key }: { chapterArrays: string[][]; key: string },
+	index: number
+) {
+	const words = chapterArrays[index];
+	const centerIndex = Math.floor(words.length / 2);
+	const centerWord = words[centerIndex];
+
+	// Remove the center word
+	words.splice(centerIndex, 1);
+
+	let newKey = key;
+	const keyValuePairs = newKey.split(' ');
+
+	// If the removed center word matches a key-value pair in the form X=someWord
+	keyValuePairs.forEach((kv) => {
+		const [maybeKey, value] = kv.split('=');
+		if (maybeKey === centerWord && !words.includes(value)) {
+			// Check if maybeKey is used in ANY other chapter arrays
+			const keyStillUsed = chapterArrays.some((arr, i) => {
+				if (i === index) return false; // we just removed from this one
+				return arr.includes(maybeKey) || arr.join(' ').includes(`${maybeKey}=`);
+			});
+			// If the key isn't used anywhere else, remove it
+			if (!keyStillUsed) {
+				newKey = newKey.replace(kv, '');
+			}
+		}
+	});
+
+	newKey = newKey.split(' ').filter(Boolean).join(' ');
+	return { chapterArrays, key: newKey };
+}
+
+/** Utility to measure total joined length of all arrays */
+function totalStringLength(chapterArrays: string[][]) {
+	return chapterArrays.reduce((acc, arr) => acc + arr.join(' ').length, 0);
+}
+
+/** Codify transcript to compress repeated words */
 export function codifyTranscript(chapters: string[]) {
 	// Single characters that count as one token, see OpenAI docs re: tokenization
 	const replacementChars =
@@ -169,16 +199,19 @@ export function codifyTranscript(chapters: string[]) {
 	// Filter out words that occur once or are too short
 	const filteredWords = filterShortWords(wordFrequency);
 
-	// Sort words by their frequency * length
+	// Sort words by frequency * length
 	const sortedWords = sortWordsByWeight(filteredWords);
 
-	// Generate the key string + the mapping from words to replacement characters
+	// Generate the key string + mapping from words to replacement characters
 	let { wordMap, key } = generateWordMap(sortedWords, replacementChars);
 
-	// Replace words in chapters with their corresponding replacement characters
+	// Replace words in chapters
 	const codifiedChapters = chapters.map((chapter) => {
 		for (const [word, replacementChar] of Object.entries(wordMap)) {
-			chapter = chapter.replace(new RegExp(`\\b${word}\\b`, 'g'), replacementChar);
+			chapter = chapter.replace(
+				new RegExp(`\\b${word}\\b`, 'g'),
+				replacementChar
+			);
 		}
 		return chapter;
 	});
@@ -187,10 +220,12 @@ export function codifyTranscript(chapters: string[]) {
 }
 
 export function getWordFrequency(text: string): Record<string, number> {
-	return text.split(' ').reduce((freq: Record<string, number>, word: string) => {
-		freq[word] = (freq[word] || 0) + 1;
-		return freq;
-	}, {});
+	return text
+		.split(' ')
+		.reduce((freq: Record<string, number>, word: string) => {
+			freq[word] = (freq[word] || 0) + 1;
+			return freq;
+		}, {});
 }
 
 export function filterShortWords(wordFrequency: Record<string, number>) {
@@ -207,10 +242,12 @@ export function filterShortWords(wordFrequency: Record<string, number>) {
 	return filteredWords;
 }
 
-export function sortWordsByWeight(wordFrequency: Record<string, number>): string[] {
-	return Object.keys(wordFrequency).sort((a, b) => {
-		return wordFrequency[b] * b.length - wordFrequency[a] * a.length;
-	});
+export function sortWordsByWeight(
+	wordFrequency: Record<string, number>
+): string[] {
+	return Object.keys(wordFrequency).sort(
+		(a, b) => wordFrequency[b] * b.length - wordFrequency[a] * a.length
+	);
 }
 
 export function generateWordMap(
@@ -230,6 +267,7 @@ export function generateWordMap(
 	return { wordMap, key: key.trim() };
 }
 
+/** Chapter grouping helper */
 export function groupCaptionsByChapter(
 	captions: Caption[],
 	chapters: Chapter[]
@@ -266,7 +304,7 @@ export function groupCaptionsByChapter(
 
 /* 
   Combined single-pass cleanup for URLs, emails, phone #s, crypto addresses, 
-  bracketed text, punctuation, and newlines 
+  bracketed text, punctuation, newlines, etc.
 */
 function combinedRemove(text: string): string {
 	const mergedPatterns = [
@@ -275,8 +313,8 @@ function combinedRemove(text: string): string {
 		/\b(?:\d{3}[-.\s]??\d{3}[-.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}|\d{10})\b/g, // phone
 		/(0x)?[A-Fa-f0-9]{40}|(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}|(L|M|t)[a-km-zA-HJ-NP-Z1-9]{26,33}/g, // crypto
 		/\[[^\]]*\]\s*/g, // bracketed text
-		/[^\w\s]/gi,       // punctuation
-		/[\r\n]+/g,        // newlines
+		/[^\w\s]/gi, // punctuation
+		/[\r\n]+/g, // newlines
 	];
 
 	let cleaned = text.toLowerCase();
@@ -287,22 +325,33 @@ function combinedRemove(text: string): string {
 	return cleaned;
 }
 
-/*
-  Removes listed words/phrases in a single pass, separating multi-word phrases vs. single words.
-*/
+/**
+ * Removes listed words/phrases in a single pass, separating multi-word vs. single words.
+ */
 function removeWords(text: string, removalList: string[]): string {
 	const multiWordPhrases = removalList.filter((w) => w.includes(' '));
 	const singleWords = removalList.filter((w) => !w.includes(' '));
 
-	const multiWordRegex = new RegExp(`\\b(?:${multiWordPhrases.join('|')})\\b`, 'gi');
+	// Remove multi-word phrases first
+	const multiWordRegex = new RegExp(
+		`\\b(?:${multiWordPhrases.join('|')})\\b`,
+		'gi'
+	);
 	let updated = text.replace(multiWordRegex, '');
 
-	const singleWordRegex = new RegExp(`\\b(?:${singleWords.join('|')})\\b`, 'gi');
+	// Then remove single words
+	const singleWordRegex = new RegExp(
+		`\\b(?:${singleWords.join('|')})\\b`,
+		'gi'
+	);
 	updated = updated.replace(singleWordRegex, '');
 
 	return updated.replace(/\s+/g, ' ').trim();
 }
 
+/**
+ * Main text reduction: runs combinedRemove, removeWords, then stems
+ */
 function reduceText(transcript: string) {
 	if (!transcript) return '';
 
@@ -319,6 +368,9 @@ function reduceText(transcript: string) {
 	return text.trim();
 }
 
+/**
+ * For keywords, we still do the same cleaning, plus remove duplicates at the end.
+ */
 function reduceKeyWords(keyWords: string) {
 	if (!keyWords) return '';
 
@@ -328,7 +380,9 @@ function reduceKeyWords(keyWords: string) {
 	return text;
 }
 
-// Below remain older removal helpers - can be removed if no longer needed:
+// -----------------------------------------------------------------------------------
+// Below remain older removal helpers - you can remove them if no longer needed anywhere
+// -----------------------------------------------------------------------------------
 export function removeUrls(text: string): string {
 	return text.replace(/(https?:\/\/[^\s]+)/g, '');
 }
@@ -390,6 +444,10 @@ export function removeDuplicateWords(text: string) {
 	return uniqueWords.join(' ');
 }
 
+// -----------------------------------------------------------------------------------
+// Additional expanded sets of filler/buzz/qualifier words & phrases
+// -----------------------------------------------------------------------------------
+
 const buzzWords = [
 	'youtube',
 	'facebook',
@@ -400,6 +458,9 @@ const buzzWords = [
 	'subscribe',
 	'sponsor',
 	'sponsors',
+	'patreon',
+	'crowdfund',
+	'merch',
 ];
 
 const stopWords = [
@@ -446,6 +507,20 @@ const stopWords = [
 	'their',
 	'it',
 	'its',
+	// More common short words
+	'so',
+	'up',
+	'out',
+	'then',
+	'now',
+	'just',
+	'that',
+	'this',
+	'these',
+	'those',
+	'be',
+	'been',
+	'being',
 ];
 
 const fillerWords = [
@@ -455,6 +530,23 @@ const fillerWords = [
 	'really',
 	'um',
 	'uh',
+	'okay',
+	'ok',
+	'like',
+	'so',
+	'well',
+	'anyway',
+	'yeah',
+	'alright',
+	'guys',
+	'hey',
+	'folks',
+	'basically',
+	'honestly',
+	'seriously',
+	'hmm',
+	'uhm',
+	'mm',
 ];
 
 const buzzPhrases = [
@@ -466,6 +558,9 @@ const buzzPhrases = [
 	'lets get into it',
 	'before we start make sure to subscribe',
 	'thanks for watching',
+	'this video is sponsored by',
+	'turn on notifications',
+	'be sure to subscribe',
 ];
 
 const qualifierPhrases = [
@@ -483,4 +578,9 @@ const qualifierPhrases = [
 	'kind of',
 	'sort of',
 	'you know',
+	'if that makes sense',
+	'if im being honest',
+	'if im being frank',
+	'i guess',
+	'like i said',
 ];
