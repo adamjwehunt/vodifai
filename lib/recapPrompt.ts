@@ -58,17 +58,14 @@ export function reduceTranscript(
 	maxLength: number
 ) {
 	const chapterLengths = chapters.map((str) => str.length);
-	const totalLength = chapterLengths.reduce(
-		(total, length) => total + length,
-		0
-	);
+	const totalLength = chapterLengths.reduce((total, length) => total + length, 0);
 	const chapterRatios = chapterLengths.map((length) => length / totalLength);
 
 	let targetLengths: number[] = [];
 	let newChapters = [...chapters];
 	let newKey = key;
 
-	// Removes center word from each chapter until the total length is less than maxLength
+	// Removes center word from each chapter until the total length is < maxLength
 	// Maintains the ratio of the lengths of each chapter
 	while (newChapters.join(' ').length + newKey.length > maxLength) {
 		const remainingLength = maxLength - newKey.length;
@@ -84,8 +81,7 @@ export function reduceTranscript(
 		);
 
 		if (
-			newChapters[maxDeviationIndex].length <=
-				targetLengths[maxDeviationIndex] ||
+			newChapters[maxDeviationIndex].length <= targetLengths[maxDeviationIndex] ||
 			newChapters[maxDeviationIndex].split(' ').length === 1
 		) {
 			break;
@@ -121,20 +117,20 @@ export function removeCenterWord(
 
 	// Check if the center word matches a key-value pair
 	keyValuePairs.forEach((keyValuePair) => {
-		const [key, value] = keyValuePair.split('=');
-		if (key === centerWord && words.indexOf(value) === -1) {
+		const [maybeKey, value] = keyValuePair.split('=');
+		if (maybeKey === centerWord && words.indexOf(value) === -1) {
 			// Check if the key exists in any string after centerWord is removed
 			const keyExists = chapters.some(
 				(str, i) =>
 					i !== index &&
-					(str.split(' ').includes(key) || str.includes(`${key}=`))
+					(str.split(' ').includes(maybeKey) || str.includes(`${maybeKey}=`))
 			);
 			if (!keyExists) {
 				// Check if the key exists in the same string after centerWord is removed
 				const sameStringWords = words.join(' ');
 				if (
-					!sameStringWords.includes(`${key}=`) &&
-					sameStringWords.indexOf(key) === -1
+					!sameStringWords.includes(`${maybeKey}=`) &&
+					sameStringWords.indexOf(maybeKey) === -1
 				) {
 					newKey = newKey.replace(keyValuePair, '');
 				}
@@ -148,7 +144,7 @@ export function removeCenterWord(
 }
 
 export function codifyTranscript(chapters: string[]) {
-	// Single characters that count as one token, see https://platform.openai.com/tokenizer
+	// Single characters that count as one token, see OpenAI docs re: tokenization
 	const replacementChars =
 		'abcdefghijklmnopqrstuvwxyz' +
 		'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
@@ -166,16 +162,13 @@ export function codifyTranscript(chapters: string[]) {
 	// Sort words by their frequency * length
 	const sortedWords = sortWordsByWeight(filteredWords);
 
-	// Generate the key string and the mapping from words to replacement characters
+	// Generate the key string + the mapping from words to replacement characters
 	let { wordMap, key } = generateWordMap(sortedWords, replacementChars);
 
 	// Replace words in chapters with their corresponding replacement characters
 	const codifiedChapters = chapters.map((chapter) => {
 		for (const [word, replacementChar] of Object.entries(wordMap)) {
-			chapter = chapter.replace(
-				new RegExp(`\\b${word}\\b`, 'g'),
-				replacementChar
-			);
+			chapter = chapter.replace(new RegExp(`\\b${word}\\b`, 'g'), replacementChar);
 		}
 		return chapter;
 	});
@@ -184,12 +177,10 @@ export function codifyTranscript(chapters: string[]) {
 }
 
 export function getWordFrequency(text: string): Record<string, number> {
-	return text
-		.split(' ')
-		.reduce((freq: Record<string, number>, word: string) => {
-			freq[word] = (freq[word] || 0) + 1;
-			return freq;
-		}, {});
+	return text.split(' ').reduce((freq: Record<string, number>, word: string) => {
+		freq[word] = (freq[word] || 0) + 1;
+		return freq;
+	}, {});
 }
 
 export function filterShortWords(wordFrequency: Record<string, number>) {
@@ -198,6 +189,7 @@ export function filterShortWords(wordFrequency: Record<string, number>) {
 		const wordWeight = frequency * word.length;
 		const keyValueTemplate = `x=${word} `;
 
+		// Filter out low-frequency or short words
 		if (frequency > 1 && wordWeight > keyValueTemplate.length) {
 			filteredWords[word] = frequency;
 		}
@@ -205,9 +197,7 @@ export function filterShortWords(wordFrequency: Record<string, number>) {
 	return filteredWords;
 }
 
-export function sortWordsByWeight(
-	wordFrequency: Record<string, number>
-): string[] {
+export function sortWordsByWeight(wordFrequency: Record<string, number>): string[] {
 	return Object.keys(wordFrequency).sort((a, b) => {
 		return wordFrequency[b] * b.length - wordFrequency[a] * a.length;
 	});
@@ -219,6 +209,7 @@ export function generateWordMap(
 ) {
 	let key = '';
 	const wordMap: { [word: string]: string } = {};
+
 	for (let i = 0; i < sortedWords.length && i < replacementChars.length; i++) {
 		const word = sortedWords[i];
 		const replacementChar = replacementChars[i];
@@ -263,21 +254,50 @@ export function groupCaptionsByChapter(
 	return chapterCaptions;
 }
 
-function reduceText(transcript: string) {
-	if (!transcript) {
-		return '';
+/* 
+  Combined single-pass cleanup for URLs, emails, phone #s, crypto addresses, 
+  bracketed text, punctuation, and newlines 
+*/
+function combinedRemove(text: string): string {
+	const mergedPatterns = [
+		/(https?:\/\/[^\s]+)/g, // URLs
+		/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, // emails
+		/\b(?:\d{3}[-.\s]??\d{3}[-.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}|\d{10})\b/g, // phone
+		/(0x)?[A-Fa-f0-9]{40}|(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}|(L|M|t)[a-km-zA-HJ-NP-Z1-9]{26,33}/g, // crypto
+		/\[[^\]]*\]\s*/g, // bracketed text
+		/[^\w\s]/gi,       // punctuation
+		/[\r\n]+/g,        // newlines
+	];
+
+	let cleaned = text.toLowerCase();
+	for (const pattern of mergedPatterns) {
+		cleaned = cleaned.replace(pattern, '');
 	}
 
-	let text = transcript.toLowerCase();
-	text = removeUrls(text);
-	text = removeEmails(text);
-	text = removePhoneNumbers(text);
-	text = removeCryptoAddresses(text);
-	text = removeBracketedText(text);
-	text = removePunctuation(text);
-	text = removeNewLines(text);
-	text = removeExtraSpaces(text);
-	text = removePhrasesAndWords(text, [
+	return cleaned;
+}
+
+/*
+  Removes listed words/phrases in a single pass, separating multi-word phrases vs. single words.
+*/
+function removeWords(text: string, removalList: string[]): string {
+	const multiWordPhrases = removalList.filter((w) => w.includes(' '));
+	const singleWords = removalList.filter((w) => !w.includes(' '));
+
+	const multiWordRegex = new RegExp(`\\b(?:${multiWordPhrases.join('|')})\\b`, 'gi');
+	let updated = text.replace(multiWordRegex, '');
+
+	const singleWordRegex = new RegExp(`\\b(?:${singleWords.join('|')})\\b`, 'gi');
+	updated = updated.replace(singleWordRegex, '');
+
+	return updated.replace(/\s+/g, ' ').trim();
+}
+
+function reduceText(transcript: string) {
+	if (!transcript) return '';
+
+	let text = combinedRemove(transcript);
+	text = removeWords(text, [
 		...buzzPhrases,
 		...qualifierPhrases,
 		...buzzWords,
@@ -290,9 +310,7 @@ function reduceText(transcript: string) {
 }
 
 function reduceKeyWords(keyWords: string) {
-	if (!keyWords) {
-		return '';
-	}
+	if (!keyWords) return '';
 
 	let text = reduceText(keyWords);
 	text = removeDuplicateWords(text);
@@ -300,6 +318,7 @@ function reduceKeyWords(keyWords: string) {
 	return text;
 }
 
+// Below remain older removal helpers - can be removed if no longer needed:
 export function removeUrls(text: string): string {
 	return text.replace(/(https?:\/\/[^\s]+)/g, '');
 }
@@ -358,8 +377,7 @@ export function removePhrasesAndWords(text: string, wordsAndPhrases: string[]) {
 export function removeDuplicateWords(text: string) {
 	const words = text.split(' ');
 	const uniqueWords = Array.from(new Set(words));
-	const filteredText = uniqueWords.join(' ');
-	return filteredText;
+	return uniqueWords.join(' ');
 }
 
 const buzzWords = [
