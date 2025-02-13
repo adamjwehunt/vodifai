@@ -267,7 +267,7 @@ export const SearchTranscriptInput = forwardRef(function SearchTranscriptInput(
 						className={styles.searchTranscriptMenuItem}
 						style={{
 							backgroundColor:
-								highlightedIndex === index ? 'hsla(0, 0%, 0%, 0.3)' : null,
+								highlightedIndex === index ? 'hsla(0, 0%, 0%, 0.3)' : undefined,
 						}}
 						{...getItemProps({
 							item,

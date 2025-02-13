@@ -23,7 +23,9 @@ export default async function middleware(
 	request: NextRequest,
 	event: NextFetchEvent
 ): Promise<Response | undefined> {
-	const ip = request.ip ?? '127.0.0.1';
+	// Get the first IP from the x-forwarded-for header, or use a default.
+	const ip =
+		request.headers.get('x-forwarded-for')?.split(',')[0].trim() || '127.0.0.1';
 	const { success } = await ratelimit.limit(ip);
 	return success
 		? NextResponse.next()

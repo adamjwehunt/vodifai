@@ -5,12 +5,13 @@ import { getSearchResultsBackgroundImage } from 'utils';
 import styles from '@/app/page.module.scss';
 
 interface SearchProps {
-	params: { query: string };
+	params: Promise<{ query: string }>;
 }
 
-export default async function Search({ params: { query } }: SearchProps) {
+export default async function Search({ params }: SearchProps) {
+	const { query } = await params;
 	const videos = await searchVideos(decodeURIComponent(query));
-
+	
 	if (!videos.length) {
 		return null;
 	}

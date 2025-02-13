@@ -30,12 +30,11 @@ import styles from './watch.module.scss';
 import transcriptStyles from '@/components/Transcript/transcript.module.scss';
 
 interface WatchPageProps {
-	params: { v: string };
+	params: Promise<{ v: string }>;
 }
 
-export default async function WatchPage({
-	params: { v: videoId },
-}: WatchPageProps) {
+export default async function WatchPage({ params }: WatchPageProps) {
+	const { v: videoId } = await params;
 	const { videoInfo, captionTracks } = await getVideoInfo(videoId);
 
 	if (!videoInfo) {
@@ -96,7 +95,6 @@ export default async function WatchPage({
 						}
 					/>
 				</div>
-				{/* @ts-expect-error Server Component */}
 				<Transcript captionTracks={captionTracks} videoDetails={videoDetails}>
 					<Top>
 						<SearchTranscriptButton

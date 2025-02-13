@@ -8,13 +8,12 @@ import {
 import { getSearchResultsBackgroundImage } from 'utils';
 import styles from '@/app/page.module.scss';
 
-interface BrowseProps {
-	params: { videoCategoryId: string };
-}
-
-export default async function BrowsePage({
-	params: { videoCategoryId },
-}: BrowseProps) {
+export default async function BrowsePageProps({
+	params,
+}: {
+	params: Promise<{ videoCategoryId: string }>;
+}) {
+	const { videoCategoryId } = await params;
 	let [videos, categoryName] = await Promise.all([
 		getVideosByCategory(videoCategoryId),
 		getCategoryTitle(videoCategoryId),
@@ -37,9 +36,9 @@ export default async function BrowsePage({
 	return (
 		<VideoResults backgroundImage={backgroundImage}>
 			<>
-				{!categoryName ? null : (
+				{categoryName ? (
 					<div className={styles.categoryHeader}>{categoryName}</div>
-				)}
+				) : null}
 				<div className={styles.searchItems}>
 					{videos.map((video) => (
 						<SearchItem key={video.videoId} video={video} />

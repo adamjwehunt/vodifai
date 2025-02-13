@@ -9,9 +9,7 @@ export const PlayerStateContext = createContext<PlayerReducerState | null>(
 export const PlayerStateDispatchContext =
 	createContext<Dispatch<PlayerReducerAction> | null>(null);
 
-export const PlayerRefContext = createContext<RefObject<ReactPlayer> | null>(
-	null
-);
+export const PlayerRefContext = createContext<RefObject<ReactPlayer>>(null!);
 
 export const usePlayerState = () => {
 	const playerState = useContext(PlayerStateContext);
@@ -36,9 +34,7 @@ export const usePlayerStateDispatch = () => {
 export const usePlayerRef = () => {
 	const playerRef = useContext(PlayerRefContext);
 	const playerStateDispatch = usePlayerStateDispatch();
-
-
-	if (playerRef === null) {
+	if (!playerRef) {
 		throw Error('PlayerRefContext has not been provided.');
 	}
 

@@ -8,8 +8,9 @@ export const TranscriptStateContext =
 export const TranscriptStateDispatchContext =
 	createContext<Dispatch<TranscriptReducerAction> | null>(null);
 
-export const CaptionsRefContext =
-	createContext<RefObject<CaptionsHandle> | null>(null);
+export const CaptionsRefContext = createContext<
+	RefObject<CaptionsHandle | null>
+>(null!);
 
 export const useTranscriptState = () => {
 	const transcriptState = useContext(TranscriptStateContext);

@@ -1,5 +1,6 @@
 import { Caption } from '@/app/types';
 import { captionTrack } from 'ytdl-core';
+import { DOMParser, Document as XmldomDocument } from '@xmldom/xmldom';
 
 export const findBestTranscriptUrl = (
 	captionTracks: captionTrack[],
@@ -12,7 +13,7 @@ export const findBestTranscriptUrl = (
 	return (trackMatchesByLanguage[0] || captionTracks[0])?.baseUrl ?? '';
 };
 
-export const mapYoutubeCaptions = (transcript: Document): Caption[] => {
+export const mapYoutubeCaptions = (transcript: XmldomDocument): Caption[] => {
 	const sentenceNodes = Array.from(transcript.getElementsByTagName('text'));
 	return sentenceNodes.map((sentence, index) => ({
 		id: index,

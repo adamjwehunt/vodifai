@@ -1,61 +1,47 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	webpack(config) {
-		// Grab the existing rule that handles SVG imports
-		const fileLoaderRule = config.module.rules.find((rule) =>
-			rule.test?.test?.('.svg')
-		);
-
-		config.module.rules.push(
-			// Reapply the existing rule, but only for svg imports ending in ?url
-			{
-				...fileLoaderRule,
-				test: /\.svg$/i,
-				resourceQuery: /url/, // *.svg?url
-			},
-			// Convert all other *.svg imports to React components
-			{
-				test: /\.svg$/i,
-				// issuer: /\.[jt]sx?$/,
-				resourceQuery: { not: /url/ }, // exclude if *.svg?url
-				use: ['@svgr/webpack'],
-			}
-		);
-
-		// Modify the file loader rule to ignore *.svg, since we have it handled now.
-		fileLoaderRule.exclude = /\.svg$/i;
-
-		return config;
-	},
-	experimental: {
-		appDir: true,
-	},
-	sassOptions: {
-		includePaths: ['./app', './components'],
-		prependData: `@import "variables.scss";`,
-	},
-	images: {
-		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'i.ytimg.com',
-				port: '',
-				pathname: '/vi/**',
-			},
-			{
-				protocol: 'https',
-				hostname: 'yt3.ggpht.com',
-				port: '',
-				pathname: '/ytc/**',
-			},
-			{
-				protocol: 'https',
-				hostname: 'yt3.ggpht.com',
-				port: '',
-				pathname: '/**',
-			},
-		],
-	},
+  webpack(config) {
+    const fileLoaderRule = config.module.rules.find((rule) =>
+      rule.test?.test?.('.svg')
+    );
+    config.module.rules.push(
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/,
+      },
+      {
+        test: /\.svg$/i,
+        resourceQuery: { not: /url/ },
+        use: ['@svgr/webpack'],
+      }
+    );
+    fileLoaderRule.exclude = /\.svg$/i;
+    return config;
+  },
+  sassOptions: {
+    includePaths: ['./app', './components'],
+    additionalData: `@use "variables" as *;`,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+        pathname: '/vi/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'yt3.ggpht.com',
+        pathname: '/ytc/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'yt3.ggpht.com',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

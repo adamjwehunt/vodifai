@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import Vibrant from 'node-vibrant';
+import { Vibrant } from 'node-vibrant/node';
 import sharp from 'sharp';
 import { extractColors, getBestColor, rgbArrayToString } from 'utils';
 
@@ -103,7 +103,7 @@ export async function generateComplimentaryColor(
 			.toFormat('png')
 			.toBuffer();
 
-		const vibrant: Vibrant = new Vibrant(thumbnailBuffer);
+		const vibrant = new Vibrant(thumbnailBuffer);
 		const palette: any = await vibrant.getPalette();
 		const colors = extractColors(palette);
 		const newColor = getBestColor(colors, [
@@ -121,4 +121,3 @@ export async function generateComplimentaryColor(
 		return;
 	}
 }
-

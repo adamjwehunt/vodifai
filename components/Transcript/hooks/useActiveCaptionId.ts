@@ -6,7 +6,7 @@ export const useActiveCaptionId = (
 	played: number,
 	isAnimating: boolean
 ): number | undefined => {
-	const previousActiveCaptionId = useRef<number | undefined>();
+	const previousActiveCaptionId = useRef<number | undefined>(undefined);
 
 	const activeCaptionId = useMemo(() => {
 		// Prevents activeCaptionId from updating while animation is in progress

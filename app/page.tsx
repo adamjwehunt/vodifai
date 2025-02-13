@@ -23,7 +23,6 @@ export default function Home() {
 					</div>
 				</button>
 			</Link>
-			{/* @ts-expect-error Server Component */}
 			<Categories />
 		</div>
 	);

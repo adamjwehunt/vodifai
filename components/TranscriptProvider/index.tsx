@@ -31,7 +31,7 @@ export const TranscriptProvider = ({
 		{ ...DEFAULT_TRANSCRIPT_REDUCER_STATE, captions, videoDetails }
 	);
 
-	const captionsRef = useRef<CaptionsHandle>(null);
+	const captionsRef = useRef<CaptionsHandle | null>(null);
 
 	return (
 		<TranscriptStateContext.Provider value={transcriptState}>
