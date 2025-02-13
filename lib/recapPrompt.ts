@@ -53,95 +53,105 @@ const fallbackPrompt = (title: string, keyWords: string, description = '') =>
 			: ''
 	}`;
 
-export function reduceTranscript(
-	{ chapters, key }: { chapters: string[]; key: string },
-	maxLength: number
-) {
-	const chapterLengths = chapters.map((str) => str.length);
-	const totalLength = chapterLengths.reduce((total, length) => total + length, 0);
-	const chapterRatios = chapterLengths.map((length) => length / totalLength);
-
-	let targetLengths: number[] = [];
-	let newChapters = [...chapters];
-	let newKey = key;
-
-	// Removes center word from each chapter until the total length is < maxLength
-	// Maintains the ratio of the lengths of each chapter
-	while (newChapters.join(' ').length + newKey.length > maxLength) {
-		const remainingLength = maxLength - newKey.length;
-		targetLengths = chapterRatios.map((ratio) =>
-			Math.round(ratio * remainingLength)
-		);
-		const deviations = newChapters.map(
-			(str, i) => str.length - targetLengths[i]
-		);
-		const maxDeviationIndex = deviations.reduce(
-			(iMax, deviation, i) => (deviation > deviations[iMax] ? i : iMax),
-			0
-		);
-
-		if (
-			newChapters[maxDeviationIndex].length <= targetLengths[maxDeviationIndex] ||
-			newChapters[maxDeviationIndex].split(' ').length === 1
-		) {
-			break;
-		}
-
-		({ chapters: newChapters, key: newKey } = removeCenterWord(
-			{ chapters: newChapters, key: newKey },
-			maxDeviationIndex
-		));
-	}
-
-	return {
-		codifiedTranscript: newChapters.join(' ').trim(),
-		key: newKey,
-	};
-}
-
-export function removeCenterWord(
-	{ chapters, key }: { chapters: string[]; key: string },
-	index: number
-) {
-	const string = chapters[index];
-	const words = string.split(' ');
-	const centerIndex = Math.floor(words.length / 2);
-	const centerWord = words[centerIndex];
-	words.splice(centerIndex, 1);
-
-	const newChapters = [...chapters];
-	newChapters[index] = words.join(' ');
-
-	let newKey = key;
-	const keyValuePairs = newKey.split(' ');
-
-	// Check if the center word matches a key-value pair
-	keyValuePairs.forEach((keyValuePair) => {
-		const [maybeKey, value] = keyValuePair.split('=');
-		if (maybeKey === centerWord && words.indexOf(value) === -1) {
-			// Check if the key exists in any string after centerWord is removed
-			const keyExists = chapters.some(
-				(str, i) =>
-					i !== index &&
-					(str.split(' ').includes(maybeKey) || str.includes(`${maybeKey}=`))
+	export function reduceTranscript(
+		{ chapters, key }: { chapters: string[]; key: string },
+		maxLength: number
+	) {
+		// Convert each chapter string into an array of words
+		let chapterArrays = chapters.map((chapter) => chapter.split(' '));
+		let newKey = key;
+	
+		// Precompute total word length across all arrays plus key length
+		while (totalStringLength(chapterArrays) + newKey.length > maxLength) {
+			// Compute total length and ratio for each chapter array
+			const lengths = chapterArrays.map((arr) => arr.join(' ').length);
+			const totalLength = lengths.reduce((acc, val) => acc + val, 0);
+	
+			// If total length is 0 or everything is single-word, break
+			if (!totalLength || chapterArrays.every((arr) => arr.length <= 1)) {
+				break;
+			}
+	
+			const ratios = lengths.map((len) => len / totalLength);
+			const remainingLength = maxLength - newKey.length;
+			const targetLengths = ratios.map((r) => Math.round(r * remainingLength));
+	
+			// Deviation: current length - target length
+			const deviations = lengths.map((length, i) => length - targetLengths[i]);
+	
+			// Highest deviation chapter
+			const maxDeviationIndex = deviations.reduce(
+				(iMax, dev, i) => (dev > deviations[iMax] ? i : iMax),
+				0
 			);
-			if (!keyExists) {
-				// Check if the key exists in the same string after centerWord is removed
-				const sameStringWords = words.join(' ');
-				if (
-					!sameStringWords.includes(`${maybeKey}=`) &&
-					sameStringWords.indexOf(maybeKey) === -1
-				) {
-					newKey = newKey.replace(keyValuePair, '');
+	
+			// If that chapter is already at or below target length, or it is a single-word array, break
+			if (
+				chapterArrays[maxDeviationIndex].join(' ').length <=
+					targetLengths[maxDeviationIndex] ||
+				chapterArrays[maxDeviationIndex].length <= 1
+			) {
+				break;
+			}
+	
+			// Remove center word from that array
+			({ chapterArrays, key: newKey } = removeCenterWordByArray(
+				{ chapterArrays, key: newKey },
+				maxDeviationIndex
+			));
+		}
+	
+		// Finally rejoin arrays
+		const newChapters = chapterArrays.map((arr) => arr.join(' ').trim());
+		return {
+			codifiedTranscript: newChapters.join(' ').trim(),
+			key: newKey,
+		};
+	}
+	
+	/**
+	 * Removes the center word from the specified chapter array,
+	 * and also adjusts the key if it references the removed word.
+	 */
+	function removeCenterWordByArray(
+		{ chapterArrays, key }: { chapterArrays: string[][]; key: string },
+		index: number
+	) {
+		const words = chapterArrays[index];
+		const centerIndex = Math.floor(words.length / 2);
+		const centerWord = words[centerIndex];
+	
+		// Remove the center word from the array
+		words.splice(centerIndex, 1);
+	
+		let newKey = key;
+		const keyValuePairs = newKey.split(' ');
+	
+		// If the removed center word matches a key-value pair in the form X=someWord
+		keyValuePairs.forEach((kv) => {
+			const [maybeKey, value] = kv.split('=');
+			if (maybeKey === centerWord && !words.includes(value)) {
+				// Check if maybeKey is used in ANY other chapter arrays
+				const keyStillUsed = chapterArrays.some((arr, i) => {
+					if (i === index) return false; // we already removed the word from this array
+					return arr.includes(maybeKey) || arr.join(' ').includes(`${maybeKey}=`);
+				});
+				// If the key isn't used anywhere else, remove it
+				if (!keyStillUsed) {
+					newKey = newKey.replace(kv, '');
 				}
 			}
-		}
-	});
-
-	newKey = newKey.split(' ').filter(Boolean).join(' '); // remove empty strings
-
-	return { chapters: newChapters, key: newKey };
-}
+		});
+	
+		newKey = newKey.split(' ').filter(Boolean).join(' ');
+		return { chapterArrays, key: newKey };
+	}
+	
+	/** Utility to measure total joined length of all arrays */
+	function totalStringLength(chapterArrays: string[][]) {
+		return chapterArrays.reduce((acc, arr) => acc + arr.join(' ').length, 0);
+	}
+	
 
 export function codifyTranscript(chapters: string[]) {
 	// Single characters that count as one token, see OpenAI docs re: tokenization
