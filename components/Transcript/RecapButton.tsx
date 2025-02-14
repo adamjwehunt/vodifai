@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
-import { useCompletion } from 'ai/react'; // <-- from npm install ai
+import { useCompletion } from 'ai/react';
 import { ClipboardButton } from '../ClipboardButton';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { TextToSpeech, TextToSpeechRef } from './TextToSpeech';
@@ -34,58 +34,38 @@ export const RecapButton = ({
 	const [isRecapFinished, setIsRecapFinished] = useState(false);
 	const [isTextToSpeechPlaying, setIsTextToSpeechPlaying] = useState(false);
 
-	// We no longer manually track 'generatedRecap' while streaming, because
-	// `useCompletion` gives us a `completion` string that updates with each token.
-	// If you prefer storing it yourself, you can do so with `onResponse` or `onFinish`.
-	// But for the minimal approach, we'll show partial text via `completion`.
-
-	// This hook does the SSE streaming behind the scenes.
-	const {
-		completion, // partial or complete text from the AI
-		isLoading, // true while streaming
-		error,
-		complete, // function to trigger the request
-		setCompletion, // if needed to manually reset the text
-	} = useCompletion({
-		api: '/api/recap', // the route we call
-		body: {
-			// We pass your YT data up front, so the route knows how to build the prompt:
-			title,
-			keywords,
-			chapters,
-			description,
-			captions,
-		},
-		onFinish: (prompt, finalText) => {
-			// Called once the stream is fully done
-			setIsRecapFinished(true);
-			// Optionally do something else here:
-			// console.log('Finished Recap. Full text is:', finalText);
-		},
-	});
+	const { completion, isLoading, error, complete, setCompletion } =
+		useCompletion({
+			api: '/api/recap',
+			body: {
+				title,
+				keywords,
+				chapters,
+				description,
+				captions,
+			},
+			onFinish: (prompt, finalText) => {
+				setIsRecapFinished(true);
+			},
+		});
 
 	const modalRef = useRef<ModalRef>(null);
 	const textToSpeechRef = useRef<TextToSpeechRef>(null);
 
-	// Stop TTS if we unmount
 	useEffect(() => {
 		return () => setIsTextToSpeechPlaying(false);
 	}, []);
 
 	const handleShowRecap = useCallback(async () => {
-		// Open the modal
 		modalRef.current?.open();
 
-		// If we've already finished once, do nothing
 		if (isRecapFinished) {
 			return;
 		}
 
-		// Reset partial text & states
 		setCompletion('');
 		setIsRecapFinished(false);
 
-		// Trigger the SSE request
 		await complete('');
 	}, [complete, isRecapFinished, setCompletion]);
 
@@ -102,7 +82,6 @@ export const RecapButton = ({
 		setIsTextToSpeechPlaying(false);
 	};
 
-	// We'll "trim" the partial or final text from the AI
 	const trimmedRecap = trimRecap(completion);
 
 	return (
@@ -148,11 +127,6 @@ export const RecapButton = ({
 					</p>
 				)}
 
-				{/**
-				 * If the stream hasn't fully finished, we still show partial text
-				 * (i.e. `trimmedRecap`).
-				 * Once `isRecapFinished` is true, we also allow TTS & copying.
-				 */}
 				{!isRecapFinished ? (
 					trimmedRecap
 				) : (
