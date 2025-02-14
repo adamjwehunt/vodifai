@@ -1,6 +1,6 @@
 import { Caption } from '@/app/types';
-import { captionTrack } from 'ytdl-core';
-import { DOMParser, Document as XmldomDocument } from '@xmldom/xmldom';
+import { captionTrack } from '@distube/ytdl-core';
+import { Document as XmldomDocument } from '@xmldom/xmldom';
 
 export const findBestTranscriptUrl = (
 	captionTracks: captionTrack[],

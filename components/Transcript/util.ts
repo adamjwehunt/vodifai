@@ -1,9 +1,8 @@
-import { captionTrack } from 'ytdl-core';
+import { captionTrack } from '@distube/ytdl-core';
 import he from 'he';
 import { DOMParser } from '@xmldom/xmldom';
 import { Caption } from '@/app/types';
 import { findBestTranscriptUrl, mapYoutubeCaptions } from 'utils/youtubeUtil';
-
 
 export async function getCaptions(
 	captionTracks: captionTrack[],

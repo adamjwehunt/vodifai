@@ -1,7 +1,7 @@
 import { Palette, WatchViewColors } from '@/app/types';
 import { youtube_v3 } from 'googleapis';
 import { Vibrant } from 'node-vibrant/node';
-import { thumbnail } from 'ytdl-core';
+import { thumbnail } from '@distube/ytdl-core';
 
 export function getBestColor(
 	palette: {

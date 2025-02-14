@@ -1,5 +1,5 @@
 import { youtube_v3 } from 'googleapis';
-import { videoFormat } from 'ytdl-core';
+import { videoFormat } from '@distube/ytdl-core';
 
 export interface SearchResult {
 	videoId: string;

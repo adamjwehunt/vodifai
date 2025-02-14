@@ -1,5 +1,5 @@
 import { Caption, OpenAIStreamPayload } from '@/app/types';
-import { Chapter } from 'ytdl-core';
+import { Chapter } from '@distube/ytdl-core';
 import { OpenAIStream } from '../../../lib/OpenAIStream';
 import { createRecapPrompt } from '../../../lib/recapPrompt';
 

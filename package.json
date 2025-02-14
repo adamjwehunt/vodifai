@@ -10,6 +10,7 @@
 		"test": "jest --watch"
 	},
 	"dependencies": {
+		"@distube/ytdl-core": "^4.16.3",
 		"@radix-ui/react-slider": "1.2.3",
 		"@types/node": "22.13.1",
 		"@types/react": "19.0.8",
@@ -36,8 +37,7 @@
 		"sharp": "^0.33.5",
 		"stemmer": "^2.0.1",
 		"tts-react": "^4.0.0",
-		"typescript": "5.7.3",
-		"ytdl-core": "npm:@distube/ytdl-core@^4.16.3"
+		"typescript": "5.7.3"
 	},
 	"devDependencies": {
 		"@svgr/webpack": "^8.1.0",

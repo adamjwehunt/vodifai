@@ -2,7 +2,7 @@
 
 import { ReactElement, useRef } from 'react';
 import { Download } from '@/app/types';
-import { videoFormat } from 'ytdl-core';
+import { videoFormat } from '@distube/ytdl-core';
 import { ModalRef, Modal } from '@/components/Modal';
 import { usePlayerState } from '@/components/PlayerProvider/playerContext';
 import { cleanAudioQualityString, formatBytes, getUniqueFormats } from './util';

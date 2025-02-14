@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@distube/ytdl-core':
+        specifier: ^4.16.3
+        version: 4.16.3
       '@radix-ui/react-slider':
         specifier: 1.2.3
         version: 1.2.3(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -89,9 +92,6 @@ importers:
       typescript:
         specifier: 5.7.3
         version: 5.7.3
-      ytdl-core:
-        specifier: npm:@distube/ytdl-core@^4.16.3
-        version: '@distube/ytdl-core@4.16.3'
     devDependencies:
       '@svgr/webpack':
         specifier: ^8.1.0

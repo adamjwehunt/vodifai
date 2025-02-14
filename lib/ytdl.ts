@@ -1,5 +1,5 @@
 import { VideoInfo } from '@/app/types';
-import ytdl, { captionTrack } from 'ytdl-core';
+import ytdl, { captionTrack } from '@distube/ytdl-core';
 import {
 	getVideoColors,
 	getWatchViewColors,

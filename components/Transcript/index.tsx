@@ -1,4 +1,4 @@
-import { captionTrack } from 'ytdl-core';
+import { captionTrack } from '@distube/ytdl-core';
 import { TranscriptProvider } from '../TranscriptProvider';
 import { VideoDetails } from '@/app/types';
 import { getCaptions } from './util';
