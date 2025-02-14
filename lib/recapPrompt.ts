@@ -132,7 +132,7 @@ function createChunkedSummary(
 }
 
 /**
- * Prompt for normal transcripts.
+ * Main transcript prompt.
  */
 function transcriptPrompt(
 	title: string,
@@ -142,12 +142,10 @@ function transcriptPrompt(
 ) {
 	return (
 		`Decode text with key:${key} text:${codifiedTranscript} ` +
-		'Summarize the video highlighting important points in a concise paragraph with complete sentences. ' +
-		'Focus on clarity and coherence. If the transcript appears incomplete or unhelpful, ' +
-		`please also consider the title and keywords. If still insufficient then ${fallbackPrompt(
-			title,
-			keyWords
-		)}`
+		'Summarize the video in a concise paragraph with complete sentences. ' +
+		'Focus on key points and overall context. Avoid referencing any source or medium. ' +
+		'If information is incomplete, also consider title and keywords. ' +
+		`If still insufficient then ${fallbackPrompt(title, keyWords)}`
 	);
 }
 
@@ -164,7 +162,8 @@ function fallbackPrompt(title: string, keyWords: string, description = '') {
 }
 
 /**
- * Special short transcript prompt, relying more on title/desc/keywords.
+ * Special short transcript prompt, relying more on title/desc/keywords,
+ * but avoiding mention of "transcript is short," "video," etc.
  */
 function shortTranscriptPrompt(
 	title: string,
@@ -172,12 +171,10 @@ function shortTranscriptPrompt(
 	description: string
 ) {
 	return (
-		`The provided transcript is very short. Using the transcript (if any), along with ` +
-		`title:${reduceText(title)}, and keywords:${reduceKeyWords(
-			keyWords
-		)}, and ` +
+		`Material is extremely brief. Combine any details from ` +
+		`title:${reduceText(title)}, keywords:${reduceKeyWords(keyWords)}, ` +
 		(description?.length ? `description:${reduceText(description)}, ` : '') +
-		`summarize the overall content. Focus on clarity, main ideas, and any relevant context.`
+		'and produce a clear, direct overview focusing on main ideas.'
 	);
 }
 
@@ -230,7 +227,9 @@ export function reduceTranscript(
 	};
 }
 
-/** Removes center word from specified chapter array, adjusts key if needed */
+/**
+ * Removes the center word from the specified chapter array, also adjusting the codification key if needed.
+ */
 function removeCenterWordByArray(
 	{ chapterArrays, key }: { chapterArrays: string[][]; key: string },
 	index: number
@@ -244,15 +243,16 @@ function removeCenterWordByArray(
 	let newKey = key;
 	const keyValuePairs = newKey.split(' ');
 
-	keyValuePairs.forEach((kv) => {
-		const [maybeKey, value] = kv.split('=');
+	// If the removed center word matches a key-value pair, remove it if it’s no longer needed
+	keyValuePairs.forEach((keyValuePair) => {
+		const [maybeKey, value] = keyValuePair.split('=');
 		if (maybeKey === centerWord && !words.includes(value)) {
 			const keyStillUsed = chapterArrays.some((arr, i) => {
 				if (i === index) return false;
 				return arr.includes(maybeKey) || arr.join(' ').includes(`${maybeKey}=`);
 			});
 			if (!keyStillUsed) {
-				newKey = newKey.replace(kv, '');
+				newKey = newKey.replace(keyValuePair, '');
 			}
 		}
 	});
@@ -321,9 +321,9 @@ export function filterShortWords(wordFrequency: Record<string, number>) {
 export function sortWordsByWeight(
 	wordFrequency: Record<string, number>
 ): string[] {
-	return Object.keys(wordFrequency).sort(
-		(a, b) => wordFrequency[b] * b.length - wordFrequency[a] * a.length
-	);
+	return Object.keys(wordFrequency).sort((a, b) => {
+		return wordFrequency[b] * b.length - wordFrequency[a] * a.length;
+	});
 }
 
 export function generateWordMap(
@@ -332,7 +332,6 @@ export function generateWordMap(
 ) {
 	let key = '';
 	const wordMap: { [word: string]: string } = {};
-
 	for (let i = 0; i < sortedWords.length && i < replacementChars.length; i++) {
 		const word = sortedWords[i];
 		const replacementChar = replacementChars[i];
@@ -343,7 +342,10 @@ export function generateWordMap(
 	return { wordMap, key: key.trim() };
 }
 
-/** Chapter grouping helper */
+/**
+ * Groups captions by chapters.
+ * This allows chunking the transcript if needed.
+ */
 export function groupCaptionsByChapter(
 	captions: Caption[],
 	chapters: Chapter[]
@@ -379,8 +381,12 @@ export function groupCaptionsByChapter(
 }
 
 /* 
-  Combined single-pass cleanup for URLs, emails, phone #s, crypto addresses, 
-  bracketed text, punctuation, newlines, etc.
+  Combined single-pass cleanup for:
+  - URLs, 
+  - emails, 
+  - phone #s, 
+  - crypto addresses, 
+  - bracketed text, punctuation, newlines, etc.
 */
 function combinedRemove(text: string): string {
 	const mergedPatterns = [
@@ -402,7 +408,7 @@ function combinedRemove(text: string): string {
 }
 
 /**
- * Removes listed words/phrases in a single pass, separating multi-word vs. single words.
+ * Removes listed words/phrases in a single pass, separating multi-word phrases vs. single words.
  */
 function removeWords(text: string, removalList: string[]): string {
 	const multiWordPhrases = removalList.filter((w) => w.includes(' '));
@@ -433,17 +439,19 @@ function removeWords(text: string, removalList: string[]): string {
  *  4) Stem final text
  */
 function reduceText(transcript: string) {
-	if (!transcript) return '';
+	if (!transcript) {
+		return '';
+	}
 
 	let text = combinedRemove(transcript);
 
-	// 1) Remove disclaimers if present (multi-word phrases, part of disclaimers array)
+	// 1) disclaimers
 	text = removeWords(text, disclaimers);
 
-	// 2) Remove repeated lines
+	// 2) remove repeated lines
 	text = removeRepetitiveLines(text);
 
-	// 3) Remove buzz/filler/stop words
+	// 3) remove buzz/filler/stop words
 	text = removeWords(text, [
 		...buzzPhrases,
 		...qualifierPhrases,
@@ -452,7 +460,7 @@ function reduceText(transcript: string) {
 		...fillerWords,
 	]);
 
-	// 4) Stem
+	// 4) stem
 	text = stemmer(text);
 
 	return text.trim();
@@ -488,7 +496,9 @@ function removeRepetitiveLines(text: string): string {
  * For keywords, do the same cleaning, plus remove duplicates at the end.
  */
 function reduceKeyWords(keyWords: string) {
-	if (!keyWords) return '';
+	if (!keyWords) {
+		return '';
+	}
 
 	let text = reduceText(keyWords);
 	text = removeDuplicateWords(text);
@@ -496,55 +506,9 @@ function reduceKeyWords(keyWords: string) {
 	return text;
 }
 
-// -----------------------------------------------------------------------------------
-// Legacy removal helpers (optional). Safe to delete if not used anywhere else.
-// -----------------------------------------------------------------------------------
-export function removeUrls(text: string): string {
-	return text.replace(/(https?:\/\/[^\s]+)/g, '');
-}
-export function removeEmails(text: string): string {
-	return text.replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, '');
-}
-export function removePhoneNumbers(text: string): string {
-	return text.replace(
-		/\b(?:\d{3}[-.\s]??\d{3}[-.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}|\d{10})\b/g,
-		''
-	);
-}
-export function removeCryptoAddresses(text: string): string {
-	return text.replace(
-		/(0x)?[A-Fa-f0-9]{40}|(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}|(L|M|t)[a-km-zA-HJ-NP-Z1-9]{26,33}/g,
-		''
-	);
-}
-export function removeBracketedText(text: string): string {
-	return text.replace(/\[[^\]]*\]\s*/g, '');
-}
-export function removePunctuation(text: string): string {
-	return text.replace(/[^\w\s]/gi, '');
-}
-export function removeNewLines(text: string): string {
-	return text.replace(/[\r\n]+/g, ' ');
-}
-export function removeExtraSpaces(text: string): string {
-	return text.replace(/\s+/g, ' ');
-}
-export function removePhrasesAndWords(text: string, wordsAndPhrases: string[]) {
-	const phraseRegex = new RegExp(
-		`\\s*(${wordsAndPhrases.filter((w) => /\s/.test(w)).join('|')})\\s*`,
-		'gi'
-	);
-	const wordRegex = new RegExp(
-		`\\b(${wordsAndPhrases.filter((w) => !/\s/.test(w)).join('|')})\\b`,
-		'gi'
-	);
-
-	return text
-		.replace(phraseRegex, '')
-		.replace(wordRegex, '')
-		.replace(/\s+/g, ' ')
-		.trim();
-}
+/**
+ * Remove duplicate words from a string.
+ */
 export function removeDuplicateWords(text: string) {
 	const words = text.split(' ');
 	const uniqueWords = Array.from(new Set(words));
@@ -552,7 +516,8 @@ export function removeDuplicateWords(text: string) {
 }
 
 // -----------------------------------------------------------------------------------
-// Extended data sets
+// Extended data sets for disclaimers, filler, buzz, stop, etc.
+// (Now includes more items, removing references to "video" or "content.")
 // -----------------------------------------------------------------------------------
 const disclaimers = [
 	'this is not financial advice',
@@ -560,6 +525,10 @@ const disclaimers = [
 	'please consult a professional',
 	'we are not responsible for any decisions',
 	'viewer discretion advised',
+	'this is not legal advice',
+	'for entertainment only',
+	'consult your doctor',
+	'no liability accepted',
 ];
 
 const buzzWords = [
@@ -575,6 +544,16 @@ const buzzWords = [
 	'patreon',
 	'crowdfund',
 	'merch',
+	'algorithm',
+	'engagement',
+	'views',
+	'like',
+	'follow us on social media',
+	'subscriber count',
+	'viral',
+	'channel',
+	'footage',
+	'upload',
 ];
 
 const stopWords = [
@@ -655,12 +634,18 @@ const fillerWords = [
 	'guys',
 	'hey',
 	'folks',
-	'basically',
 	'honestly',
 	'seriously',
 	'hmm',
 	'uhm',
 	'mm',
+	'kinda',
+	'sorta',
+	'stuff like that',
+	'you know',
+	'you see',
+	'yknow',
+	'basically',
 ];
 
 const buzzPhrases = [
@@ -675,6 +660,9 @@ const buzzPhrases = [
 	'this video is sponsored by',
 	'turn on notifications',
 	'be sure to subscribe',
+	'smash that subscribe button',
+	'drop a comment below',
+	'leave a like',
 ];
 
 const qualifierPhrases = [
