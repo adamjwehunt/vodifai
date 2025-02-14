@@ -1,6 +1,7 @@
 'use client';
 
-import {  ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { useCompletion } from 'ai/react'; // <-- from npm install ai
 import { ClipboardButton } from '../ClipboardButton';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { TextToSpeech, TextToSpeechRef } from './TextToSpeech';
@@ -30,79 +31,79 @@ export const RecapButton = ({
 		videoDetails: { title, keywords, chapters, description },
 	} = useTranscriptState();
 
-	const [generatedRecap, setGeneratedRecap] = useState('');
 	const [isRecapFinished, setIsRecapFinished] = useState(false);
-	const [isLoading, setLoading] = useState(false);
 	const [isTextToSpeechPlaying, setIsTextToSpeechPlaying] = useState(false);
+
+	// We no longer manually track 'generatedRecap' while streaming, because
+	// `useCompletion` gives us a `completion` string that updates with each token.
+	// If you prefer storing it yourself, you can do so with `onResponse` or `onFinish`.
+	// But for the minimal approach, we'll show partial text via `completion`.
+
+	// This hook does the SSE streaming behind the scenes.
+	const {
+		completion, // partial or complete text from the AI
+		isLoading, // true while streaming
+		error,
+		complete, // function to trigger the request
+		setCompletion, // if needed to manually reset the text
+	} = useCompletion({
+		api: '/api/recap', // the route we call
+		body: {
+			// We pass your YT data up front, so the route knows how to build the prompt:
+			title,
+			keywords,
+			chapters,
+			description,
+			captions,
+		},
+		onFinish: (prompt, finalText) => {
+			// Called once the stream is fully done
+			setIsRecapFinished(true);
+			// Optionally do something else here:
+			// console.log('Finished Recap. Full text is:', finalText);
+		},
+	});
 
 	const modalRef = useRef<ModalRef>(null);
 	const textToSpeechRef = useRef<TextToSpeechRef>(null);
 
+	// Stop TTS if we unmount
 	useEffect(() => {
-		return () => {
-			setIsTextToSpeechPlaying(false);
-		};
+		return () => setIsTextToSpeechPlaying(false);
 	}, []);
 
 	const handleShowRecap = useCallback(async () => {
+		// Open the modal
 		modalRef.current?.open();
 
+		// If we've already finished once, do nothing
 		if (isRecapFinished) {
 			return;
 		}
 
-		setGeneratedRecap('');
-		setLoading(true);
+		// Reset partial text & states
+		setCompletion('');
+		setIsRecapFinished(false);
 
-		const response = await fetch('/api/recap', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				title,
-				keywords,
-				chapters,
-				description,
-				captions,
-			}),
-		});
+		// Trigger the SSE request
+		await complete('');
+	}, [complete, isRecapFinished, setCompletion]);
 
-		if (!response.ok) {
-			throw new Error(response.statusText);
+	const handleToggleTextToSpeech = () => {
+		if (!isTextToSpeechPlaying) {
+			textToSpeechRef.current?.play();
+		} else {
+			textToSpeechRef.current?.pause();
 		}
+		setIsTextToSpeechPlaying(!isTextToSpeechPlaying);
+	};
 
-		const data = response.body;
-		if (!data) {
-			return;
-		}
+	const handleModalClose = () => {
+		setIsTextToSpeechPlaying(false);
+	};
 
-		const reader = data.getReader();
-		const decoder = new TextDecoder();
-		let done = false;
-
-		setLoading(false);
-
-		while (!done) {
-			const { value, done: doneReading } = await reader.read();
-			done = doneReading;
-			const chunkValue = decoder.decode(value);
-			setGeneratedRecap((prev) => prev + chunkValue);
-		}
-
-		if (done) {
-			setIsRecapFinished(true);
-		}
-	}, [captions, chapters, description, keywords, title, isRecapFinished]);
-
-	const handleToggleTextToSpeech = () =>
-		!isTextToSpeechPlaying
-			? textToSpeechRef.current?.play()
-			: textToSpeechRef.current?.pause();
-
-	const handleModalClose = () => setIsTextToSpeechPlaying(false);
-
-	const trimmedRecap = trimRecap(generatedRecap);
+	// We'll "trim" the partial or final text from the AI
+	const trimmedRecap = trimRecap(completion);
 
 	return (
 		<>
@@ -141,6 +142,17 @@ export const RecapButton = ({
 				}
 				onClose={handleModalClose}
 			>
+				{error && (
+					<p style={{ color: 'red', marginBottom: '1rem' }}>
+						Error: {error.message}
+					</p>
+				)}
+
+				{/**
+				 * If the stream hasn't fully finished, we still show partial text
+				 * (i.e. `trimmedRecap`).
+				 * Once `isRecapFinished` is true, we also allow TTS & copying.
+				 */}
 				{!isRecapFinished ? (
 					trimmedRecap
 				) : (
