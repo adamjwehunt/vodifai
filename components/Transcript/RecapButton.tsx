@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
-import { useCompletion } from 'ai/react';
+import { useCompletion } from '@ai-sdk/react';
 import { ClipboardButton } from '../ClipboardButton';
 import { useTranscriptState } from '../TranscriptProvider/transcriptContext';
 import { TextToSpeech, TextToSpeechRef } from './TextToSpeech';
