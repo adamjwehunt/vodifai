@@ -63,7 +63,6 @@ export async function POST(req: NextRequest) {
 	const { title, keywords, description, chapters, captions } =
 		(await req.json()) as RecapRequestBody;
 
-	// 4) Build your big transcript prompt
 	const recapPrompt = createRecapPrompt(
 		title || '',
 		(keywords || []).join(' '),
@@ -72,11 +71,7 @@ export async function POST(req: NextRequest) {
 		chapters || [],
 		4000
 	);
-	console.log(
-		`app/api/recap/route.ts - 75 => recapPrompt: `,
-		'\n',
-		recapPrompt
-	);
+
 	if (!recapPrompt) {
 		return new Response('No prompt in the request', { status: 400 });
 	}
