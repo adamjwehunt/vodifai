@@ -6,7 +6,6 @@ import fileDownloadIconUrl from '@/public/file-download-icon.svg?url';
 import shareIconUrl from '@/public/share-icon.svg?url';
 import SearchIcon from '@/public/search-icon.svg';
 import ChevronDownIcon from '@/public/chevron-back-icon.svg';
-import recapIconUrl from '@/public/ai-icon.svg?url';
 import LoadingSpinner from '@/public/loading-spinner.svg';
 import expandIconUrl from '@/public/expand-icon.svg?url';
 import ClipboardIcon from '@/public/clipboard-icon.svg';
@@ -122,10 +121,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
 									ariaLabel={'Show AI recap'}
 									modalTitle={'AI-generated Recap'}
 									loadingSpinner={<LoadingSpinner />}
-								>
-									<Image alt={''} src={recapIconUrl} />
-									{'Recap'}
-								</RecapButton>
+								/>
 								<ExpandButton ariaLabel={'Expand transcript'}>
 									<Image alt={''} src={expandIconUrl} />
 								</ExpandButton>

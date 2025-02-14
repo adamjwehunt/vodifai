@@ -14,14 +14,12 @@ import styles from './transcript.module.scss';
 
 interface RecapButtonProps {
 	ariaLabel: string;
-	children: ReactNode;
 	modalTitle: string;
 	loadingSpinner: ReactNode;
 }
 
 export const RecapButton = ({
 	ariaLabel,
-	children,
 	modalTitle,
 	loadingSpinner,
 }: RecapButtonProps) => {
@@ -92,7 +90,7 @@ export const RecapButton = ({
 				tabIndex={isExpanded ? -1 : 0}
 				onClick={handleShowRecap}
 			>
-				{children}
+				{'✨ Recap'}
 			</button>
 			<Modal
 				ref={modalRef}
