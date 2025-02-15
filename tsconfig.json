@@ -23,6 +23,7 @@
 		"paths": {
 			"@/public/*": ["public/*"],
 			"@/components/*": ["components/*"],
+			"@/constants/*": ["constants/*"],
 			"@/app/*": ["app/*"],
 			"@/lib/*": ["lib/*"]
 		},
