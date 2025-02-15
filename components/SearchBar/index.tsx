@@ -5,7 +5,7 @@ import vodifaiLogoUrl from '@/public/vodifai-logo.svg?url';
 import ArrowIcon from '@/public/arrow-icon.svg';
 import SearchIcon from '@/public/search-icon.svg';
 import { SearchInput } from './SearchInput';
-import { SEARCH_BAR_PLACEHOLDER } from '@/app/page';
+import { SEARCH_BAR_PLACEHOLDER } from '@/constants/homepage';
 import { AboutButton } from '../AboutButton';
 import styles from './searchBar.module.scss';
 
